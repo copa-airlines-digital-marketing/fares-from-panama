@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+</script>
+
+<!-- Hero -->
+<section class="min-h-dvh bg-primary-light" id="portada" aria-label="Portada">
+	<h1>Las mejores tarifas de Copa desde Panamá</h1>
+</section>
+<!-- Description -->
