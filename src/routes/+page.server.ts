@@ -1,25 +1,20 @@
-import { CMS_CONTENT_COLLECTION, CMS_CONTENT_ID, CMS_HOST, CMS_TOKEN, DEFAULT_LANG, DEFAULT_STOREFRONT, PAGE_ID_HOMPAGE } from '$env/static/private';
-import contentProcesing from '$lib/server/contentProcesing';
+import { CMS_HOST, CMS_TOKEN } from '$env/static/private';
+import { COLLECTIONS_SITES, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT, ID_SITE } from '$lib/server/constants';
+import { getPage } from '$lib/server/contentProcesing';
+import { getPageQuery, type PageQueryBuilderFunctionParams } from '$lib/server/page-request';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ url, cookies }) => {
-  const days = url.searchParams.get('days');
-  const month = url.searchParams.get('mont');
-  const destination = url.searchParams.get('dest')
-  
-  const content = contentProcesing(CMS_HOST, CMS_TOKEN, CMS_CONTENT_COLLECTION, CMS_CONTENT_ID, DEFAULT_LANG, DEFAULT_STOREFRONT, PAGE_ID_HOMPAGE)
+const pageSetting: PageQueryBuilderFunctionParams = {
+  id: 9,
+  defaultLang: DEFAULT_LANGUAGE,
+  defaultStorefront: DEFAULT_STOREFRONT
+}
+
+export const load: PageServerLoad = async () => {
+
+  const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_SITES, ID_SITE, getPageQuery(pageSetting))
 
 	return {
-    days,
-    month,
-    destination,
-		modules: {
-			featured: '',
-      promos: '',
-      budget: '',
-      calendar: '',
-      histogram: '',
-      interest: '',
-		},
+    content
 	};
 };

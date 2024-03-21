@@ -1,7 +1,7 @@
 import { createDirectus, staticToken, rest, readItem, readItems } from "@directus/sdk";
 
 // Gets the content of the site
-export default async function<Schema, Item>({host, token, collection, id, item, items}: Directus.Params<Schema, Item>){
+export const getItems = async function<Schema, Item>({host, token, collection, id, item, items}: Directus.Params<Schema, Item>){
 
   const client = createDirectus(host).with(staticToken(token)).with(rest())
 

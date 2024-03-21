@@ -1,43 +1,17 @@
 import type { Query } from "@directus/sdk";
-import cms from "./cms";
+import { getItems } from "./cms";
 
 
-export default async function(host:string, token: string, collection: string, id: string, lang: string, storfront: string, page: string){
-  const requestSettings: Directus.Params<Directus.ContentQuery, Directus.Content> = {
+export const getPage = async function(host:string, token: string, collection: string, id: string, item: Query<Directus.Schema, Directus.Site>){
+  const requestSettings: Directus.Params<Directus.Schema, Directus.Site> = {
     host,
     token,
     collection,
     id,
+    item,
   }
 
-  const item: Query<Directus.ContentQuery, Directus.Content> = {
-    fields: [
-      "favIcon",
-      {
-        pages: [
-          "name",
-          "share_image",
-          "translations.*",
-          "storefronts.*"
-        ]
-      }
-    ],
-    deep: {
-      { pages: {
-          _filter: {
-            id: {
-              _eq: page
-            }
-          }
-        }
-      }
-        pages: {
-          _
-        }
-    }
-  }
+  const request = await getItems({...requestSettings, item})
 
-  const request = await cms({...requestSettings, item})
-
-  console.log(request)
+  return request
 }
