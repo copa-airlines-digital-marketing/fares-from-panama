@@ -1,0 +1,1 @@
+export const CMS_IMAGE_URL='https://cm-marketing.directus.app/assets/'

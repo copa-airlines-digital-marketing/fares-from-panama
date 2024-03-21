@@ -28,11 +28,12 @@ const getStorefrontsCodeFilter = (defaultStorefront: string, storefront?: string
   }
 }
 
-
 export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefront}: PageQueryBuilderFunctionParams) => {
   const query: Query<Directus.Schema, Directus.Site> = {
     fields: [
-      "favIcon",
+      {favIcon: [
+        "image"
+      ]},
       {
         pages: [
           "name",
@@ -108,8 +109,11 @@ export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefro
           sections: {
             sections_id: {
               section_content: {
-                item: {
-                  
+                "item:Text_Content": {
+                  translations: getlanguageCodeFilter(defaultLang, lang),
+                },
+                "item:navigation": {
+                  translations: getlanguageCodeFilter(defaultLang, lang),
                 }
               }
             }

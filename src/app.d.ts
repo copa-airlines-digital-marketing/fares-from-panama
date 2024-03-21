@@ -50,6 +50,7 @@ declare global {
     }
 
     type NavigationTranslations = {
+      languages_code: string
       title: string
       links: NavigationLinks[]
     }
@@ -102,6 +103,8 @@ declare global {
     }
 
     type PageSectionContent = {
+      "item:Text_Content": TextContent[]
+      "item:navigation": Navigation[]
       collection: string
       item: Carrousel[] | TextContent[] | SVGAsset[] | Form[]
     }
@@ -136,14 +139,14 @@ declare global {
     }
 
     type Site = {
-      favIcon: string //id of the asset library
+      favIcon: SVGAsset[] //id of the asset library
       pages: Page[]
     }
 
     type Schema = {
       sites: Site[]
       pages: Page[]
-      translations: (PageTranslation | TextContentTranslation | NavigationTranslations)[]
+      translations: PageTranslation[] | TextContentTranslation[] | NavigationTranslations[]
       storefronts: PageStorefront[]
       sections_id: PageStorefrontsSections[]
       sections: Section[]
@@ -155,6 +158,9 @@ declare global {
       form: Form[]
       navigation: Navigation[]
       carrousel: Carrousel[]
+      favIcon: SVGAsset[]
+      "item:Text_Content": TextContent[]
+      "item:navigation": Navigation[]
     }
     
     type FaresQuery = {
