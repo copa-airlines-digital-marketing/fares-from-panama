@@ -103,23 +103,22 @@ declare global {
 
     type PageSectionContent = {
       collection: string
-      item: Carrousel | TextContent | SVGAsset | Form
+      item: Carrousel[] | TextContent[] | SVGAsset[] | Form[]
     }
 
-    type SectionsSectionContent = {
+    type Section = {
       section_id: string
-      section_content: SectionContent[]
+      section_content: PageSectionContent[]
     }
 
-    type PageSection = {
-      section_id: string
-      sections_id: SectionsSectionContent[]
-      sections_content: PageSectionContent[]
+    type PageStorefrontsSections = {
+      id: number
+      sections_id: Section[]
     }
 
     type PageStorefront = {
       storefronts_code: string
-      sections: PageSection[]
+      sections: PageStorefrontsSections[]
     }
 
     type PageTranslation = {
@@ -144,10 +143,12 @@ declare global {
     type Schema = {
       sites: Site[]
       pages: Page[]
-      translations: PageTranslation[]
+      translations: (PageTranslation | TextContentTranslation | NavigationTranslations)[]
       storefronts: PageStorefront[]
-      sections: PageSection[]
-      sections_id: PageSection[]
+      sections_id: PageStorefrontsSections[]
+      sections: Section[]
+      section_content: PageSectionContent[]
+      item: TextContent[] | SVGAsset[] | Form[] | Navigation[] | Carrousel[]
       Text_Content: TextContent[]
       logos: SVGAsset[]
       icon: SVGAsset[]

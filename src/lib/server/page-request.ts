@@ -106,7 +106,13 @@ export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefro
         storefronts: {
           ...getStorefrontsCodeFilter(defaultStorefront, storefront),
           sections: {
-            
+            sections_id: {
+              section_content: {
+                item: {
+                  
+                }
+              }
+            }
           }
         }
       },
