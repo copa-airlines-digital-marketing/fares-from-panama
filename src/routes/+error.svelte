@@ -14,7 +14,7 @@
 		<Icon data={NotFound} class="w-152 h-152"></Icon>
 	</div>
 
-	<Heading type="h1" style="text-primary text-center">
+	<Heading type="display-normal" style="text-primary text-center">
 		No pudimos encontrar lo que estabas buscando
 	</Heading>
 	<div class="my-24 grid grid-cols-2 grid-rows-1 gap-16 items-start">
