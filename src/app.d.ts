@@ -115,19 +115,24 @@ declare global {
       slides: string
     }
 
-    type MFAItem = Carrousel | TextContent | SVGAsset | Form | TermsAndConditions
+    type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions
+
+    type ContentCollectionNames = 'carrousel' | 'form' | 'icons' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content'
 
     type PageSectionContent = {
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
       "item:terms_and_conditions": TermsAndConditions[]
-      collection: string
+      collection: ContentCollectionNames
       item: MFAItem
     }
+
+    type SectionLandmark = 'aside' | 'footer' | 'header' | 'regular' | 'section'
 
     type Section = {
       section_id: string
       section_content: PageSectionContent[]
+      landmark: SectionLandmark
     }
 
     type PageStorefrontsSections = {

@@ -48,10 +48,11 @@ export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefro
             storefronts: [
               'storefronts_code',
               {
-                sections:[ 
+                sections:[
                   {
                     sections_id:[
                       'section_id',
+                      'landmark',
                       {
                         section_content: [
                           'collection',

@@ -1,11 +1,28 @@
 <script lang="ts">
-	export let data;
+	import Section from '$lib/components/directus/section/section.svelte';
+	import Header from '$lib/components/header/header.svelte';
+	import {
+		getMetaDescriptionFromPage,
+		getSectionsFromSite,
+		getTitleTagFromPage
+	} from '$lib/public/utils';
 
+	export let data;
 	console.log('home', data);
+
+	const site = data.content;
+	const titleTag = getTitleTagFromPage(site);
+	const description = getMetaDescriptionFromPage(site);
+	const storefrontSection = getSectionsFromSite(site);
 </script>
 
-<!-- Hero -->
-<section class="min-h-dvh bg-primary-light" id="portada" aria-label="Portada">
-	<h1>Las mejores tarifas de Copa desde Panamá</h1>
-</section>
-<!-- Description -->
+<svelte:head>
+	<title>{titleTag}</title>
+	<meta name="description" content={description} />
+</svelte:head>
+
+<Header additionalClass="absolute"></Header>
+{#each storefrontSection as sectioM2M}
+	{@const section = sectioM2M.sections_id}
+	<Section {section}></Section>
+{/each}
