@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let data;
 
-	console.log(data);
+	console.log('home', data);
 </script>
 
 <!-- Hero -->

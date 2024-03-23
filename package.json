@@ -2,9 +2,9 @@
 	"name": "fares-from-panama-sveltekit",
 	"version": "0.0.1",
 	"private": true,
-  "engines": {
-    "node": "20.5.1"
-  },
+	"engines": {
+		"node": "21.4.0"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -16,7 +16,7 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-    "start": "node build/index.js"
+		"start": "node build/index.js"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -44,6 +44,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@directus/errors": "^0.2.4",
 		"@directus/sdk": "^15.0.3",
 		"cmds-tailwind-styles": "^1.1.6",
 		"date-fns": "^3.3.1",

@@ -5,9 +5,11 @@
 	import Icon from '$lib/components/icon/icon.svelte';
 
 	export let color: 'bg-transparent' | 'bg-primary' = 'bg-transparent';
+
+	export let additionalClass = '';
 </script>
 
-<header class="p-16 absolute top-0 left-0 w-full {color}">
+<header class="p-16 w-full {color} {additionalClass}">
 	<div class="container flex gap-16 items-center justify-between mx-auto">
 		<a href="/" title="ir al inicio">
 			<Icon data={tarifasFelicesLogo} class="h-56 md:h-72" />

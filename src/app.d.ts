@@ -15,6 +15,19 @@ declare global {
   namespace Directus {
     // Directus types
 
+    type TermsAndConditionsTranslations = {
+      title: string
+      termAndConditions: string
+      path: string
+    }
+
+    type TermsAndConditions = {
+      id: string
+      name: string
+      status: string
+      translations: TermsAndConditionsTranslations[]
+    }
+
     type TextContentCallToAction = {
       text: string
       link: string
@@ -102,11 +115,14 @@ declare global {
       slides: string
     }
 
+    type MFAItem = Carrousel | TextContent | SVGAsset | Form | TermsAndConditions
+
     type PageSectionContent = {
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
+      "item:terms_and_conditions": TermsAndConditions[]
       collection: string
-      item: Carrousel[] | TextContent[] | SVGAsset[] | Form[]
+      item: MFAItem
     }
 
     type Section = {
@@ -116,7 +132,7 @@ declare global {
 
     type PageStorefrontsSections = {
       id: number
-      sections_id: Section[]
+      sections_id: Section
     }
 
     type PageStorefront = {
@@ -151,7 +167,7 @@ declare global {
       sections_id: PageStorefrontsSections[]
       sections: Section[]
       section_content: PageSectionContent[]
-      item: TextContent[] | SVGAsset[] | Form[] | Navigation[] | Carrousel[]
+      item: MFAItem
       Text_Content: TextContent[]
       logos: SVGAsset[]
       icon: SVGAsset[]
@@ -159,6 +175,8 @@ declare global {
       navigation: Navigation[]
       carrousel: Carrousel[]
       favIcon: SVGAsset[]
+      terms_and_conditions: TermsAndConditions[]
+      "item:terms_and_conditions": TermsAndConditions[]
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
     }

@@ -1,4 +1,5 @@
 export const COLLECTIONS_SITES='sites'
-export const DEFAULT_LANGUAGE='en'
+export const DEFAULT_LANGUAGE='es'
 export const DEFAULT_STOREFRONT='gs'
 export const ID_SITE='5'
+export const DEFAULT_ERROR_MESSAGE='Nuestro servicio no está disponible en estos momentos, regresa mas tarde por favor.'

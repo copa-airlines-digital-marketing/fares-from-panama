@@ -82,6 +82,12 @@ export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefro
                                   'links'
                                 ]
                               }],
+                              terms_and_conditions: [
+                                {translations: [
+                                  'title',
+                                  'termAndConditions'
+                                ]}
+                              ],
                               carrousel: ['autoSlide', 'autoSlideDelayMS', 'slides'],
                             }
                           }
@@ -114,7 +120,10 @@ export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefro
                 },
                 "item:navigation": {
                   translations: getlanguageCodeFilter(defaultLang, lang),
-                }
+                },
+                "item:terms_and_conditions": {
+                  translations: getlanguageCodeFilter(defaultLang, lang),
+                },
               }
             }
           }
