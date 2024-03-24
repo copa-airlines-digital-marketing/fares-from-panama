@@ -3,7 +3,7 @@
 	import Header from '$lib/components/header/header.svelte';
 	import {
 		getMetaDescriptionFromPage,
-		getSectionsFromSite,
+		getSectionsFromPage,
 		getTitleTagFromPage
 	} from '$lib/public/utils';
 
@@ -13,7 +13,7 @@
 	const site = data.content;
 	const titleTag = getTitleTagFromPage(site);
 	const description = getMetaDescriptionFromPage(site);
-	const storefrontSection = getSectionsFromSite(site);
+	const storefrontSection = getSectionsFromPage(site);
 </script>
 
 <svelte:head>

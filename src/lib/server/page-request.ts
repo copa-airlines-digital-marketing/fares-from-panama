@@ -28,71 +28,83 @@ const getStorefrontsCodeFilter = (defaultStorefront: string, storefront?: string
   }
 }
 
-export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefront}: PageQueryBuilderFunctionParams) => {
-  const query: Query<Directus.Schema, Directus.Site> = {
-    fields: [
-      {favIcon: [
-        "image"
+export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}: PageQueryBuilderFunctionParams) => {
+  const query: Query<Directus.Schema, Directus.Page> = {
+    fields: [ 
+      "name",
+      "share_image",
+      {
+        translations: [
+        'languages_code',
+        'title_tag',
+        'meta_description'
       ]},
       {
-        pages: [
-          "name",
-          "share_image",
+        storefronts: [
+          'storefronts_code',
           {
-            translations: [
-            'languages_code',
-            'title_tag',
-            'meta_description'
-          ]},
-          {
-            storefronts: [
-              'storefronts_code',
+            sections:[
               {
-                sections:[
+                sections_id:[
+                  'content_spacing',
+                  'horizontal_behaviour',
+                  'landmark',
+                  'section_id',
                   {
-                    sections_id:[
-                      'section_id',
-                      'landmark',
+                    section_content: [
+                      'collection',
+                      'display',
                       {
-                        section_content: [
-                          'collection',
-                          {
-                            item: {
-                              Text_Content: [
-                                'icon', 
-                                'icon_from_library', 
-                                {
-                                  'translations': [
-                                    'languages_code',
-                                    'call_to_actions',
-                                    'description',
-                                    'embed_media',
-                                    'media',
-                                    'title'
-                                  ]
-                                }
-                              ],
-                              logos: ['code'],
-                              icon: ['code'],
-                              form: ['action', 'inputs'],
-                              navigation: [
-                                'icon', {
-                                'translations': [
-                                  'languages_code',
-                                  'title',
-                                  'links'
-                                ]
-                              }],
-                              terms_and_conditions: [
-                                {translations: [
-                                  'title',
-                                  'termAndConditions'
-                                ]}
-                              ],
-                              carrousel: ['autoSlide', 'autoSlideDelayMS', 'slides'],
+                        item: {
+                          carrousel: ['autoSlide', 'autoSlideDelayMS', 'slides'],
+                          copyrights: [
+                            'name',
+                            {translations: ['copyright']}
+                          ],
+                          icon: ['code'],
+                          follow_buttons: [{translations: [
+                            'languages_code',
+                            'title',
+                            {social_network: [
+                              {"links_url":[
+                                'name',
+                                'url',
+                                'opens_in',
+                                {'icon':['code']}
+                              ]},
+                            ]}
+                          ]}],
+                          form: ['action', 'inputs'],
+                          logos: ['code'],
+                          navigation: [
+                            'icon', {
+                            'translations': [
+                              'languages_code',
+                              'title',
+                              'links'
+                            ]
+                          }],
+                          Text_Content: [
+                            'icon', 
+                            'icon_from_library', 
+                            {
+                              'translations': [
+                                'languages_code',
+                                'call_to_actions',
+                                'description',
+                                'embed_media',
+                                'media',
+                                'title'
+                              ]
                             }
-                          }
-                        ]
+                          ],
+                          terms_and_conditions: [
+                            {translations: [
+                              'title',
+                              'termAndConditions'
+                            ]}
+                          ],
+                        }
                       }
                     ]
                   }
@@ -104,33 +116,29 @@ export const getPageQuery = ({id, defaultLang, defaultStorefront, lang, storefro
       }
     ],
     deep: {
-      pages: {
-        _filter: {
-          id: {
-            _eq: id
-          }
-        },
-        translations: getlanguageCodeFilter(defaultLang, lang),
-        storefronts: {
-          ...getStorefrontsCodeFilter(defaultStorefront, storefront),
-          sections: {
-            sections_id: {
-              section_content: {
-                "item:Text_Content": {
-                  translations: getlanguageCodeFilter(defaultLang, lang),
-                },
-                "item:navigation": {
-                  translations: getlanguageCodeFilter(defaultLang, lang),
-                },
-                "item:terms_and_conditions": {
-                  translations: getlanguageCodeFilter(defaultLang, lang),
-                },
-              }
+      translations: getlanguageCodeFilter(defaultLang, lang),
+      storefronts: {
+        ...getStorefrontsCodeFilter(defaultStorefront, storefront),
+        sections: {
+          sections_id: {
+            section_content: {
+              "item:copyrights": {
+                translations: getlanguageCodeFilter(defaultLang, lang),
+              },
+              "item:Text_Content": {
+                translations: getlanguageCodeFilter(defaultLang, lang),
+              },
+              "item:navigation": {
+                translations: getlanguageCodeFilter(defaultLang, lang),
+              },
+              "item:terms_and_conditions": {
+                translations: getlanguageCodeFilter(defaultLang, lang),
+              },
             }
           }
         }
-      },
-    }
+      }
+    },
   }
 
   return query

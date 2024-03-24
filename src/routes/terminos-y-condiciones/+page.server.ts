@@ -1,5 +1,5 @@
 import { CMS_HOST, CMS_TOKEN } from '$env/static/private';
-import { COLLECTIONS_SITES, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT, ID_SITE } from '$lib/server/constants';
+import { COLLECTIONS_PAGES, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT, ID_SITE } from '$lib/server/constants';
 import { getPage } from '$lib/server/contentProcesing';
 import { getPageQuery, type PageQueryBuilderFunctionParams } from '$lib/server/page-request';
 import { error, isHttpError } from '@sveltejs/kit';
@@ -18,7 +18,7 @@ const errorMessage = { message: DEFAULT_ERROR_MESSAGE }
 export const load: PageServerLoad = async () => {
 
   try {
-    const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_SITES, ID_SITE, getPageQuery(pageSetting)).catch((err) => {
+    const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
       console.log('Location: terminos-y-condiciones fetch -', err)
       error(404, errorMessage)
     })

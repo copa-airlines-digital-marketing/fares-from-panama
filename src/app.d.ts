@@ -115,24 +115,69 @@ declare global {
       slides: string
     }
 
-    type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions
+    type CopyrightTranslations = {
+      languages_code: string
+      copyright:string
+    }
 
-    type ContentCollectionNames = 'carrousel' | 'form' | 'icons' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content'
+    type Copyrights = {
+      name: string
+      status: string
+      translations: CopyrightTranslations[]
+    }
+
+    type Links = {
+      url: string,
+      name: string,
+      opens_in: string,
+      icon: SVGAsset
+    }
+
+    type FollowLink = {
+      links_url: Link
+    }
+
+    type FollowButtonsTranslations = {
+      languages_code: string
+      title: string
+      social_network: FollowLink[]
+    }
+
+    type FollowButtons = {
+      name: string
+      status: string
+      translations: FollowButtonsTranslations[]
+    }
+
+    type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions | Copyrights | FollowButtons
+
+    type ContentCollectionNames = 'carrousel' | 'form' | 'icon' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content' | 'copyrights' | 'follow_buttons'
+
+    type ContentDisplay = '100' | '75' | '50' | '25'
 
     type PageSectionContent = {
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
       "item:terms_and_conditions": TermsAndConditions[]
+      "item:copyrights": Copyrights[]
+      "item:follow_buttons": FollowButtons[]
       collection: ContentCollectionNames
+      display: ContentDisplay
       item: MFAItem
     }
 
     type SectionLandmark = 'aside' | 'footer' | 'header' | 'regular' | 'section'
 
+    type HorizontalBehaviour = 'contained' | 'full'
+
+    type ContentSpacing = 'none' | 'minimal' | 'tiny' | 'petit' | 'normal' | 'roomy' | 'spacious' | 'big' | 'huge'
+
     type Section = {
+      content_spacing: ContentSpacing
+      horizontal_behaviour: HorizontalBehaviour
+      landmark: SectionLandmark
       section_id: string
       section_content: PageSectionContent[]
-      landmark: SectionLandmark
     }
 
     type PageStorefrontsSections = {
@@ -181,24 +226,22 @@ declare global {
       carrousel: Carrousel[]
       favIcon: SVGAsset[]
       terms_and_conditions: TermsAndConditions[]
+      copyrights: Copyrights[]
+      follow_buttons: FollowButtons[]
+      links: Link[]
+      links_url: Link[]
+      "item:copyrights": Copyrights[]
       "item:terms_and_conditions": TermsAndConditions[]
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
-    }
-    
-    type FaresQuery = {
-      a: string
-    }
-    
-    type Fares = {
-      a: string
+      "item:follow_buttons": FollowButtons[]
     }
     
     type Params<Schema, Item> = {
       host: string,
       token: string,
       collection: string,
-      id?: string,
+      id?: string | number,
       items?: Query<Schema, Item>
       item?: QueryItem<Schema, Item>
     }

@@ -9,6 +9,6 @@
 <Heading type="h2" style="text-primary">
 	{translation?.title}
 </Heading>
-<p class="text-grey-600">
+<p class="text-grey-600 mt-16">
 	{@html translation?.termAndConditions}
 </p>
