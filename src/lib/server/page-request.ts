@@ -46,6 +46,10 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
             sections:[
               {
                 sections_id:[
+                  'content_horizontal_alignment',
+                  'content_horizontal_distribution',
+                  'content_vertical_alignment',
+                  'content_vertical_distribution',
                   'content_spacing',
                   'horizontal_behaviour',
                   'landmark',
@@ -54,6 +58,8 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                     section_content: [
                       'collection',
                       'display',
+                      'horizontal_alignment',
+                      'vertical_alignment',
                       {
                         item: {
                           carrousel: ['autoSlide', 'autoSlideDelayMS', 'slides'],

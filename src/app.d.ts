@@ -155,6 +155,12 @@ declare global {
 
     type ContentDisplay = '100' | '75' | '50' | '25'
 
+    type VerticalAlignment = 'top' | 'center' | 'bottom' | 'stretch' | 'baseline'
+
+    type HorizontalAlignment = 'left' | 'center' | 'right' | 'stretch'
+
+    type ContentDistribution = 'space_around' | 'space_between' | 'space_evenly'
+
     type PageSectionContent = {
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
@@ -163,7 +169,9 @@ declare global {
       "item:follow_buttons": FollowButtons[]
       collection: ContentCollectionNames
       display: ContentDisplay
+      horizontal_alignment: HorizontalAlignment
       item: MFAItem
+      vertical_alignment: VerticalAlignment
     }
 
     type SectionLandmark = 'aside' | 'footer' | 'header' | 'regular' | 'section'
@@ -173,6 +181,10 @@ declare global {
     type ContentSpacing = 'none' | 'minimal' | 'tiny' | 'petit' | 'normal' | 'roomy' | 'spacious' | 'big' | 'huge'
 
     type Section = {
+      content_horizontal_alignment: HorizontalAlignment
+      content_horizontal_distribution: HorizontalAlignment | ContentDistribution
+      content_vertical_alignment: VerticalAlignment
+      content_vertical_distribution: VerticalAlignment | ContentDistribution
       content_spacing: ContentSpacing
       horizontal_behaviour: HorizontalBehaviour
       landmark: SectionLandmark
