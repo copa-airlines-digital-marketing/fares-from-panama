@@ -54,6 +54,9 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                   'horizontal_behaviour',
                   'landmark',
                   'section_id',
+                  {'background_color':[
+                    'name'
+                  ]},
                   {
                     section_content: [
                       'collection',

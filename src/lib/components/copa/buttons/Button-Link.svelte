@@ -15,10 +15,10 @@
 	);
 
 	const textStylesMap: Map<ButtonStyles, string> = new Map();
-	textStylesMap.set('rounded-solid-primary', 'text-grey-0');
+	textStylesMap.set('rounded-solid-primary', 'text-common-white');
 	textStylesMap.set(
 		'rounded-oultine-primary',
-		'text-primary group-hover:text-grey-0 group-active:text-grey-0 group-focus:text-grey-0'
+		'text-primary group-hover:text-common-white group-active:text-common-white group-focus:text-common-white'
 	);
 </script>
 

@@ -1,3 +1,30 @@
+
+@layer base{
+  p {
+    @apply text-grey-600;
+  }
+  
+  a {
+    @apply text-primary-light hover:underline;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+  @apply w-[5px];
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-secondary/10 rounded-md;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary/40 rounded-md;
+}
+

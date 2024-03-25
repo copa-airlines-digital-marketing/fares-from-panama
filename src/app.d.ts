@@ -149,6 +149,13 @@ declare global {
       translations: FollowButtonsTranslations[]
     }
 
+    type ColorName = 'alternative-dark-orange' | 'alternative-gold' | 'alternative-light-orange' | 'alternative-pardo' | 'alternative-prefer-member-blue' | 'background-light-blue' | 'background-paper' | 'black' | 'grey-100' | 'grey-300' | 'grey-400' | 'grey-500' | 'grey-600' | 'grey-700' | 'grey-75' | 'grey-800' | 'primary' | 'primary-dark' | 'primary-faded' | 'primary-light' | 'primary-ultradark' | 'primary-ultralight' | 'secondary' | 'secondary-faded' | 'status-gold' | 'status-silver' | 'system-error' | 'system-error-faded' | 'system-success' | 'system-success-faded' | 'system-warning' | 'system-warning-faded' | 'tertiary' | 'white'
+
+    type Colors ={
+      hex: string
+      name: ColorName
+    }
+
     type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions | Copyrights | FollowButtons
 
     type ContentCollectionNames = 'carrousel' | 'form' | 'icon' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content' | 'copyrights' | 'follow_buttons'
@@ -174,7 +181,7 @@ declare global {
       vertical_alignment: VerticalAlignment
     }
 
-    type SectionLandmark = 'aside' | 'footer' | 'header' | 'regular' | 'section'
+    type SectionLandmark = 'aside' | 'footer' | 'header' | 'hero' | 'regular' | 'section'
 
     type HorizontalBehaviour = 'contained' | 'full'
 
@@ -187,6 +194,7 @@ declare global {
       content_vertical_distribution: VerticalAlignment | ContentDistribution
       content_spacing: ContentSpacing
       horizontal_behaviour: HorizontalBehaviour
+      background_color: Color
       landmark: SectionLandmark
       section_id: string
       section_content: PageSectionContent[]
@@ -242,6 +250,7 @@ declare global {
       follow_buttons: FollowButtons[]
       links: Link[]
       links_url: Link[]
+      colors: Color[]
       "item:copyrights": Copyrights[]
       "item:terms_and_conditions": TermsAndConditions[]
       "item:Text_Content": TextContent[]

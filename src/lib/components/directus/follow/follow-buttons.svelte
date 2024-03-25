@@ -6,8 +6,8 @@
 	const networks = followButtons.translations[0].social_network;
 </script>
 
-<div class="flex gap-16 text-grey-0 items-center">
-	<p class="text-14/20 caret-transparent">{followButtons.translations[0].title}</p>
+<div class="flex gap-16 text-common-white items-center">
+	<p class="text-14/20 caret-transparent text-current">{followButtons.translations[0].title}</p>
 	<ul class="flex gap-8">
 		{#each networks as network}
 			{@const link = network.links_url}
