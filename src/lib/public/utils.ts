@@ -54,3 +54,6 @@ export const getBackgroundColorMap = (colorName: Directus.ColorName) => {
   return map[colorName]
 }
 
+export const joinClasses = (...params: string[]) => {
+  return params.join(' ')
+}

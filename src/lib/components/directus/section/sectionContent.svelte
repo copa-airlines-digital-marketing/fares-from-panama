@@ -2,6 +2,7 @@
 	import Copyright from '../copyright/copyright.svelte';
 	import FollowButtons from '../follow/follow-buttons.svelte';
 	import TermsAndConditions from '../terms-and-conditions/terms-and-conditions.svelte';
+	import TextContent from '../text/text-content.svelte';
 
 	export let contents: Directus.PageSectionContent[];
 
@@ -35,7 +36,15 @@
 </script>
 
 {#each contents as content}
-	{@const { collection, item, display, vertical_alignment, horizontal_alignment } = content}
+	{@const {
+		collection,
+		item,
+		display,
+		vertical_alignment,
+		horizontal_alignment,
+		theme,
+		component_name
+	} = content}
 	{@const className = [
 		displayMap[display],
 		alignSelf[vertical_alignment],
@@ -48,6 +57,8 @@
 			<FollowButtons followButtons={item}></FollowButtons>
 		{:else if collectionIsValidItem('terms_and_conditions', collection, item)}
 			<TermsAndConditions terms={item}></TermsAndConditions>
+		{:else if collectionIsValidItem('Text_Content', collection, item)}
+			<TextContent content={item} {theme} {component_name}></TextContent>
 		{:else}
 			<div>Unsupported collection: {collection}</div>
 		{/if}

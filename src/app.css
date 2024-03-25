@@ -1,10 +1,7 @@
 
 @layer base{
-  p {
-    @apply text-grey-600;
-  }
   
-  a {
+  .wysiwyg a {
     @apply text-primary-light hover:underline;
   }
 }
@@ -20,11 +17,11 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  @apply bg-secondary/10 rounded-md;
+  @apply bg-secondary/30 rounded-md;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-secondary/40 rounded-md;
+  @apply bg-secondary/60 rounded-md;
 }
 

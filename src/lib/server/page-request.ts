@@ -60,8 +60,10 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                   {
                     section_content: [
                       'collection',
+                      'component_name',
                       'display',
                       'horizontal_alignment',
+                      'theme',
                       'vertical_alignment',
                       {
                         item: {
@@ -94,6 +96,7 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                             ]
                           }],
                           Text_Content: [
+                            'name',
                             'icon', 
                             'icon_from_library', 
                             {

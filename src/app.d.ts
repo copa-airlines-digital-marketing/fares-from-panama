@@ -44,6 +44,7 @@ declare global {
     }
 
     type TextContent = {
+      name: string
       icon: string
       icon_from_library: array[]
       translations: TextContentTranslation[]
@@ -168,6 +169,8 @@ declare global {
 
     type ContentDistribution = 'space_around' | 'space_between' | 'space_evenly'
 
+    type Theme = 'light' | 'dark'
+
     type PageSectionContent = {
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
@@ -175,9 +178,11 @@ declare global {
       "item:copyrights": Copyrights[]
       "item:follow_buttons": FollowButtons[]
       collection: ContentCollectionNames
+      component_name: string
       display: ContentDisplay
       horizontal_alignment: HorizontalAlignment
       item: MFAItem
+      theme: Theme
       vertical_alignment: VerticalAlignment
     }
 
