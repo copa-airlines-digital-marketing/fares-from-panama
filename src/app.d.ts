@@ -92,6 +92,7 @@ declare global {
       max: number
       min: number
       step: number
+      icon: string
     }
 
     type Form = {
