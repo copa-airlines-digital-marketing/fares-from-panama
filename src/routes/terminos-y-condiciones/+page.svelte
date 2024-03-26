@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Header from '$lib/components/header/header.svelte';
+	import Header from '$lib/components/site/header.svelte';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
 		getTitleTagFromPage
 	} from '$lib/public/utils.js';
-	import Section from '$lib/components/directus/section/section.svelte';
+	import Section from '$lib/components/directus/section.svelte';
 
 	export let data;
 

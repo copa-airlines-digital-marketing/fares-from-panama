@@ -1,8 +1,9 @@
 <script lang="ts">
-	import Copyright from '../copyright/copyright.svelte';
-	import FollowButtons from '../follow/follow-buttons.svelte';
-	import TermsAndConditions from '../terms-and-conditions/terms-and-conditions.svelte';
-	import TextContent from '../text/text-content.svelte';
+	import Copyright from '../site/copyright.svelte';
+	import FollowButtons from '../site/follow-buttons.svelte';
+	import TermsAndConditions from '../site/terms-and-conditions.svelte';
+	import Form from './form.svelte';
+	import TextContent from './text-content.svelte';
 
 	export let contents: Directus.PageSectionContent[];
 
@@ -55,6 +56,8 @@
 			<Copyright copyrights={item}></Copyright>
 		{:else if collectionIsValidItem('follow_buttons', collection, item)}
 			<FollowButtons followButtons={item}></FollowButtons>
+		{:else if collectionIsValidItem('form', collection, item)}
+			<Form form={item} {component_name} {theme}></Form>
 		{:else if collectionIsValidItem('terms_and_conditions', collection, item)}
 			<TermsAndConditions terms={item}></TermsAndConditions>
 		{:else if collectionIsValidItem('Text_Content', collection, item)}

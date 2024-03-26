@@ -186,7 +186,7 @@ declare global {
       vertical_alignment: VerticalAlignment
     }
 
-    type SectionLandmark = 'aside' | 'footer' | 'header' | 'hero' | 'regular' | 'section'
+    type SectionLandmark = 'aside' | 'footer' | 'header' | 'hero' | 'loading' | 'modal' | 'regular' | 'section'
 
     type HorizontalBehaviour = 'contained' | 'full'
 

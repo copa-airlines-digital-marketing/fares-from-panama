@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Section from '$lib/components/directus/section/section.svelte';
-	import Header from '$lib/components/header/header.svelte';
+	import Section from '$lib/components/directus/section.svelte';
+	import Header from '$lib/components/site/header.svelte';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Link from '../link/link.svelte';
+	import Link from './link.svelte';
 
 	export let followButtons: Directus.FollowButtons;
 

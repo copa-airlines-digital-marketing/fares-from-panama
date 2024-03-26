@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Hero from '$lib/components/hero/hero.svelte';
+	import Hero from '$lib/components/site/hero.svelte';
+	import Loader from '$lib/components/site/loader.svelte';
 	import { getBackgroundColorMap } from '$lib/public/utils';
 	import SectionContent from './sectionContent.svelte';
 
@@ -103,6 +104,8 @@
 	<div id={section_id}>
 		<Hero content={section_content}></Hero>
 	</div>
+{:else if landmark === 'loading'}
+	<Loader></Loader>
 {:else if landmark === 'regular'}
 	<div
 		id={section_id}

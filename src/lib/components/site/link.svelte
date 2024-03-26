@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '$lib/components/icon/icon.svelte';
+	import Icon from '$lib/components/site/icon.svelte';
 
 	export let link: Directus.Links;
 

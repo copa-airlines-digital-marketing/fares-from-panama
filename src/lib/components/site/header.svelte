@@ -2,7 +2,7 @@
 	import tarifasFelicesLogo from '$lib/assets/tarifas-viaja-panama-logo-white.svg?raw';
 	import copaIsotipo from '$lib/assets/logo-copa-airlines-isotipo.svg?raw';
 	import copaLogo from '$lib/assets/logo-copa-airlines.svg?raw';
-	import Icon from '$lib/components/icon/icon.svelte';
+	import Icon from '$lib/components/site/icon.svelte';
 
 	export let color: 'bg-transparent' | 'bg-primary' = 'bg-transparent';
 

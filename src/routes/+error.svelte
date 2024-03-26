@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import NotFound from '$lib/assets/404.svg?raw';
 	import ButtonLink from '$lib/components/copa/buttons/Button-Link.svelte';
-	import Header from '$lib/components/header/header.svelte';
-	import Icon from '$lib/components/icon/icon.svelte';
+	import Header from '$lib/components/site/header.svelte';
+	import Icon from '$lib/components/site/icon.svelte';
 	import Heading from '$lib/components/copa/typography/heading.svelte';
 </script>
 

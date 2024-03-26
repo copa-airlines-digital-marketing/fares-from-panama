@@ -1,5 +1,6 @@
 <script lang="ts">
-	import TextContent from '$lib/components/site/textContent/textContent.svelte';
+	import TextContent from '$lib/components/site/textContent.svelte';
+	import Quote from '../site/quote.svelte';
 
 	export let content: Directus.TextContent;
 	export let component_name: string;
@@ -21,7 +22,9 @@
 	};
 </script>
 
-{#if component_name === 'textContent'}
+{#if component_name === 'quote'}
+	<Quote {theme}>{@html description}</Quote>
+{:else if component_name === 'textContent'}
 	<TextContent {title} {description} {call_to_actions} {theme}></TextContent>
 {:else}
 	{logUnsupportedComponent(component_name)}
