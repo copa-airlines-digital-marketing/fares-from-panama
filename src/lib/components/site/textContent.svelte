@@ -20,17 +20,25 @@
 </script>
 
 {#if title}
-	<Heading type="h2" style={joinClasses(titleTheme[theme], 'text-center max-w-prose mx-auto')}>
+	<Heading
+		type="h2"
+		style={joinClasses(titleTheme[theme], 'text-center max-w-prose mx-auto caret-transparent')}
+	>
 		{title}
 	</Heading>
 {/if}
 {#if description}
-	<p class={joinClasses(descriptionTheme[theme], 'wysiwyg my-8 text-center max-w-prose mx-auto')}>
+	<p
+		class={joinClasses(
+			descriptionTheme[theme],
+			'wysiwyg my-8 text-center max-w-prose mx-auto caret-transparent'
+		)}
+	>
 		{@html description}
 	</p>
 {/if}
 {#if call_to_actions}
-	<ul class="grid justify-center gap-16 md:gap-24">
+	<ul class="grid justify-center gap-16 md:gap-24 caret-transparent">
 		{#each call_to_actions as cta}
 			<li>
 				<ButtonLink link={cta.link} style="regular-solid-primary" target={cta.open_in}>
