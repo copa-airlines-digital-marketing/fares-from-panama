@@ -1,3 +1,4 @@
+import { getlanguageCodeFilter } from "$lib/public/utils"
 import type { Query } from "@directus/sdk"
 
 export type PageQueryBuilderFunctionParams = {
@@ -6,16 +7,6 @@ export type PageQueryBuilderFunctionParams = {
   defaultStorefront: string, 
   lang?: string, 
   storefront?: string
-}
-
-const getlanguageCodeFilter = (defaultLang: string, lang?: string) => {
-  return {
-    _filter: {
-      languages_code: {
-        _eq: lang || defaultLang
-      }
-    }
-  }
 }
 
 const getStorefrontsCodeFilter = (defaultStorefront: string, storefront?: string) => {

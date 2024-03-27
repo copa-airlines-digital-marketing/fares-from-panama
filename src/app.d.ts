@@ -235,10 +235,46 @@ declare global {
       pages: Page[]
     }
 
+    type CountryTranslation = {
+      languages_code: string
+      name: string
+    }
+
+    type Country = {
+      code: string
+      translations: CountryTranslation[]
+    }
+
+    type CategoryTranslation = {
+      languages_code: string
+      name: string
+    }
+
+    type Category = {
+      translations: CategoryTranslation[]
+    }
+
+    type DestinationCategory = {
+      destination_category_id: Category
+    }
+
+    type DestinationTranslation = {
+      languages_code: string
+      name: string
+    }
+
+    type Destination = {
+      categories: DestinationCategory[]
+      country: Country
+      iata_code: string
+      main_image: string
+      translations: DestinationTranslation[] 
+    }
+
     type Schema = {
       sites: Site[]
       pages: Page[]
-      translations: PageTranslation[] | TextContentTranslation[] | NavigationTranslations[]
+      translations: PageTranslation[] | TextContentTranslation[] | NavigationTranslations[] | CategoryTranslation[] | CountryTranslation[] | DestinationTranslation[]
       storefronts: PageStorefront[]
       sections_id: PageStorefrontsSections[]
       sections: Section[]
@@ -257,6 +293,9 @@ declare global {
       links: Link[]
       links_url: Link[]
       colors: Color[]
+      destinatons: Destination[]
+      countries: Country[]
+      destination_category: Category[]
       "item:copyrights": Copyrights[]
       "item:terms_and_conditions": TermsAndConditions[]
       "item:Text_Content": TextContent[]

@@ -1,11 +1,12 @@
 import { CMS_HOST, CMS_TOKEN } from '$env/static/private';
-import { COLLECTIONS_PAGES, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
-import { getPage } from '$lib/server/contentProcesing';
+import { COLLECTIONS_PAGES, COLLECTION_DESTINATIONS, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
+import { getDestinations, getPage } from '$lib/server/contentProcesing';
 import { getPageQuery, type PageQueryBuilderFunctionParams } from '$lib/server/page-request';
 import { error, isHttpError } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { isDirectusError } from '@directus/errors';
-import { contentIsPage } from '$lib/public/utils';
+import { contentIsPage, valueIsDestinations } from '$lib/public/utils';
+import { getDestinationsQuery } from '$lib/server/destinations-request';
 
 const pageSetting: PageQueryBuilderFunctionParams = {
   id: 9,
@@ -19,15 +20,20 @@ export const load: PageServerLoad = async () => {
 
   try {
     const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
-      console.log('Location: Home fetch -', err)
+      console.log('Location: Home fetch content -', err)
       error(404, errorMessage)
     })
 
-    if (isDirectusError(content) || isHttpError(content) || !contentIsPage(content))
+    const destinations = await getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)).catch((err) => {
+      console.log('Location: Home fetch destinations -', err)
+    })
+
+    if (isDirectusError(content) || isHttpError(content) || !contentIsPage(content) || isDirectusError(destinations) || isHttpError(destinations) || !valueIsDestinations(destinations) )
       error(404, errorMessage)
 
     return {
-      content
+      content,
+      destinations
     };
 
   } catch (err) {

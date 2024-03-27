@@ -15,3 +15,15 @@ export const getPage = async function(host:string, token: string, collection: st
 
   return request
 }
+
+export const getDestinations = async function (host: string, token: string, collection: string, items: Query<Directus.Schema, Directus.Destination>) {
+  const requestSettings: Directus.Params<Directus.Schema, Directus.Destination> = {
+    host,
+    token,
+    collection
+  }
+
+  const request = await getItems({...requestSettings, items})
+
+  return request
+}

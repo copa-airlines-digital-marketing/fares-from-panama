@@ -4,6 +4,8 @@ export const contentIsError = (content: unknown): content is Error => content !=
 
 export const contentIsPage = (content: unknown): content is Directus.Page => content != null && typeof content === 'object' && 'share_image' in content
 
+export const valueIsDestinations = (value: unknown): value is Directus.Destination => value != null && Array.isArray(value)  && 'iata_code' in value[0]
+
 export const getTitleTagFromPage = (page: Directus.Page) => page.translations[0]?.title_tag || 'No se econtró el titulo'
 
 export const getMetaDescriptionFromPage = (page: Directus.Page) => page.translations[0]?.meta_description || 'No se econtró la descripcion'
@@ -56,4 +58,14 @@ export const getBackgroundColorMap = (colorName: Directus.ColorName) => {
 
 export const joinClasses = (...params: string[]) => {
   return params.join(' ')
+}
+
+export const getlanguageCodeFilter = (defaultLang: string, lang?: string) => {
+  return {
+    _filter: {
+      languages_code: {
+        _eq: lang || defaultLang
+      }
+    }
+  }
 }
