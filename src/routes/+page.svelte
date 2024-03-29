@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
 	import Header from '$lib/components/site/header.svelte';
+	import { destinations } from '$lib/public/store.js';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
@@ -9,6 +10,8 @@
 
 	export let data;
 	console.log('home', data);
+
+	destinations.set(data.destinations);
 
 	const site = data.content;
 	const titleTag = getTitleTagFromPage(site);

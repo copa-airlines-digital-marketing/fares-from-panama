@@ -19,16 +19,20 @@ const errorMessage = { message: DEFAULT_ERROR_MESSAGE }
 export const load: PageServerLoad = async () => {
 
   try {
-    const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
-      console.log('Location: Home fetch content -', err)
-      error(404, errorMessage)
-    })
 
-    const destinations = await getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)).catch((err) => {
-      console.log('Location: Home fetch destinations -', err)
-    })
+    const requests = await Promise.all([
+      getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
+        console.log('Location: Home fetch content -', err)
+        error(404, errorMessage)
+      }),
+      getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)).catch((err) => {
+        console.log('Location: Home fetch destinations -', err)
+      })
+    ])
 
-    if (isDirectusError(content) || isHttpError(content) || !contentIsPage(content) || isDirectusError(destinations) || isHttpError(destinations) || !valueIsDestinations(destinations) )
+    const [content, destinations] = requests
+    
+    if (isDirectusError(content) || isHttpError(content) || !contentIsPage(content) || isDirectusError(destinations) || isHttpError(destinations) || !valueIsDestinations(destinations))
       error(404, errorMessage)
 
     return {

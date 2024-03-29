@@ -41,7 +41,7 @@
 	<ul class="grid justify-center gap-16 md:gap-24 caret-transparent">
 		{#each call_to_actions as cta}
 			<li>
-				<ButtonLink link={cta.link} style="regular-solid-primary" target={cta.open_in}>
+				<ButtonLink link={cta.link} style="rounded-solid-primary" target={cta.open_in}>
 					{cta.text}
 				</ButtonLink>
 			</li>

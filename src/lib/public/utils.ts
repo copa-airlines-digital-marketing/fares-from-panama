@@ -4,7 +4,7 @@ export const contentIsError = (content: unknown): content is Error => content !=
 
 export const contentIsPage = (content: unknown): content is Directus.Page => content != null && typeof content === 'object' && 'share_image' in content
 
-export const valueIsDestinations = (value: unknown): value is Directus.Destination => value != null && Array.isArray(value)  && 'iata_code' in value[0]
+export const valueIsDestinations = (value: unknown): value is Directus.Destination[] => value != null && Array.isArray(value)  && 'iata_code' in value[0]
 
 export const getTitleTagFromPage = (page: Directus.Page) => page.translations[0]?.title_tag || 'No se econtró el titulo'
 

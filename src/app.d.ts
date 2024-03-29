@@ -76,7 +76,7 @@ declare global {
 
     type InputOpions = {
       value: string
-      labele: string
+      label: string
     }
 
     type FormInput = {
