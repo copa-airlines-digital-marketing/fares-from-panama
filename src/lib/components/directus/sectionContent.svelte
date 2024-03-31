@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Carousel from '../site/carousel.svelte';
 	import Copyright from '../site/copyright.svelte';
 	import FollowButtons from '../site/follow-buttons.svelte';
 	import TermsAndConditions from '../site/terms-and-conditions.svelte';
@@ -60,6 +61,8 @@
 			<Form form={item} {component_name} {theme}></Form>
 		{:else if collectionIsValidItem('terms_and_conditions', collection, item)}
 			<TermsAndConditions terms={item}></TermsAndConditions>
+		{:else if collectionIsValidItem('carrousel', collection, item)}
+			<Carousel carousel={item}></Carousel>
 		{:else if collectionIsValidItem('Text_Content', collection, item)}
 			<TextContent content={item} {theme} {component_name}></TextContent>
 		{:else}

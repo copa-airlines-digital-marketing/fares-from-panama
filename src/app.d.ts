@@ -114,7 +114,7 @@ declare global {
       name: string
       autoSlide: boolean
       autoSlideDelayMS: number
-      slides: string
+      slides: CarrouselSlide[]
     }
 
     type CopyrightTranslations = {

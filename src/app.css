@@ -1,9 +1,4 @@
 
-@layer base{
-  .wysiwyg a {
-    @apply text-primary-light hover:underline focus:outline-none focus:underline;
-  }
-}
 
 @tailwind base;
 @tailwind components;
@@ -24,3 +19,21 @@
   @apply bg-secondary/60 rounded-md;
 }
 
+
+@layer base{
+  .wysiwyg a {
+    @apply text-primary-light hover:underline focus:outline-none focus:underline;
+  }
+}
+
+@layer utilities {
+  .hide-scroll {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.hide-scroll::-webkit-scrollbar {
+		display: none;
+	}
+}
