@@ -33,7 +33,7 @@ export const getBackgroundColorMap = (colorName: Directus.ColorName) => {
     'grey-700': 'bg-grey-700',
     'grey-75': 'bg-grey-75',
     'grey-800': 'bg-grey-800',
-    'primary': 'bg-primary',
+    'primary': 'bg-gradient-to-l from-primary-ultradark to-primary',
     'primary-dark': 'bg-primary-dark',
     'primary-faded': 'bg-primary-faded',
     'primary-light': 'bg-primary-light',

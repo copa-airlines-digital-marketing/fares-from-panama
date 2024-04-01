@@ -1,16 +1,14 @@
 <script lang="ts">
 	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
-	import { joinClasses } from '$lib/public/utils';
 	import Icon from './icon.svelte';
 	import { fly } from 'svelte/transition';
-	import { destinations, selectedDestination } from '$lib/public/store';
+	import { destinations, ping, selectedDestination } from '$lib/public/store';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
-	import type { MeltEvent } from '@melt-ui/svelte/internal/types';
 	export let item: Directus.FormInput;
 
-	const { name, placeholder, icon } = item;
+	const { placeholder, icon } = item;
 
 	const itemLabel = item.label.split(' ');
 
@@ -38,7 +36,7 @@
 	}
 
 	$: {
-		$selectedDestination = $selected?.value ?? undefined;
+		$selected = $selectedDestination ? toOption($selectedDestination) : undefined;
 	}
 
 	$: filteredDestinations = $touchedInput
@@ -63,7 +61,12 @@
 		if ((event.key === 'Enter' || event.key === 'Tab') && $touchedInput && $inputValue) {
 			selected.set(toOption(filteredDestinations[0]));
 			$inputValue = $selected?.label ?? '';
+			$selectedDestination = $selected?.value ?? undefined;
 		}
+	};
+
+	const selectDestination = (destination: Directus.Destination) => () => {
+		$selectedDestination = destination;
 	};
 </script>
 
@@ -80,9 +83,12 @@
 		</div>
 		<div
 			class="w-full relative [grid-area:input] {$open
-				? 'xs:fixed xs:top-0 xs:left-0 xs:p-16 xs:bg-primary'
+				? 'xs:fixed xs:top-0 xs:left-0 xs:p-16 xs:bg-primary xs:z-10'
 				: ''}"
 		>
+			{#if $ping}
+				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
+			{/if}
 			<input
 				use:melt={$input}
 				{placeholder}
@@ -130,6 +136,7 @@
 		{#each filteredDestinations as destination, index (index)}
 			<li
 				class="p-16 cursor-pointer hover:bg-backgound-lightblue data-[highlighted]:bg-backgound-lightblue data-[selected]:bg-backgound-lightblue grid [grid-template-areas:'dest_iata''ctry_iata'] grid-cols-[1fr_auto] grid-rows-[1fr_auto]"
+				on:m-click={selectDestination(destination)}
 				use:melt={$option(toOption(destination))}
 			>
 				<span class="text-grey-800 font-heading font-heading-medium [grid-area:dest]">

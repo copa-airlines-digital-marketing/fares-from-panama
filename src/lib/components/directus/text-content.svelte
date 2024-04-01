@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TextContent from '$lib/components/site/textContent.svelte';
-	import Quote from '../site/quote.svelte';
+	import Quote from '$lib/components/site/quote.svelte';
 
 	export let content: Directus.TextContent;
 	export let component_name: string;

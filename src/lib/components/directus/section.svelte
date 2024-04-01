@@ -23,15 +23,15 @@
 		horizontal_behaviour === 'contained' ? 'container mx-auto' : 'w-full max-w-full';
 
 	const sectionVerticalSpacing: Record<Directus.ContentSpacing, string> = {
-		none: 'py-0',
-		minimal: 'py-8',
-		tiny: 'py-16',
-		petit: 'py-24',
-		normal: 'py-32',
-		roomy: 'py-32 sm:py-40 md:py-48 lg:py-56',
-		spacious: 'py-40 sm:py-48 md:py-56 lg:py-64',
-		big: 'py-56 sm:py-64 md:py-72 lg:py-80',
-		huge: 'py-72 sm:py-88 md:py-96 lg:py-112'
+		none: 'py-none',
+		minimal: 'py-minmal',
+		tiny: 'py-tiny',
+		petit: 'py-petit',
+		normal: 'py-normal',
+		roomy: 'py-roomy',
+		spacious: 'py-spacious',
+		big: 'py-big',
+		huge: 'py-huge'
 	};
 
 	const gridSystem =

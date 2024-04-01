@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InputBuscar from '../site/input-buscar.svelte';
 	import InputDays from '../site/input-days.svelte';
 	import InputDestination from '../site/input-destination.svelte';
 	import InputSlider from '../site/input-slider.svelte';
@@ -6,9 +7,11 @@
 	export let form: Directus.Form;
 	export let component_name: string;
 	export let theme: Directus.Theme;
+
+	const { action } = form;
 </script>
 
-<form class="my-24 max-w-[320px] mx-auto">
+<form class="max-w-[320px] mx-auto">
 	{#each form.inputs as input}
 		{@const { value, label } = input}
 		{#if component_name === 'budget'}
@@ -17,6 +20,8 @@
 			<InputDays {theme} {input}></InputDays>
 		{:else if component_name === 'destination'}
 			<InputDestination item={input}></InputDestination>
+		{:else if component_name === 'buscar'}
+			<InputBuscar {action} {input}></InputBuscar>
 		{:else}
 			<div>⚠️ Unsupported input: {component_name}</div>
 		{/if}

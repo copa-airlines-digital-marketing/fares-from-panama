@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createTabs, melt } from '@melt-ui/svelte';
 	import Heading from '../copa/typography/heading.svelte';
-	import { crossfade, fly } from 'svelte/transition';
+	import { crossfade } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 
 	export let carousel: Directus.Carrousel;
@@ -16,7 +16,7 @@
 	});
 
 	const [send, receive] = crossfade({
-		duration: 250,
+		duration: 350,
 		easing: cubicInOut
 	});
 
@@ -31,7 +31,7 @@
 <div
 	aria-label="Consejos para conseguir pasajes baratos"
 	aria-roledescription="carousel"
-	class="container-grid [grid-template-areas:'top_top_top''._title_.''._content_.''._buttons_.''bottom_bottom_bottom'] grid-rows-[auto_auto_1fr_auto_auto] portrait:h-[clamp(500px,177.78vw,100svh)] landscape:h-[clamp(500px,42.86vw,100vh)] overflow-hidden relative w-full"
+	class="container-grid [grid-template-areas:'top_top_top''._title_.''._content_.''._buttons_.''bottom_bottom_bottom'] grid-rows-[auto_auto_1fr_auto_auto] portrait:h-[clamp(600px,177.78vw,100svh)] landscape:h-[clamp(500px,42.86vw,100vh)] overflow-hidden relative w-full"
 	use:melt={$root}
 >
 	<div class="[grid-area:top] h-roomy"></div>

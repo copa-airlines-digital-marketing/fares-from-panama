@@ -3,7 +3,7 @@
 
 	export let link: Directus.Links;
 
-	const { name, icon, url, opens_in } = link;
+	const { name, icon, url } = link;
 	export let showicon: boolean | undefined | null = false;
 	export let showtitle: boolean | undefined | null = true;
 </script>
@@ -11,7 +11,7 @@
 <a
 	href={url}
 	title={!showtitle ? name : null}
-	target={opens_in}
+	target="_blank"
 	class="text-current flex gap-4 min-w-32 h-full caret-transparent"
 >
 	{#if icon && showicon}

@@ -63,7 +63,7 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                             'name',
                             {translations: ['copyright']}
                           ],
-                          icon: ['code'],
+                          icon: ['name','code'],
                           follow_buttons: [{translations: [
                             'languages_code',
                             'title',
@@ -76,14 +76,22 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                               ]},
                             ]}
                           ]}],
-                          form: ['action', 'inputs'],
-                          logos: ['code'],
+                          form: ['action', 'method', 'inputs'],
+                          logos: ['name', 'code'],
                           navigation: [
-                            'icon', {
-                            'translations': [
+                            'name',
+                            {icon: ['code']}, 
+                            {translations: [
                               'languages_code',
                               'title',
-                              'links'
+                              {links: [
+                                'title',
+                                'opens_in',
+                                {icon_override: ['code']},
+                                {links_url: [
+                                  'url',
+                                ]}
+                              ]}
                             ]
                           }],
                           Text_Content: [

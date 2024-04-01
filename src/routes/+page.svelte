@@ -9,14 +9,13 @@
 	} from '$lib/public/utils';
 
 	export let data;
-	console.log('home', data);
-
-	destinations.set(data.destinations);
 
 	const site = data.content;
 	const titleTag = getTitleTagFromPage(site);
 	const description = getMetaDescriptionFromPage(site);
 	const storefrontSection = getSectionsFromPage(site);
+
+	destinations.set(data.destinations);
 </script>
 
 <svelte:head>
@@ -24,7 +23,7 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<Header additionalClass="absolute"></Header>
+<Header additionalClass="absolute z-10"></Header>
 {#each storefrontSection as sectioM2M}
 	{@const section = sectioM2M.sections_id}
 	<Section {section}></Section>

@@ -52,15 +52,16 @@ declare global {
 
     // Applies for icons and logos
     type SVGAsset = {
+      name: string
       image: string //id of the asset
       code: string //svg tag of the icon
     }
 
     type NavigationLinks = {
+      links_url: Links
+      icon_override: SVGAsset
+      opens_in: string
       title: string
-      link: string
-      icon_id: string
-      open_in: string
     }
 
     type NavigationTranslations = {
@@ -70,7 +71,8 @@ declare global {
     }
 
     type Navigation = {
-      icon: string,
+      name: string,
+      icon: SVGAsset,
       translations: NavigationTranslations[]
     }
 
@@ -131,7 +133,6 @@ declare global {
     type Links = {
       url: string,
       name: string,
-      opens_in: string,
       icon: SVGAsset
     }
 
@@ -159,7 +160,9 @@ declare global {
     }
 
     type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions | Copyrights | FollowButtons
-
+    
+    type ContentTranslations = PageTranslation[] | TextContentTranslation[] | NavigationTranslations[] | CategoryTranslation[] | CountryTranslation[] | DestinationTranslation[] | TermsAndConditionsTranslations[] | CopyrightTranslations[] | FollowButtonsTranslations[]
+    
     type ContentCollectionNames = 'carrousel' | 'form' | 'icon' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content' | 'copyrights' | 'follow_buttons'
 
     type ContentDisplay = '100' | '75' | '50' | '25'
@@ -189,7 +192,7 @@ declare global {
 
     type SectionLandmark = 'aside' | 'footer' | 'header' | 'hero' | 'loading' | 'modal' | 'regular' | 'section'
 
-    type HorizontalBehaviour = 'contained' | 'full'
+    type HorizontalBehaviour = 'contained' | 'full' | 'container-grid'
 
     type ContentSpacing = 'none' | 'minimal' | 'tiny' | 'petit' | 'normal' | 'roomy' | 'spacious' | 'big' | 'huge'
 
@@ -271,10 +274,11 @@ declare global {
       translations: DestinationTranslation[] 
     }
 
+
     type Schema = {
       sites: Site[]
       pages: Page[]
-      translations: PageTranslation[] | TextContentTranslation[] | NavigationTranslations[] | CategoryTranslation[] | CountryTranslation[] | DestinationTranslation[]
+      translations: ContentTranslations
       storefronts: PageStorefront[]
       sections_id: PageStorefrontsSections[]
       sections: Section[]

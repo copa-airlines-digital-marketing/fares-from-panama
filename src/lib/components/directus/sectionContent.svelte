@@ -1,18 +1,20 @@
 <script lang="ts">
-	import Carousel from '../site/carousel.svelte';
-	import Copyright from '../site/copyright.svelte';
-	import FollowButtons from '../site/follow-buttons.svelte';
-	import TermsAndConditions from '../site/terms-and-conditions.svelte';
-	import Form from './form.svelte';
-	import TextContent from './text-content.svelte';
+	import Carousel from '$lib/components/site/carousel.svelte';
+	import Copyright from '$lib/components/site/copyright.svelte';
+	import FollowButtons from '$lib/components/site/follow-buttons.svelte';
+	import TermsAndConditions from '$lib/components/site/terms-and-conditions.svelte';
+	import Form from '$lib/components/directus/form.svelte';
+	import TextContent from '$lib/components/directus/text-content.svelte';
+	import {
+		itemIsCarrousel,
+		itemIsCopyrights,
+		itemIsFollowButtons,
+		itemIsForm,
+		itemIsTermsAndConditions,
+		itemIsTextContent
+	} from '$lib/components/directus/utils';
 
 	export let contents: Directus.PageSectionContent[];
-
-	const collectionIsValidItem = <T extends Directus.MFAItem>(
-		collectionValue: Directus.ContentCollectionNames,
-		collection: Directus.ContentCollectionNames,
-		item: Directus.MFAItem
-	): item is T => collection === collectionValue && item != null;
 
 	const displayMap: Record<Directus.ContentDisplay, string> = {
 		'100': 'col-span-1 sm:col-span-2 md:col-span-4',
@@ -53,17 +55,17 @@
 		justifySelf[horizontal_alignment]
 	].join(' ')}
 	<div class={className}>
-		{#if collectionIsValidItem('copyrights', collection, item)}
+		{#if itemIsCopyrights(item)}
 			<Copyright copyrights={item}></Copyright>
-		{:else if collectionIsValidItem('follow_buttons', collection, item)}
+		{:else if itemIsFollowButtons(item)}
 			<FollowButtons followButtons={item}></FollowButtons>
-		{:else if collectionIsValidItem('form', collection, item)}
+		{:else if itemIsForm(item)}
 			<Form form={item} {component_name} {theme}></Form>
-		{:else if collectionIsValidItem('terms_and_conditions', collection, item)}
+		{:else if itemIsTermsAndConditions(item)}
 			<TermsAndConditions terms={item}></TermsAndConditions>
-		{:else if collectionIsValidItem('carrousel', collection, item)}
+		{:else if itemIsCarrousel(item)}
 			<Carousel carousel={item}></Carousel>
-		{:else if collectionIsValidItem('Text_Content', collection, item)}
+		{:else if itemIsTextContent(item)}
 			<TextContent content={item} {theme} {component_name}></TextContent>
 		{:else}
 			<div>Unsupported collection: {collection}</div>
