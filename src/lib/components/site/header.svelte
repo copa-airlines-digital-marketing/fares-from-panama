@@ -12,7 +12,7 @@
 <header class="p-16 w-full {color} {additionalClass}">
 	<div class="container flex gap-16 items-center justify-between mx-auto">
 		<a href="/" title="ir al inicio">
-			<Icon data={tarifasFelicesLogo} class="h-56" />
+			<Icon data={tarifasFelicesLogo} class="h-56 lg:h-72" />
 		</a>
 		<a href="https://www.copaair.com" title="Ir a copa.com">
 			<Icon data={copaIsotipo} class="h-40 sm:hidden" />

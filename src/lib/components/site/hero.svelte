@@ -20,15 +20,15 @@
 	{#each content as part, index (index)}
 		{@const { component_name, item, theme } = part}
 		{#if component_name === 'main-title' && itemIsTextContent(item)}
-			<div class="col-start-2 row-start-1 self-center relative">
+			<div class="col-start-2 row-start-1 self-center relative" id="hero-nav">
 				<MainTitle content={item}></MainTitle>
 			</div>
 		{:else if component_name === 'main-nav' && itemIsNavigation(item)}
-			<div class="fixed top-16 left-16 md:left-24 z-10">
+			<div class="fixed top-16 right-16 md:right-24 z-10">
 				<MainNav nav={item}></MainNav>
 			</div>
 		{:else if component_name === 'hero-nav' && itemIsNavigation(item)}
-			<div class="col-start-2 row-start-5 relative self-end" id="hero-nav">
+			<div class="col-start-2 row-start-5 relative self-end">
 				<HeroNav nav={item}></HeroNav>
 			</div>
 		{:else if component_name === 'destination' && itemIsForm(item)}
@@ -48,7 +48,7 @@
 				<HeroCarousel carousel={item}></HeroCarousel>
 			</div>
 			<div
-				class="col-start-1 col-span-3 bg-gradient-to-b from-common-black row-start-1 relative row-span-full w-full"
+				class="col-start-1 col-span-3 bg-common-black/35 row-start-1 relative row-span-full w-full"
 			></div>
 		{:else}
 			<div>

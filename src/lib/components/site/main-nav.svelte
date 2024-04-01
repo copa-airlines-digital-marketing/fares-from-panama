@@ -29,10 +29,12 @@
 
 	let isMenuVisible: IntersectionObserverCallback = (entries, obs) => {
 		entries.forEach((entry) => {
-			if (entry.target.id === 'hero-nav' && entry.isIntersecting === true)
-				return (heroMenuVisible = true);
+			console.log(entry.intersectionRatio, entry.isIntersecting);
+			if (entry.target.id === 'hero-nav' && entry.isIntersecting) {
+				return (heroMenuVisible = false);
+			}
 
-			return (heroMenuVisible = false);
+			return (heroMenuVisible = true);
 		});
 	};
 
@@ -51,7 +53,7 @@
 	{@const { links } = translations[0]}
 
 	<div class="relative" use:melt={$root}>
-		{#if !heroMenuVisible}
+		{#if heroMenuVisible}
 			<button
 				aria-label="Ver menú principal"
 				class="bg-secondary cursor-pointer p-16 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition"
@@ -72,7 +74,7 @@
 					links_url: { url },
 					title
 				} = linkItem}
-				{#if $open && !heroMenuVisible && ((title === 'Descuentos' && $containsDiscounts) || title !== 'Descuentos')}
+				{#if $open && heroMenuVisible && ((title === 'Descuentos' && $containsDiscounts) || title !== 'Descuentos')}
 					<a
 						class="flex flex-col focus:text-primary gap-4 hover:text-primary items-center mx-4 my-8 outline-none text-common-white transition-colors"
 						href={url}
