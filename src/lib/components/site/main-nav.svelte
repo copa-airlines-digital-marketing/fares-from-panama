@@ -27,9 +27,8 @@
 
 	let heroMenuVisible = false;
 
-	let isMenuVisible: IntersectionObserverCallback = (entries, obs) => {
+	let isMenuVisible: IntersectionObserverCallback = (entries) => {
 		entries.forEach((entry) => {
-			console.log(entry.intersectionRatio, entry.isIntersecting);
 			if (entry.target.id === 'hero-nav' && entry.isIntersecting) {
 				return (heroMenuVisible = false);
 			}

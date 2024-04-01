@@ -45,8 +45,7 @@ declare global {
 
     type TextContent = {
       name: string
-      icon: string
-      icon_from_library: array[]
+      icon: SVGAsset
       translations: TextContentTranslation[]
     }
 
