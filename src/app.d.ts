@@ -35,12 +35,12 @@ declare global {
     }
 
     type TextContentTranslation = {
-      description: string
-      embed_media: string
-      languages_code: string
-      media: string //id of the asset
+      description?: string
+      embed_media?: string
+      languages_code?: string
+      media?: string //id of the asset
       title: string
-      call_to_actions: TextContentCallToAction[]
+      call_to_actions?: TextContentCallToAction[]
     }
 
     type TextContent = {

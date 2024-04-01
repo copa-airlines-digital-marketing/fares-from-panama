@@ -13,6 +13,7 @@
 		itemIsTermsAndConditions,
 		itemIsTextContent
 	} from '$lib/components/directus/utils';
+	import { addToast } from '../site/toast.svelte';
 
 	export let contents: Directus.PageSectionContent[];
 
@@ -37,9 +38,37 @@
 		right: 'justify-self-end',
 		stretch: 'self-stretch'
 	};
+
+	const cleanedContents = contents.filter((content) => content.component_name !== 'toast');
+
+	const toasts = contents.filter((content) => content.component_name === 'toast');
+
+	const showToast = () => {
+		//if (!toasts || !Array.isArray(toasts) || toasts.length < 1) return;
+
+		const { item, collection } = toasts[0];
+
+		console.log('yo', item);
+
+		if (!itemIsTextContent(item))
+			return addToast({
+				data: {
+					name: '',
+					icon: { code: '', image: '', name: '' },
+					translations: [
+						{
+							title: '⚠️ Unsupported Collection for a Toast',
+							description: `Collection: ${collection}`
+						}
+					]
+				}
+			});
+
+		return addToast({ data: item });
+	};
 </script>
 
-{#each contents as content}
+{#each cleanedContents as content}
 	{@const {
 		collection,
 		item,
@@ -72,3 +101,9 @@
 		{/if}
 	</div>
 {/each}
+
+{#if toasts && Array.isArray(toasts) && toasts.length > 0}
+	<button class="button button-tranparent-invert button-fancy" on:click={showToast}
+		>Show toast</button
+	>
+{/if}
