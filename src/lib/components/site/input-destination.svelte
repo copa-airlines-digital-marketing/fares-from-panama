@@ -54,6 +54,8 @@
 
 	const erraseInputValue = () => {
 		$inputValue = '';
+		$selected = undefined;
+		$selectedDestination = undefined;
 	};
 
 	const selectFirstOnEnter = ({ detail }: any) => {
@@ -86,7 +88,7 @@
 				? 'xs:fixed xs:top-0 xs:left-0 xs:p-16 xs:bg-primary xs:z-10'
 				: ''}"
 		>
-			{#if $ping}
+			{#if $ping && !$selectedDestination}
 				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
 			{/if}
 			<input

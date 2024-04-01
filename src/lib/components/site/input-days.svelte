@@ -37,7 +37,7 @@
 	>
 		<span class="relative">
 			{label}
-			{#if $ping}
+			{#if $ping && !$selectedDays}
 				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
 			{/if}
 		</span>
