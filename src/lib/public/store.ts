@@ -7,3 +7,5 @@ export const selectedDestination = writable<Directus.Destination | undefined>(un
 export const selectedDays = writable<string>()
 
 export const ping = writable<boolean>(false)
+
+export const containsDiscounts = writable<boolean>(false)

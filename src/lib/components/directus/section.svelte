@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Hero from '$lib/components/site/hero.svelte';
 	import Loader from '$lib/components/site/loader.svelte';
+	import { containsDiscounts } from '$lib/public/store';
 	import { getBackgroundColorMap } from '$lib/public/utils';
 	import SectionContent from './sectionContent.svelte';
 
@@ -107,16 +108,18 @@
 {:else if landmark === 'loading'}
 	<Loader></Loader>
 {:else if landmark === 'regular'}
-	<div
-		id={section_id}
-		class="{sectionVerticalSpacing[content_spacing]} {background_color
-			? getBackgroundColorMap(background_color.name)
-			: ''}"
-	>
-		<div class="{hbClasses} {contentSpacingClass}">
-			<SectionContent contents={section_content}></SectionContent>
+	{#if (section_id === 'descuentos' && $containsDiscounts) || section_id !== 'descuentos'}
+		<div
+			id={section_id}
+			class="{sectionVerticalSpacing[content_spacing]} {background_color
+				? getBackgroundColorMap(background_color.name)
+				: ''}"
+		>
+			<div class="{hbClasses} {contentSpacingClass}">
+				<SectionContent contents={section_content}></SectionContent>
+			</div>
 		</div>
-	</div>
+	{/if}
 {:else if landmark === 'section'}
 	<section
 		id={section_id}
@@ -129,5 +132,5 @@
 		</div>
 	</section>
 {:else}
-	<div>Insupported section landmark</div>
+	<div>Insupported section landmark: {section_id}</div>
 {/if}

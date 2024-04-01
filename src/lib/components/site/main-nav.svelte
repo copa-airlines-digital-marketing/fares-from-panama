@@ -4,6 +4,7 @@
 	import { slide, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
+	import { containsDiscounts } from '$lib/public/store';
 
 	export let nav: Directus.Navigation;
 
@@ -71,7 +72,7 @@
 					links_url: { url },
 					title
 				} = linkItem}
-				{#if $open && !heroMenuVisible}
+				{#if $open && !heroMenuVisible && ((title === 'Descuentos' && $containsDiscounts) || title !== 'Descuentos')}
 					<a
 						class="flex flex-col focus:text-primary gap-4 hover:text-primary items-center mx-4 my-8 outline-none text-common-white transition-colors"
 						href={url}
