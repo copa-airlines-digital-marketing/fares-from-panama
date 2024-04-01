@@ -9,10 +9,9 @@
 	import Form from '$lib/components/directus/form.svelte';
 	import HeroCarousel from './hero-carousel.svelte';
 	import HeroNav from './hero-nav.svelte';
+	import MainNav from './main-nav.svelte';
 
 	export let content: Directus.PageSectionContent[];
-
-	console.log(content);
 </script>
 
 <div
@@ -24,10 +23,12 @@
 			<div class="col-start-2 row-start-1 self-center relative">
 				<MainTitle content={item}></MainTitle>
 			</div>
-		{:else if component_name === 'main-nav'}
-			<div class="fixed"></div>
+		{:else if component_name === 'main-nav' && itemIsNavigation(item)}
+			<div class="fixed top-16 left-16 md:left-24 z-10">
+				<MainNav nav={item}></MainNav>
+			</div>
 		{:else if component_name === 'hero-nav' && itemIsNavigation(item)}
-			<div class="col-start-2 row-start-5 relative self-end">
+			<div class="col-start-2 row-start-5 relative self-end" id="hero-nav">
 				<HeroNav nav={item}></HeroNav>
 			</div>
 		{:else if component_name === 'destination' && itemIsForm(item)}
