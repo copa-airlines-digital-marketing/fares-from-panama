@@ -45,14 +45,14 @@
 				title
 			} = linkItem}
 			<a
-				class="flex flex-col focus:text-secondary gap-4 items-center outline-none text-common-white transition-colors"
+				class="flex flex-col focus:text-secondary gap-4 hover:text-secondary items-center outline-none text-common-white transition-colors"
 				href={url}
 				{title}
 			>
 				<span bind:this={linksElements[getLinkId(index + 1)]}>
 					<Icon data={code} class="size-32 fill-current"></Icon>
 				</span>
-				<span class="text-12/16">{title}</span>
+				<span class="text-12/16 text-common-white">{title}</span>
 			</a>
 		{/each}
 	</div>
