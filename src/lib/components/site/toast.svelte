@@ -19,41 +19,30 @@
 </script>
 
 <div
-	class="fixed right-0 top-0 z-20 m-8 flex flex-col items-end gap-4 md:bottom-0 md:top-auto"
+	class="auto-rows-auto container-grid fixed gap-8 justify-items-center left-1/2 m-8 top-0 -translate-x-1/2 z-50 w-full"
 	use:portal
 >
 	{#each $toasts as { id, data: { translations, icon: { code }, name } } (id)}
 		<div
 			animate:flip={{ duration: 500 }}
-			in:fly={{ duration: 150, x: '100%' }}
-			out:fly={{ duration: 150, x: '100%' }}
+			in:fly={{ duration: 350, y: '-100%' }}
+			out:fly={{ duration: 350, y: '-100%' }}
 			use:melt={$content(id)}
-			class="rounded-lg bg-system-warning text-la shadow-md"
+			class="bg-system-warning flex col-start-2 items-start max-w-[710px] p-16 rounded shadow-medium text-grey-700 w-full"
 		>
 			{#if translations[0]}
-				{@const { title, description } = translations[0]}
-				<div
-					class="relative flex w-[24rem] max-w-[calc(100vw-2rem)] items-start justify-between gap-4 p-8"
-				>
-					<div>
-						<div class="flex gap-4 items-center my-8" use:melt={$title(id)}>
-							<Heading type="h4" style="">
-								{#if code}
-									<span>
-										<Icon data={code} class="size-24 inline"></Icon>
-									</span>
-								{/if}
-								{title}
-							</Heading>
-						</div>
-						<div use:melt={$description(id)}>
-							{@html description}
-						</div>
-					</div>
-					<button use:melt={$close(id)} aria-label="close notification">
-						<Icon data={IconCross} class="size-24"></Icon>
-					</button>
+				{@const { description } = translations[0]}
+				{#if code}
+					<span class="mr-8">
+						<Icon data={code} class="size-24 inline"></Icon>
+					</span>
+				{/if}
+				<div class="wysiwyg" use:melt={$description(id)}>
+					{@html description}
 				</div>
+				<button class="ml-32" use:melt={$close(id)} aria-label="close notification">
+					<Icon data={IconCross} class="size-24"></Icon>
+				</button>
 			{:else}
 				<div>⚠️ No translations for content: {name}</div>
 			{/if}
