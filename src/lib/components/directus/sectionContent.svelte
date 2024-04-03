@@ -8,12 +8,14 @@
 	import {
 		itemIsCarrousel,
 		itemIsCopyrights,
+		itemIsFareModule,
 		itemIsFollowButtons,
 		itemIsForm,
 		itemIsTermsAndConditions,
 		itemIsTextContent
 	} from '$lib/components/directus/utils';
 	import { addToast } from '../site/toast.svelte';
+	import FareModules from './fare-modules.svelte';
 
 	export let contents: Directus.PageSectionContent[];
 
@@ -86,6 +88,8 @@
 	<div class={className}>
 		{#if itemIsCopyrights(item)}
 			<Copyright copyrights={item}></Copyright>
+		{:else if itemIsFareModule(item)}
+			<FareModules {component_name} {item}></FareModules>
 		{:else if itemIsFollowButtons(item)}
 			<FollowButtons followButtons={item}></FollowButtons>
 		{:else if itemIsForm(item)}
@@ -97,7 +101,7 @@
 		{:else if itemIsTextContent(item)}
 			<TextContent content={item} {theme} {component_name}></TextContent>
 		{:else}
-			<div>Unsupported collection: {collection}</div>
+			<div>⚠️ Unsupported collection: {collection}</div>
 		{/if}
 	</div>
 {/each}

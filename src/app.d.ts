@@ -63,6 +63,21 @@ declare global {
   namespace Directus {
     // Directus types
 
+    type FareModuleLabels = {
+      name: string
+      value: string
+    }
+
+    type FareModuleTranslations = {
+      languages_code: string
+      labels: FareModuleLabels[]
+    }
+
+    type FareModule = {
+      name: string
+      translations: FareModuleTranslations[]
+    }
+
     type Fare = {
       id: string,
       destination: string,
@@ -219,11 +234,11 @@ declare global {
       name: ColorName
     }
 
-    type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions | Copyrights | FollowButtons
+    type MFAItem = Carrousel | Navigation | TextContent | SVGAsset | Form | TermsAndConditions | Copyrights | FollowButtons | FareModule
     
-    type ContentTranslations = PageTranslation[] | TextContentTranslation[] | NavigationTranslations[] | CategoryTranslation[] | CountryTranslation[] | DestinationTranslation[] | TermsAndConditionsTranslations[] | CopyrightTranslations[] | FollowButtonsTranslations[]
+    type ContentTranslations = PageTranslation[] | TextContentTranslation[] | NavigationTranslations[] | CategoryTranslation[] | CountryTranslation[] | DestinationTranslation[] | TermsAndConditionsTranslations[] | CopyrightTranslations[] | FollowButtonsTranslations[] | FareModuleTranslations[]
     
-    type ContentCollectionNames = 'carrousel' | 'form' | 'icon' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content' | 'copyrights' | 'follow_buttons'
+    type ContentCollectionNames = 'carrousel' | 'form' | 'icon' | 'logos' | 'navigation' | 'terms_and_conditions' | 'Text_Content' | 'copyrights' | 'follow_buttons' | 'fare_module'
 
     type ContentDisplay = '100' | '75' | '50' | '25'
 
@@ -241,6 +256,7 @@ declare global {
       "item:terms_and_conditions": TermsAndConditions[]
       "item:copyrights": Copyrights[]
       "item:follow_buttons": FollowButtons[]
+      "item:fare_module": FareModule[]
       collection: ContentCollectionNames
       component_name: string
       display: ContentDisplay
@@ -360,11 +376,13 @@ declare global {
       destinatons: Destination[]
       countries: Country[]
       destination_category: Category[]
+      fare_module: FareModule[]
       "item:copyrights": Copyrights[]
       "item:terms_and_conditions": TermsAndConditions[]
       "item:Text_Content": TextContent[]
       "item:navigation": Navigation[]
       "item:follow_buttons": FollowButtons[]
+      "item:fare_module": FareModule[]
     }
     
     type Params<Schema, Item> = {

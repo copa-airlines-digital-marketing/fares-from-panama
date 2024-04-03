@@ -1,5 +1,6 @@
 import { eachDayOfInterval, endOfMonth, endOfWeek, format, isBefore, parse, startOfMonth, startOfWeek } from "date-fns"
 import { utcToZonedTime } from "date-fns-tz"
+import { es } from 'date-fns/locale'
 
 export const contentIsResponse = (content: unknown): content is Response => content != null && typeof content === 'object' && 'response' in content
 
@@ -75,7 +76,21 @@ export const getlanguageCodeFilter = (defaultLang: string, lang?: string) => {
   }
 }
 
+es
+
 export const parseDeparture = ({departure}: Directus.Fare) => utcToZonedTime(parse(departure, 'yyyy-MM-dd', new Date()), "America/Panama")
+
+export const parseDate = (dateString: string) => utcToZonedTime(parse(dateString, 'yyyy-MM-dd', new Date()), "America/Panama")
+
+export const getMonthName = (date: Date) => format(date, 'LLLL', {locale: es})
+
+export const getDayOfWeekName = (date: Date) => format(date, 'eee', {locale: es})
+
+export const getFullDateName = (date: Date) => format(date, 'eeee dd de LLL', {locale: es})
+
+export const getWeekDaysNames = () => eachDayOfInterval({start: startOfWeek(new Date()), end: endOfWeek(new Date())}).map(getDayOfWeekName)
+
+export const formatDateForDisplay = (date: Date) => format(date, 'dd/MM/yyy')
 
 export const fareDepartureIsBeforeExisting = (fare: Directus.Fare, existing: Directus.Fare) => isBefore(parseDeparture(fare), parseDeparture(existing))
 
@@ -98,3 +113,7 @@ export const inititeHistogramFareMonth = (fare: Directus.Fare): Record<App.DateS
 export const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => farePriceIsLowerThanExisting(fare, existing) || farePriceIsEqualToExisting(fare, existing) && fareDepartureIsBeforeExisting(fare,existing)
 
 export const isEmptyObject = (obj: unknown) => obj == null || typeof obj !== 'object' || Object.keys(obj).length === 0
+
+export const getShoppingEngingeURL = (fare: Directus.Fare) => `
+https://shopping.copaair.com/?infants=0&origin=TarifasViajaPanama&adults=1&area1=PTY&area2=${fare.destination}&advanced_air_search=false&date2=${fare.return}&flexible_dates_v2=false&date1=${fare.departure}&roundtrip=true&sf=pa&children=0&langid=es
+`

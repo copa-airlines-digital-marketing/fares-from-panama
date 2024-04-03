@@ -132,5 +132,5 @@
 		</div>
 	</section>
 {:else}
-	<div>Insupported section landmark: {section_id}</div>
+	<div>⚠️ Unsupported section landmark: {section_id}</div>
 {/if}

@@ -16,7 +16,7 @@
 	class="h-svh w-full grid place-content-center bg-gradient-to-r from-primary to-secondary via-primary-light via-75% relative"
 	out:fly={{ duration: 350, easing: quintOut, y: -100 }}
 >
-	<div class="flex flex-col gap-16 text-common-white">
+	<div class="container mx-auto flex flex-col gap-16 text-common-white">
 		{#if error}
 			<Icon data={IconError} class="size-32 fill-system-error"></Icon>
 		{/if}

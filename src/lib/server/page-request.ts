@@ -64,6 +64,12 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                             {translations: ['copyright']}
                           ],
                           icon: ['name','code'],
+                          fare_module: [
+                            'name',
+                            {translations: [
+                              'labels'
+                            ]}
+                          ],
                           follow_buttons: [{translations: [
                             'languages_code',
                             'title',
@@ -144,6 +150,9 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
               "item:terms_and_conditions": {
                 translations: getlanguageCodeFilter(defaultLang, lang),
               },
+              "item:fare_module": {
+                translations: getlanguageCodeFilter(defaultLang, lang)
+              }
             }
           }
         }

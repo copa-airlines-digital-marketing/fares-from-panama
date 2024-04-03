@@ -23,4 +23,7 @@ export const itemIsCopyrights = (item: Directus.MFAItem): item is Directus.Copyr
 
 export const itemIsFollowButtons = (item: Directus.MFAItem): item is Directus.FollowButtons => 
   'translations' in item && Array.isArray(item.translations) && item.translations.length > 0 && 'social_network' in item.translations[0]
+
+export const itemIsFareModule = (item: Directus.MFAItem): item is Directus.FareModule => 
+'translations' in item && Array.isArray(item.translations) && item.translations.length > 0 && 'labels' in item.translations[0]
   

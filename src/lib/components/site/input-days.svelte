@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { ping, selectedDays } from '$lib/public/store';
+	import { ping, selectedDaysStore } from '$lib/public/store';
 	import { createRadioGroup, createTooltip, melt } from '@melt-ui/svelte';
-	import Icon from './icon.svelte';
-	import IconHelpFilled from '$lib/assets/icon-help-filled.svg?raw';
-	import { fly } from 'svelte/transition';
+	import Tooltip from './tooltip.svelte';
 
 	export let input: Directus.FormInput;
 
@@ -21,25 +19,14 @@
 		orientation: 'horizontal'
 	});
 
-	const {
-		elements: { trigger, content, arrow },
-		states: { open }
-	} = createTooltip({
-		positioning: { placement: 'top' },
-		openDelay: 0,
-		closeDelay: 0,
-		closeOnPointerDown: false,
-		forceVisible: true
-	});
-
 	const toRadioOptions = options.map((opiton) => opiton.value);
 
 	const themeColor = theme === 'dark' ? 'text-primary' : 'text-common-white';
 
-	const setSelectedDays = (value: string) => () => selectedDays.set(value);
+	const setSelectedDays = (value: string) => () => selectedDaysStore.set(parseInt(value));
 
 	$: {
-		$value = $selectedDays;
+		$value = $selectedDaysStore ? $selectedDaysStore.toString() : '';
 	}
 </script>
 
@@ -51,27 +38,10 @@
 	>
 		<span class="relative">
 			{label}
-			{#if $ping && !$selectedDays}
+			{#if $ping && !$selectedDaysStore}
 				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
 			{/if}
-			<button
-				class="absolute -right-20 -top-8 {theme === 'light' ? 'text-common-white' : 'text-primary'}"
-				type="button"
-				use:melt={$trigger}
-				aria-label="¿Qué es esto?"
-			>
-				<Icon data={IconHelpFilled} class="size-16 fill-current"></Icon>
-			</button>
-			{#if $open}
-				<div
-					class="bg-backgound-lightblue max-w-prose p-8 rounded-lg shadow-medium z-10"
-					transition:fly
-					use:melt={$content}
-				>
-					<div use:melt={$arrow}></div>
-					<p class="text-12/16 text-grey-600">{placeholder}</p>
-				</div>
-			{/if}
+			<Tooltip text={placeholder} {theme}></Tooltip>
 		</span>
 	</div>
 	<div class="grid auto-cols-auto grid-flow-col gap-16 justify-center">

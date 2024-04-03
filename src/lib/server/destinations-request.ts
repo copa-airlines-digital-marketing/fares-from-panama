@@ -16,6 +16,7 @@ export const getDestinationsQuery = ({defaultLang, lang}: DestinationBuilderFunc
       {destination_category_id:[{translations:['name']}]}
     ]},
     {'country': [
+      'code',
       {translations: ['name']}
     ]}
   ],
