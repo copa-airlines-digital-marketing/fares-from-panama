@@ -48,7 +48,7 @@
 				<HeroCarousel carousel={item}></HeroCarousel>
 			</div>
 			<div
-				class="col-start-1 col-span-3 bg-common-black/70 row-start-1 relative row-span-full w-full"
+				class="col-start-1 col-span-3 bg-common-black/45 row-start-1 relative row-span-full w-full"
 			></div>
 		{:else}
 			<div>

@@ -1,12 +1,12 @@
 import { CMS_HOST, CMS_TOKEN } from '$env/static/private';
-import { COLLECTIONS_PAGES, COLLECTION_DESTINATIONS, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
-import { getDestinations, getPage } from '$lib/server/contentProcesing';
+import { COLLECTIONS_PAGES, COLLECTION_DESTINATIONS, COLLECTION_FARES, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
+import { getDestinations, getFares, getPage } from '$lib/server/contentProcesing';
 import { getPageQuery, type PageQueryBuilderFunctionParams } from '$lib/server/page-request';
-import { error, isHttpError } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { isDirectusError } from '@directus/errors';
-import { contentIsPage, valueIsDestinations } from '$lib/public/utils';
+import { contentIsPage } from '$lib/public/utils';
 import { getDestinationsQuery } from '$lib/server/destinations-request';
+import { getFaresQuery } from '$lib/server/fares-request';
 
 const pageSetting: PageQueryBuilderFunctionParams = {
   id: 9,
@@ -20,24 +20,23 @@ export const load: PageServerLoad = async () => {
 
   try {
 
-    const requests = await Promise.all([
-      getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
-        console.log('Location: Home fetch content -', err)
-        error(404, errorMessage)
-      }),
-      getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)).catch((err) => {
-        console.log('Location: Home fetch destinations -', err)
-      })
-    ])
+    const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
+      console.log('Location: Home fetch content -', err)
+      error(404, errorMessage)
+    })
 
-    const [content, destinations] = requests
     
-    if (isDirectusError(content) || isHttpError(content) || !contentIsPage(content) || isDirectusError(destinations) || isHttpError(destinations) || !valueIsDestinations(destinations))
+    console.log
+
+    if (!contentIsPage(content))
       error(404, errorMessage)
 
     return {
       content,
-      destinations
+      lazy: Promise.all([
+        getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)),
+        getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery())
+      ])
     };
 
   } catch (err) {

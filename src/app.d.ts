@@ -5,6 +5,54 @@ import type { Query, QueryItem } from "@directus/sdk"
 // for information about these interfaces
 declare global {
 	namespace App {
+
+    type IATA = string
+
+    type Days = number
+
+    type Interest = string
+
+    type MonthYear = string
+
+    type DateString = string
+
+    type Destination = Record<IATA, Directus.Destination>
+
+    type BasicFares = Record<IATA, Directus.Fare>
+
+    type FaresByDays = Record<Days, BasicFares>
+
+    type PopularFares = FaresByDays
+
+    type BudgetFares = FaresByDays
+
+    type LowestFareByInterest = Record<Days, Record<Interest, Directus.Fare>>
+
+    type InterestFares = Record<Days, Record<Interest, BasicFares>>
+    
+    type LowestFareByMonthAndDestination = Record<IATA, Record<Days, Record<MonthYear, Directus.Fare>>>
+
+    type FaresByDateOfDestination = Record<IATA, Record<Days, Record<MonthYear, Record<DateString, Directus.Fare>>>>
+    
+    type LowestFareByMonth = Record<Days, Record<MonthYear, Directus.Fare>>
+
+    type LowestFareByDate = Record<Days, Record<MonthYear, Record<DateString, Directus.Fare>>>
+    
+    type FaresByDate = Record<Days, Record<MonthYear, Record<DateString, BasicFares>>>
+
+    type Modules = {
+      budget: BudgetFares
+      calendarMonths: LowestFareByMonthAndDestination
+      calendar: FaresByDateOfDestination
+      histogramMonths: LowestFareByMonth
+      histogramDays: LowestFareByDate
+      histogram: FaresByDate
+      interestNames: LowestFareByInterest
+      interests: InterestFares
+      popular: PopularFares
+      destinations: Destination
+    }
+
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
@@ -14,6 +62,19 @@ declare global {
 
   namespace Directus {
     // Directus types
+
+    type Fare = {
+      id: string,
+      destination: string,
+      days: number,
+      departure: string,
+      return: string,
+      fare: string,
+      taxes: string,
+      price: string,
+      seats: number,
+      score: number,
+    }
 
     type TermsAndConditionsTranslations = {
       title: string

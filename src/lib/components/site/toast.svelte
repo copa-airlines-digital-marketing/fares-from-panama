@@ -12,7 +12,6 @@
 <script lang="ts">
 	import { createToaster, melt } from '@melt-ui/svelte';
 	import Icon from '$lib/components/site/icon.svelte';
-	import Heading from '$lib/components/copa/typography/heading.svelte';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';

@@ -1,3 +1,6 @@
+import { eachDayOfInterval, endOfMonth, endOfWeek, format, isBefore, parse, startOfMonth, startOfWeek } from "date-fns"
+import { utcToZonedTime } from "date-fns-tz"
+
 export const contentIsResponse = (content: unknown): content is Response => content != null && typeof content === 'object' && 'response' in content
 
 export const contentIsError = (content: unknown): content is Error => content != null && typeof content === 'object' && 'cause' in content
@@ -5,6 +8,8 @@ export const contentIsError = (content: unknown): content is Error => content !=
 export const contentIsPage = (content: unknown): content is Directus.Page => content != null && typeof content === 'object' && 'share_image' in content
 
 export const valueIsDestinations = (value: unknown): value is Directus.Destination[] => value != null && Array.isArray(value)  && 'iata_code' in value[0]
+
+export const valueIsFaresArray = (value: unknown): value is Directus.Fare[] => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]  && 'departure' in value[0] && 'price' in value[0]
 
 export const getTitleTagFromPage = (page: Directus.Page) => page.translations[0]?.title_tag || 'No se econtró el titulo'
 
@@ -69,3 +74,27 @@ export const getlanguageCodeFilter = (defaultLang: string, lang?: string) => {
     }
   }
 }
+
+export const parseDeparture = ({departure}: Directus.Fare) => utcToZonedTime(parse(departure, 'yyyy-MM-dd', new Date()), "America/Panama")
+
+export const fareDepartureIsBeforeExisting = (fare: Directus.Fare, existing: Directus.Fare) => isBefore(parseDeparture(fare), parseDeparture(existing))
+
+export const farePriceIsLowerThanExisting = (fare: Directus.Fare, existing: Directus.Fare) => parseInt(fare.price) < parseInt(existing.price)
+
+export const farePriceIsEqualToExisting = (fare: Directus.Fare, existing: Directus.Fare) => parseInt(fare.price) === parseInt(existing.price)
+
+const initiateMonth = (fare: Directus.Fare, start: 'week' | 'month' ) => {
+  const departureDate = parseDeparture(fare)
+
+  const datesOfMonth = eachDayOfInterval({start: start === 'month' ? startOfMonth(departureDate) : startOfWeek(startOfMonth(departureDate), {weekStartsOn: 1}), end: start === 'month' ? endOfMonth(departureDate) : endOfWeek(endOfMonth(departureDate), {weekStartsOn: 1})})
+
+  return {...datesOfMonth.reduce((accum, current) => ({...accum,[format(current, 'yyyy-MM-dd')]: {}}), {})}
+}
+
+export const inititeFareMonth = (fare: Directus.Fare): Record<App.DateString, Directus.Fare> => initiateMonth(fare, 'week')
+
+export const inititeHistogramFareMonth = (fare: Directus.Fare): Record<App.DateString, App.BasicFares> => initiateMonth(fare, 'month')
+
+export const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => farePriceIsLowerThanExisting(fare, existing) || farePriceIsEqualToExisting(fare, existing) && fareDepartureIsBeforeExisting(fare,existing)
+
+export const isEmptyObject = (obj: unknown) => obj == null || typeof obj !== 'object' || Object.keys(obj).length === 0

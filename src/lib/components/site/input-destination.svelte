@@ -2,7 +2,7 @@
 	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
 	import Icon from './icon.svelte';
 	import { fly } from 'svelte/transition';
-	import { destinations, ping, selectedDestination } from '$lib/public/store';
+	import { destinationsStore, ping, selectedDestination } from '$lib/public/store';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
@@ -40,7 +40,7 @@
 	}
 
 	$: filteredDestinations = $touchedInput
-		? $destinations.filter((destination) => {
+		? Object.values($destinationsStore).filter((destination) => {
 				const normalizedInput = $inputValue.toLocaleLowerCase().trim();
 				return (
 					destination.iata_code.toLocaleLowerCase().includes(normalizedInput) ||
@@ -48,7 +48,7 @@
 					destination.country.translations[0]?.name.toLocaleLowerCase().includes(normalizedInput)
 				);
 			})
-		: $destinations;
+		: Object.values($destinationsStore);
 
 	const toggleDropdown = (currentState: boolean) => () => ($open = !currentState);
 
