@@ -6,8 +6,6 @@
 	export let fares: App.BudgetFares;
 	export let module: Directus.FareModule;
 
-	console.log(module);
-
 	$: top10Fares = $selectedDaysStore
 		? Object.values(fares[$selectedDaysStore])
 				.filter((fare) => parseInt(fare.price) <= $selectedBudgetStore)

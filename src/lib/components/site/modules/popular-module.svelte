@@ -6,8 +6,6 @@
 	export let fares: App.PopularFares;
 	export let module: Directus.FareModule;
 
-	console.log(module);
-
 	$: top10Fares = $selectedDaysStore
 		? Object.values(fares[$selectedDaysStore])
 				.sort((a, b) => b.score - a.score)
