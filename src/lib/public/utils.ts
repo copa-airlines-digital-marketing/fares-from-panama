@@ -86,7 +86,7 @@ export const getMonthName = (date: Date) => format(date, 'LLLL', {locale: es})
 
 export const getDayOfWeekName = (date: Date) => format(date, 'eee', {locale: es})
 
-export const getFullDateName = (date: Date) => format(date, 'eeee dd de LLL', {locale: es})
+export const getFullDateName = (date: Date) => format(date, 'EEEE dd LLL', {locale: es})
 
 export const getWeekDaysNames = () => eachDayOfInterval({start: startOfWeek(new Date()), end: endOfWeek(new Date())}).map(getDayOfWeekName)
 
@@ -108,7 +108,9 @@ const initiateMonth = (fare: Directus.Fare, start: 'week' | 'month' ) => {
 
 export const inititeFareMonth = (fare: Directus.Fare): Record<App.DateString, Directus.Fare> => initiateMonth(fare, 'week')
 
-export const inititeHistogramFareMonth = (fare: Directus.Fare): Record<App.DateString, App.BasicFares> => initiateMonth(fare, 'month')
+export const inititeHistogramFareMonthDates = (fare: Directus.Fare): Record<App.DateString, App.BasicFares> => initiateMonth(fare, 'month')
+
+export const inititeHistogramFareMonth = (fare: Directus.Fare): Record<App.DateString, Directus.Fare> => initiateMonth(fare, 'month')
 
 export const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => farePriceIsLowerThanExisting(fare, existing) || farePriceIsEqualToExisting(fare, existing) && fareDepartureIsBeforeExisting(fare,existing)
 

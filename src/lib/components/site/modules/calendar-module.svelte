@@ -1,7 +1,6 @@
 <script lang="ts">
 	import CalendarFareModule from './calendar-fare-module.svelte';
 	import CalendarMonthModule from './calendar-month-module.svelte';
-	import InterestLowestModule from './interest-lowest-module.svelte';
 
 	export let months: App.LowestFareByMonthAndDestination;
 	export let calendar: App.FaresByDateOfDestination;

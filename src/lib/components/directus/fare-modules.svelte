@@ -2,6 +2,7 @@
 	import { modulesStore } from '$lib/public/store';
 	import BudgetModule from '../site/modules/budget-module.svelte';
 	import CalendarModule from '../site/modules/calendar-module.svelte';
+	import HistogramModule from '../site/modules/histogram-module.svelte';
 	import InterestModule from '../site/modules/interest-module.svelte';
 	import PopularModule from '../site/modules/popular-module.svelte';
 
@@ -18,7 +19,12 @@
 		module={item}
 	></CalendarModule>
 {:else if component_name === 'histogram'}
-	histograma
+	<HistogramModule
+		months={$modulesStore.histogramMonths}
+		dates={$modulesStore.histogramDays}
+		fares={$modulesStore.histogram}
+		module={item}
+	></HistogramModule>
 {:else if component_name === 'interest'}
 	<InterestModule
 		interestFares={$modulesStore.interests}

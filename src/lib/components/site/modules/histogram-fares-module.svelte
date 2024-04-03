@@ -1,20 +1,20 @@
 <script lang="ts">
 	import {
 		selectedDaysStore,
-		selectedDestination,
-		selectedCalendarMonthStore
+		selectedHistogramMonthStore,
+		selectedHistogramDateStore
 	} from '$lib/public/store';
 	import Heading from '../../copa/typography/heading.svelte';
-	import FareCard from '$lib/components/site/calendar-fare.svelte';
+	import FareCard from '$lib/components/site/copa-fare.svelte';
 
+	export let fares: App.FaresByDate;
 	export let module: Directus.FareModule;
-	export let calendar: App.FaresByDateOfDestination;
 
 	$: fareCards =
-		$selectedDaysStore && $selectedDestination && $selectedCalendarMonthStore
+		$selectedDaysStore && $selectedDaysStore && $selectedHistogramDateStore
 			? Object.values(
-					calendar[$selectedDestination.iata_code][$selectedDaysStore][$selectedCalendarMonthStore]
-				)
+					fares[$selectedDaysStore][$selectedHistogramMonthStore][$selectedHistogramDateStore]
+				).sort((a, b) => parseInt(a.price) - parseInt(b.price))
 			: [];
 
 	const labels: Record<string, string> = module?.translations[0]
@@ -29,8 +29,8 @@
 		</li>
 	{:else}
 		<li>
-			<Heading type="display-tiny" style="text-common-white text-center my-normal">
-				{labels['instructions']}
+			<Heading type="display-tiny" style="text-grey-600 text-center my-normal">
+				{labels['selectDays']}
 			</Heading>
 		</li>
 	{/each}

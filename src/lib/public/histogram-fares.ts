@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { inititeFareMonth, inititeHistogramFareMonth, isEmptyObject, isValidToAdd, parseDeparture } from "./utils"
+import { inititeHistogramFareMonth, inititeHistogramFareMonthDates, isEmptyObject, isValidToAdd, parseDeparture } from "./utils"
 import { YEAR_MONTH_FORMAT } from "./constants"
 
 const addDestinationToHistogram = (module: App.FaresByDate, fare: Directus.Fare) => {
@@ -14,7 +14,7 @@ const addDestinationToHistogram = (module: App.FaresByDate, fare: Directus.Fare)
     newModule[days] = {}
 
   if (!newModule[days][fareMonth])
-    newModule[days][fareMonth] = inititeHistogramFareMonth(fare)
+    newModule[days][fareMonth] = inititeHistogramFareMonthDates(fare)
 
   if (isEmptyObject(newModule[days][fareMonth][departure]))
     newModule[days][fareMonth][departure]= {}
@@ -46,7 +46,7 @@ const setLowestFareByDate = (module: App.LowestFareByDate, fare: Directus.Fare) 
     newModule[days] = {}
 
   if (!newModule[days][fareMonth])
-    newModule[days][fareMonth] = inititeFareMonth(fare)
+    newModule[days][fareMonth] = inititeHistogramFareMonth(fare)
 
   if (isEmptyObject(newModule[days][fareMonth][departure])){
     newModule[days][fareMonth][departure]= fare

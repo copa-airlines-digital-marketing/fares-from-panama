@@ -10,7 +10,7 @@
 
 <a href={getShoppingEngingeURL(fare)}>
 	<img
-		src="https://cm-marketing.directus/assets/{$destinationsStore[destination]
+		src="https://cm-marketing.directus.app/assets/{$destinationsStore[destination]
 			.main_image}?width=200&height=185&fit=cover"
 		alt=""
 	/>
