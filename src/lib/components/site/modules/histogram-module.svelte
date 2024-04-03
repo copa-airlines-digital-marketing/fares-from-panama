@@ -25,4 +25,5 @@
 	{/if}
 {:else}
 	<div>Cargando tarifas...</div>
+	|
 {/if}
