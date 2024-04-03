@@ -37,8 +37,6 @@
 		{/each}
 	</DestinationAndFares>
 {:catch error}
-	<Interstitial
-		text="Estamos buscando las mejores tarifas para viajar a tú próximo destino."
-		loading
+	<Interstitial text="Ocurrió un error al intentar descargar las tarifas: {error.message}" error
 	></Interstitial>
 {/await}
