@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	const {
-		elements: { content, title, description, close },
+		elements: { content, description, close },
 		helpers,
 		states: { toasts },
 		actions: { portal }
