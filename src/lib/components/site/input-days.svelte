@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ping, selectedDaysStore } from '$lib/public/store';
-	import { createRadioGroup, createTooltip, melt } from '@melt-ui/svelte';
+	import { createRadioGroup, melt } from '@melt-ui/svelte';
 	import Tooltip from './tooltip.svelte';
 
 	export let input: Directus.FormInput;
@@ -48,7 +48,7 @@
 		{#each toRadioOptions as option}
 			<button
 				use:melt={$item(option)}
-				class="cursor-pointer text-20/24 border-2 {themeColor} border-current size-48 grid place-content-center rounded-full hover:border-secondary hover:bg-secondary hover:text-common-white transition-colors outline-2 outline-offset-4 focus:bg-secondary focus:border-secondary focus:outline focus:outline-secondary focus:text-common-white data-[state=checked]:bg-red data-[state=checked]:border-red data-[state=checked]:text-common-white data-[state=checked]:focus:outline-red"
+				class="cursor-pointer text-20/24 border-2 {themeColor} caret-transparent border-current size-48 grid place-content-center rounded-full hover:border-secondary hover:bg-secondary hover:text-common-white transition-colors outline-2 outline-offset-4 focus:bg-secondary focus:border-secondary focus:outline focus:outline-secondary focus:text-common-white data-[state=checked]:bg-red data-[state=checked]:border-red data-[state=checked]:text-common-white data-[state=checked]:focus:outline-red"
 			>
 				<span class="cursor-pointer font-heading font-heading-bold">
 					{option}
