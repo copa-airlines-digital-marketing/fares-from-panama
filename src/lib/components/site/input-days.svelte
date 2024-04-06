@@ -3,19 +3,16 @@
 	import { createRadioGroup, melt } from '@melt-ui/svelte';
 	import Tooltip from './tooltip.svelte';
 
+	export let section: string;
 	export let input: Directus.FormInput;
-
 	export let theme: Directus.Theme;
 
 	const { label, options, placeholder } = input;
-
-	const defaultValue = input.value;
 
 	const {
 		elements: { root, item, hiddenInput },
 		states: { value }
 	} = createRadioGroup({
-		defaultValue: defaultValue,
 		orientation: 'horizontal'
 	});
 
@@ -23,11 +20,8 @@
 
 	const themeColor = theme === 'dark' ? 'text-primary' : 'text-common-white';
 
-	const setSelectedDays = (value: string) => () => selectedDaysStore.set(parseInt(value));
-
-	$: {
-		$value = $selectedDaysStore ? $selectedDaysStore.toString() : '';
-	}
+	const setSelectedDays = (value: string) => () =>
+		selectedDaysStore.set({ ...$selectedDaysStore, [section]: parseInt(value) });
 </script>
 
 <div class="my-32" use:melt={$root}>
@@ -38,7 +32,7 @@
 	>
 		<span class="relative">
 			{label}
-			{#if $ping && !$selectedDaysStore}
+			{#if $ping && !$selectedDaysStore[section]}
 				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
 			{/if}
 			<Tooltip text={placeholder} {theme}></Tooltip>

@@ -3,16 +3,19 @@
 	import Heading from '../../copa/typography/heading.svelte';
 	import FareCard from '$lib/components/site/interest-fare.svelte';
 
+	export let section: string;
 	export let interestLowest: App.LowestFareByInterest;
 	export let module: Directus.FareModule;
 	export let interestFares: App.InterestFares;
 
-	$: fareCards = $selectedDaysStore
-		? Object.keys(interestLowest[$selectedDaysStore])
+	$: sectionDays = $selectedDaysStore[section];
+
+	$: fareCards = sectionDays
+		? Object.keys(interestLowest[sectionDays])
 				.map((name) => ({
 					interest: name,
-					fare: interestLowest[$selectedDaysStore][name],
-					count: Object.keys(interestFares[$selectedDaysStore][name]).length
+					fare: interestLowest[sectionDays][name],
+					count: Object.keys(interestFares[sectionDays][name]).length
 				}))
 				.sort((a, b) => parseInt(a.fare.price) - parseInt(b.fare.price))
 		: [];

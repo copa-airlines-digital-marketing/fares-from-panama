@@ -6,17 +6,19 @@
 	import InterestModule from '../site/modules/interest-module.svelte';
 	import PopularModule from '../site/modules/popular-module.svelte';
 
+	export let section: string;
 	export let component_name: string;
 	export let item: Directus.FareModule;
 </script>
 
 {#if component_name === 'budget'}
-	<BudgetModule fares={$modulesStore.popular} module={item}></BudgetModule>
+	<BudgetModule fares={$modulesStore.popular} module={item} {section}></BudgetModule>
 {:else if component_name === 'calendar'}
 	<CalendarModule
 		months={$modulesStore.calendarMonths}
 		calendar={$modulesStore.calendar}
 		module={item}
+		{section}
 	></CalendarModule>
 {:else if component_name === 'histogram'}
 	<HistogramModule
@@ -24,15 +26,17 @@
 		dates={$modulesStore.histogramDays}
 		fares={$modulesStore.histogram}
 		module={item}
+		{section}
 	></HistogramModule>
 {:else if component_name === 'interest'}
 	<InterestModule
 		interestFares={$modulesStore.interests}
 		interestLowest={$modulesStore.interestNames}
 		module={item}
+		{section}
 	></InterestModule>
 {:else if component_name === 'popular'}
-	<PopularModule fares={$modulesStore.popular} module={item}></PopularModule>
+	<PopularModule fares={$modulesStore.popular} module={item} {section}></PopularModule>
 {:else}
 	<div>⚠️ Unsupported Fare Module {component_name}</div>
 {/if}

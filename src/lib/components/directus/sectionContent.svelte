@@ -17,6 +17,7 @@
 	import { addToast } from '../site/toast.svelte';
 	import FareModules from './fare-modules.svelte';
 
+	export let section: string;
 	export let contents: Directus.PageSectionContent[];
 
 	const displayMap: Record<Directus.ContentDisplay, string> = {
@@ -89,11 +90,11 @@
 		{#if itemIsCopyrights(item)}
 			<Copyright copyrights={item}></Copyright>
 		{:else if itemIsFareModule(item)}
-			<FareModules {component_name} {item}></FareModules>
+			<FareModules {component_name} {item} {section}></FareModules>
 		{:else if itemIsFollowButtons(item)}
 			<FollowButtons followButtons={item}></FollowButtons>
 		{:else if itemIsForm(item)}
-			<Form form={item} {component_name} {theme}></Form>
+			<Form form={item} {component_name} {theme} {section}></Form>
 		{:else if itemIsTermsAndConditions(item)}
 			<TermsAndConditions terms={item}></TermsAndConditions>
 		{:else if itemIsCarrousel(item)}

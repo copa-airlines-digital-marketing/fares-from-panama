@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { ping, selectedDaysStore, selectedDestination } from '$lib/public/store';
-	import ButtonLink from '../copa/buttons/Button-Link.svelte';
 
+	export let section: string;
 	export let input: Directus.FormInput;
 	export let action: string;
 
 	const { label } = input;
 
 	const handleClick = (event: Event) => {
-		if ($selectedDestination && $selectedDaysStore) return;
+		if ($selectedDestination && $selectedDaysStore[section]) return;
 
 		event.preventDefault();
 

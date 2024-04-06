@@ -2,6 +2,7 @@
 	import InterestFareModule from './interest-fare-module.svelte';
 	import InterestLowestModule from './interest-lowest-module.svelte';
 
+	export let section: string;
 	export let interestLowest: App.LowestFareByInterest;
 	export let module: Directus.FareModule;
 	export let interestFares: App.InterestFares;
@@ -10,10 +11,11 @@
 {#if interestLowest && interestFares}
 	{#if module?.translations[0]}
 		<div>
-			<InterestLowestModule {interestLowest} {module} {interestFares}></InterestLowestModule>
+			<InterestLowestModule {interestLowest} {module} {interestFares} {section}
+			></InterestLowestModule>
 		</div>
 		<div>
-			<InterestFareModule {module} {interestFares}></InterestFareModule>
+			<InterestFareModule {module} {interestFares} {section}></InterestFareModule>
 		</div>
 	{:else}
 		<div>⚠️ No translations for {module.name}</div>

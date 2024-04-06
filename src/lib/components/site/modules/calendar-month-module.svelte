@@ -4,19 +4,25 @@
 	import FareCard from '$lib/components/site/month-fare.svelte';
 	import { parseDate } from '$lib/public/utils';
 
+	export let section: string;
 	export let months: App.LowestFareByMonthAndDestination;
 	export let calendar: App.FaresByDateOfDestination;
 	export let module: Directus.FareModule;
 
+	const mapMonths = (destination: string, days: number) => (name: string) => ({
+		monthYear: name,
+		fare: months[destination][days][name],
+		count: Object.keys(calendar[destination][days][name]).length
+	});
+
+	$: sectionDays = $selectedDaysStore[section];
+
+	$: destination = $selectedDestination?.iata_code;
+
 	$: fareCards =
-		$selectedDestination && $selectedDaysStore
-			? Object.keys(months[$selectedDestination.iata_code][$selectedDaysStore])
-					.map((name) => ({
-						monthYear: name,
-						fare: months[$selectedDestination.iata_code][$selectedDaysStore][name],
-						count: Object.keys(calendar[$selectedDestination.iata_code][$selectedDaysStore][name])
-							.length
-					}))
+		destination && sectionDays
+			? Object.keys(months[destination][sectionDays])
+					.map(mapMonths(destination, sectionDays))
 					.sort(
 						(a, b) =>
 							parseDate(a.fare.departure).getMilliseconds() -

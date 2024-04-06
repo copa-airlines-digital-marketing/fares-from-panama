@@ -1,20 +1,16 @@
 <script lang="ts">
 	import TextContent from '$lib/components/site/textContent.svelte';
 	import Quote from '$lib/components/site/quote.svelte';
-	import Toaster from '../site/toast.svelte';
-	import { addToast } from '../site/toast.svelte';
 
 	export let content: Directus.TextContent;
 	export let component_name: string;
 	export let theme: Directus.Theme;
 
-	const { icon, name } = content;
+	const { name } = content;
 
 	const {
 		title,
 		description, //wysiwyg
-		media, //directus asset id
-		embed_media,
 		call_to_actions
 	} = content.translations[0];
 

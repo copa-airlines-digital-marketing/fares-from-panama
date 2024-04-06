@@ -53,7 +53,7 @@
 			>
 				<img
 					alt=""
-					class=" col-start-1 row-start-1 row-span-2"
+					class="col-start-1 row-start-1 row-span-2 w-full h-full object-cover"
 					loading="lazy"
 					src="https://cm-marketing.directus.app/assets/{imageID}?width=120&height=160&fit=cover"
 				/>

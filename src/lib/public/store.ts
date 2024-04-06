@@ -4,7 +4,7 @@ export const destinationsStore = writable<App.Destination>({})
 
 export const selectedDestination = writable<Directus.Destination | undefined>(undefined)
 
-export const selectedDaysStore = writable<number>()
+export const selectedDaysStore = writable<Record<string, number>>({})
 
 export const selectedBudgetStore = writable<number>()
 

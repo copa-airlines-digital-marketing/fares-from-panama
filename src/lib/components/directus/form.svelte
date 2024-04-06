@@ -4,6 +4,7 @@
 	import InputDestination from '../site/input-destination.svelte';
 	import InputSlider from '../site/input-slider.svelte';
 
+	export let section: string;
 	export let form: Directus.Form;
 	export let component_name: string;
 	export let theme: Directus.Theme;
@@ -17,11 +18,11 @@
 		{#if component_name === 'budget'}
 			<InputSlider {input}></InputSlider>
 		{:else if component_name === 'days'}
-			<InputDays {theme} {input}></InputDays>
+			<InputDays {theme} {input} {section}></InputDays>
 		{:else if component_name === 'destination'}
 			<InputDestination item={input}></InputDestination>
 		{:else if component_name === 'buscar'}
-			<InputBuscar {action} {input}></InputBuscar>
+			<InputBuscar {action} {input} {section}></InputBuscar>
 		{:else}
 			<div>⚠️ Unsupported input: {component_name}</div>
 		{/if}

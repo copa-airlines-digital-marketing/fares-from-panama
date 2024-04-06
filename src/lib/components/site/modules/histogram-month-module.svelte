@@ -3,15 +3,18 @@
 	import Heading from '../../copa/typography/heading.svelte';
 	import FareCard from '$lib/components/site/month-fare.svelte';
 
+	export let section: string;
 	export let months: App.LowestFareByMonth;
 	export let dates: App.LowestFareByDate;
 	export let module: Directus.FareModule;
 
-	$: fareCards = $selectedDaysStore
-		? Object.keys(months[$selectedDaysStore]).map((name) => ({
+	$: sectionDays = $selectedDaysStore[section];
+
+	$: fareCards = sectionDays
+		? Object.keys(months[sectionDays]).map((name) => ({
 				monthYear: name,
-				fare: months[$selectedDaysStore][name],
-				count: Object.keys(dates[$selectedDaysStore][name]).length
+				fare: months[sectionDays][name],
+				count: Object.keys(dates[sectionDays][name]).length
 			}))
 		: [];
 

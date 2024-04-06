@@ -7,14 +7,17 @@
 	import Heading from '../../copa/typography/heading.svelte';
 	import FareCard from '$lib/components/site/calendar-fare.svelte';
 
+	export let section: string;
 	export let module: Directus.FareModule;
 	export let calendar: App.FaresByDateOfDestination;
 
+	$: sectionDays = $selectedDaysStore[section];
+
+	$: destination = $selectedDestination?.iata_code;
+
 	$: fareCards =
-		$selectedDaysStore && $selectedDestination && $selectedCalendarMonthStore
-			? Object.values(
-					calendar[$selectedDestination.iata_code][$selectedDaysStore][$selectedCalendarMonthStore]
-				)
+		sectionDays && destination && $selectedCalendarMonthStore
+			? Object.values(calendar[destination][sectionDays][$selectedCalendarMonthStore])
 			: [];
 
 	const labels: Record<string, string> = module?.translations[0]

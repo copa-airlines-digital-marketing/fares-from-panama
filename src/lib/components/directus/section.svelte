@@ -89,21 +89,21 @@
 
 {#if landmark === 'aside'}
 	<aside id={section_id} class={sectionVerticalSpacing[content_spacing]}>
-		<SectionContent contents={section_content}></SectionContent>
+		<SectionContent contents={section_content} section={section_id}></SectionContent>
 	</aside>
 {:else if landmark === 'footer'}
 	<footer id={section_id} class="bg-primary {sectionVerticalSpacing[content_spacing]}">
 		<div class="container mx-auto {gridSystem} {contentSpacingClass}">
-			<SectionContent contents={section_content}></SectionContent>
+			<SectionContent contents={section_content} section={section_id}></SectionContent>
 		</div>
 	</footer>
 {:else if landmark === 'header'}
 	<header id={section_id}>
-		<SectionContent contents={section_content}></SectionContent>
+		<SectionContent contents={section_content} section={section_id}></SectionContent>
 	</header>
 {:else if landmark === 'hero'}
 	<div id={section_id}>
-		<Hero content={section_content}></Hero>
+		<Hero content={section_content} section={section_id}></Hero>
 	</div>
 {:else if landmark === 'loading'}
 	<Loader></Loader>
@@ -116,7 +116,7 @@
 				: ''}"
 		>
 			<div class="{hbClasses} {contentSpacingClass}">
-				<SectionContent contents={section_content}></SectionContent>
+				<SectionContent contents={section_content} section={section_id}></SectionContent>
 			</div>
 		</div>
 	{/if}
@@ -128,7 +128,7 @@
 			: ''}"
 	>
 		<div class="{hbClasses} {contentSpacingClass}">
-			<SectionContent contents={section_content}></SectionContent>
+			<SectionContent contents={section_content} section={section_id}></SectionContent>
 		</div>
 	</section>
 {:else}

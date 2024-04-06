@@ -11,6 +11,7 @@
 	import HeroNav from './hero-nav.svelte';
 	import MainNav from './main-nav.svelte';
 
+	export let section: string;
 	export let content: Directus.PageSectionContent[];
 </script>
 
@@ -33,15 +34,15 @@
 			</div>
 		{:else if component_name === 'destination' && itemIsForm(item)}
 			<div class="col-start-2 row-start-2 relative">
-				<Form form={item} {component_name} {theme}></Form>
+				<Form form={item} {component_name} {theme} {section}></Form>
 			</div>
 		{:else if component_name === 'days' && itemIsForm(item)}
 			<div class="col-start-2 row-start-3 relative">
-				<Form form={item} {component_name} {theme}></Form>
+				<Form form={item} {component_name} {theme} {section}></Form>
 			</div>
 		{:else if component_name === 'buscar' && itemIsForm(item)}
 			<div class="col-start-2 row-start-4 justify-self-center relative">
-				<Form form={item} {component_name} {theme}></Form>
+				<Form form={item} {component_name} {theme} {section}></Form>
 			</div>
 		{:else if component_name === 'hero-carousel' && itemIsCarrousel(item)}
 			<div class="col-start-1 col-span-3 row-start-1 row-span-full">

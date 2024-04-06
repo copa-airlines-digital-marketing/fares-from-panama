@@ -7,13 +7,16 @@
 	import Heading from '../../copa/typography/heading.svelte';
 	import FareCard from '$lib/components/site/copa-fare.svelte';
 
+	export let section: string;
 	export let fares: App.FaresByDate;
 	export let module: Directus.FareModule;
 
+	$: sectionDays = $selectedDaysStore[section];
+
 	$: fareCards =
-		$selectedDaysStore && $selectedDaysStore && $selectedHistogramDateStore
+		sectionDays && $selectedHistogramMonthStore && $selectedHistogramDateStore
 			? Object.values(
-					fares[$selectedDaysStore][$selectedHistogramMonthStore][$selectedHistogramDateStore]
+					fares[sectionDays][$selectedHistogramMonthStore][$selectedHistogramDateStore]
 				).sort((a, b) => parseInt(a.price) - parseInt(b.price))
 			: [];
 

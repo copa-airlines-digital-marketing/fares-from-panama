@@ -3,12 +3,15 @@
 	import Heading from '../../copa/typography/heading.svelte';
 	import FareCard from '$lib/components/site/square-dest-bg-fare.svelte';
 
+	export let section: string;
 	export let module: Directus.FareModule;
 	export let interestFares: App.InterestFares;
 
+	$: sectionDays = $selectedDaysStore[section];
+
 	$: fareCards =
-		$selectedDaysStore && $selectedInterestStore
-			? Object.values(interestFares[$selectedDaysStore][$selectedInterestStore]).sort(
+		sectionDays && $selectedInterestStore
+			? Object.values(interestFares[sectionDays][$selectedInterestStore]).sort(
 					(a, b) => parseInt(a.price) - parseInt(b.price)
 				)
 			: [];
