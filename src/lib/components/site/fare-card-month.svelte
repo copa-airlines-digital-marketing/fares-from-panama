@@ -38,11 +38,12 @@
 		</span>
 		{#if isLowest}
 			<span
-				class="[grid-area:lowes] sm:self-center sm:ml-4"
+				class="[grid-area:lowes] flex font-heading-bold gap-4 items-center sm:self-center sm:ml-4 text-secondary"
 				class:text-common-white={isSelected}
 				class:text-secondary={!isSelected}
 			>
-				<Icon data={Isotipo} class="size-24 fill-current"></Icon>
+				<Icon data={Isotipo} class="fill-current w-16"></Icon>
+				<span>{labels['lowestFare']}</span>
 			</span>
 		{/if}
 		<span class="[grid-area:froms] self-end">{labels['from']}</span>
@@ -80,7 +81,7 @@
 
 	@media (min-width: 1180px) {
 		.fare-card--month {
-			grid-template-areas: 'month month month' 'lowes lowes .' '. froms price' '. crncy price';
+			grid-template-areas: 'month month month' 'lowes lowes lowes' '. froms price' '. crncy price';
 			grid-template-columns: 1fr auto auto;
 			grid-template-rows: auto 1fr auto auto;
 		}

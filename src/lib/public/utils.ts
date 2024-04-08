@@ -91,6 +91,8 @@ export const getMonthName = (date: Date) => format(date, 'LLLL', {locale: es})
 
 export const getDayOfWeekName = (date: Date) => format(date, 'eee', {locale: es})
 
+export const getDayAndDate = (date: Date) => format(date, 'eeee d', {locale: es})
+
 export const getFullDateName = (date: Date) => format(date, 'EEEE dd LLL', {locale: es})
 
 export const getWeekDaysNames = () => eachDayOfInterval({start: startOfWeek(new Date()), end: endOfWeek(new Date())}).map(getDayOfWeekName)

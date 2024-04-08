@@ -71,7 +71,13 @@
 {/if}
 
 {#if accordionThreshold}
-	<CalendarAccordion {calendar} months={filteredMonths} {labels} skeleton={monthsSkeleton}
+	<CalendarAccordion
+		{calendar}
+		months={filteredMonths}
+		{labels}
+		skeleton={monthsSkeleton}
+		selectedDestination={destination}
+		selectedDays={days}
 	></CalendarAccordion>
 {:else}
 	<CalendarTabs

@@ -45,7 +45,7 @@
 			{#each months as { monthYear, fare }}
 				{@const selected = $value === monthYear}
 				<button
-					class="block border group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none rounded-2xl transition-colors w-full"
+					class="block border group focus:bg-red focus:border-red hover:bg-red hover:border-red outline-none rounded-2xl transition-colors w-full"
 					use:melt={$trigger(monthYear)}
 					class:bg-red={selected}
 					class:border-red={selected}
@@ -62,7 +62,7 @@
 			{/each}
 		</div>
 		{#if calendarSkeleton}
-			<div></div>
+			<div>skeleton</div>
 		{:else}
 			{@const destination = selectedDestination ? selectedDestination : ''}
 			{#each months as { monthYear }}
@@ -72,6 +72,8 @@
 						monthOfFare={parseMonthYear(monthYear)}
 						{labels}
 						skeleton={calendarSkeleton}
+						isTab={true}
+						{lowest}
 					></CalendarFareModule>
 				</div>
 			{/each}
