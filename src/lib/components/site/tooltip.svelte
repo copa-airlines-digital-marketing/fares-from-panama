@@ -21,7 +21,9 @@
 </script>
 
 <button
-	class="absolute -right-20 -top-8 {theme === 'light' ? 'text-common-white' : 'text-primary'}"
+	class="absolute -right-20 top-1/2 -translate-y-1/2 {theme === 'light'
+		? 'text-common-white'
+		: 'text-primary'}"
 	type="button"
 	use:melt={$trigger}
 	aria-label="¿Qué es esto?"

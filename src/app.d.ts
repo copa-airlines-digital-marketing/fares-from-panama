@@ -40,6 +40,12 @@ declare global {
     
     type FaresByDate = Record<Days, Record<MonthYear, Record<DateString, BasicFares>>>
 
+    type MonthCardData = {
+      monthYear: string
+      fare: Directus.Fare
+      count: number
+    }
+
     type Modules = {
       budget: BudgetFares
       calendarMonths: LowestFareByMonthAndDestination

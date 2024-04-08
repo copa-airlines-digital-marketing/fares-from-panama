@@ -23,56 +23,56 @@
 {#if translations}
 	<StatusText>
 		<Icon data={IconError} class="size-24 text-red"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
+		<Heading type="display-tiny" style="{themeColor} text-center ">
 			No translations for {name}
 		</Heading>
 	</StatusText>
 {:else if fares}
 	<StatusText pulse>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
+		<Heading type="display-tiny" style="{themeColor} text-center ">
 			{labels['loading']}
 		</Heading>
 	</StatusText>
 {:else if destination}
 	<StatusText>
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
-			{labels['selectDays']}
+		<Heading type="display-tiny" style="{themeColor} text-center ">
+			{labels['selectDestination']}
 		</Heading>
 	</StatusText>
 {:else if days}
 	<StatusText>
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
+		<Heading type="display-tiny" style="{themeColor} text-center ">
 			{labels['selectDays']}
 		</Heading>
 	</StatusText>
 {:else if budget}
 	<StatusText>
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
-			{labels['selectDays']}
+		<Heading type="display-tiny" style="{themeColor} text-center ">
+			{labels['selectBudget']}
 		</Heading>
 	</StatusText>
 {:else if month}
 	<StatusText>
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
-			{labels['selectDays']}
+		<Heading type="display-tiny" style="{themeColor} text-center ">
+			{labels['selectMonth']}
 		</Heading>
 	</StatusText>
 {:else if interest}
 	<StatusText>
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
-			{labels['selectDays']}
+		<Heading type="display-tiny" style="{themeColor} text-center ">
+			{labels['selectInterest']}
 		</Heading>
 	</StatusText>
 {:else if dates}
 	<StatusText>
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} text-center my-normal">
-			{labels['selectDays']}
+		<Heading type="display-tiny" style="{themeColor} text-center ">
+			{labels['selectDate']}
 		</Heading>
 	</StatusText>
 {/if}

@@ -1,4 +1,5 @@
-import { eachDayOfInterval, endOfMonth, endOfWeek, format, isBefore, parse, startOfMonth, startOfWeek } from "date-fns"
+
+import { addDays, eachDayOfInterval, endOfMonth, endOfWeek, format, isAfter, isBefore, parse, startOfMonth, startOfWeek } from "date-fns"
 import { toZonedTime } from "date-fns-tz"
 import { es } from 'date-fns/locale'
 import type { FlyParams } from "svelte/transition"
@@ -77,11 +78,14 @@ export const getlanguageCodeFilter = (defaultLang: string, lang?: string) => {
   }
 }
 
-es
+export const toPanamaTimeZone = (date: Date) => toZonedTime(date, "America/Panama")
 
-export const parseDeparture = ({departure}: Directus.Fare) => toZonedTime(parse(departure, 'yyyy-MM-dd', new Date()), "America/Panama")
+export const parseDeparture = ({departure}: Directus.Fare) => toPanamaTimeZone(parse(departure, 'yyyy-MM-dd', new Date()))
 
-export const parseDate = (dateString: string) => toZonedTime(parse(dateString, 'yyyy-MM-dd', new Date()), "America/Panama")
+export const parseDate = (dateString: string) => toPanamaTimeZone(parse(dateString, 'yyyy-MM-dd', new Date()))
+
+export const parseMonthYear = (dateString: string) => 
+  toPanamaTimeZone(parse(dateString+'01', 'yyyyMMdd', new Date()))
 
 export const getMonthName = (date: Date) => format(date, 'LLLL', {locale: es})
 
@@ -113,6 +117,11 @@ export const inititeHistogramFareMonthDates = (fare: Directus.Fare): Record<App.
 
 export const inititeHistogramFareMonth = (fare: Directus.Fare): Record<App.DateString, Directus.Fare> => initiateMonth(fare, 'month')
 
+export const getWeekDays = () => {
+  const now = toPanamaTimeZone(new Date())
+ return  eachDayOfInterval({start: startOfWeek(now, {weekStartsOn: 1}), end: endOfWeek(now, {weekStartsOn: 1})}).map((value) => format(value, 'EEE', {locale: es}))
+}
+
 export const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => farePriceIsLowerThanExisting(fare, existing) || farePriceIsEqualToExisting(fare, existing) && fareDepartureIsBeforeExisting(fare,existing)
 
 export const isEmptyObject = (obj: unknown) => obj == null || typeof obj !== 'object' || Object.keys(obj).length === 0
@@ -134,3 +143,10 @@ export const getFlyingOption = (seed: number) => {
   return flyOptions[Math.floor((seed * 997) % 4)]
 }
 
+export const minFare = (min: number, fare: Directus.Fare) => parseInt(fare.price) < min ? parseInt(fare.price) : min 
+
+export const dateIsInMonth = (date: Date, month: Date) => {
+  return isAfter(date, addDays(startOfMonth(month),-1)) && isBefore(date, endOfMonth(month))
+}
+
+export const isBeforeToday = (date: Date) => isBefore(date, toPanamaTimeZone(new Date()))

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { selectedDaysStore } from '$lib/public/store';
 	import Heading from '../../copa/typography/heading.svelte';
-	import FareCard from '$lib/components/site/month-fare.svelte';
+	import FareCard from '$lib/components/site/fare-card-month.svelte';
 
 	export let section: string;
 	export let months: App.LowestFareByMonth;
@@ -27,7 +27,7 @@
 	{#each fareCards as card}
 		{@const { count, fare, monthYear } = card}
 		<li>
-			<FareCard {fare} {count} {monthYear} {labels} store="histogram"></FareCard>
+			<FareCard month={fare} {count} {monthYear} {labels} store="histogram"></FareCard>
 		</li>
 	{:else}
 		<li>

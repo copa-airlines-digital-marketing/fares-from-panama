@@ -27,8 +27,10 @@ export const itemIsFollowButtons = (item: Directus.MFAItem): item is Directus.Fo
 export const itemIsFareModule = (item: Directus.MFAItem): item is Directus.FareModule => 
 'translations' in item && Array.isArray(item.translations) && item.translations.length > 0 && 'labels' in item.translations[0]
 
+export const getRandomUUID = () => crypto.randomUUID()
+
 export const setSkeletonFare = (): Directus.Fare => ({
-  id: crypto.randomUUID(),
+  id: getRandomUUID(),
   destination: '',
   days: 0,
   departure: '',
@@ -41,4 +43,6 @@ export const setSkeletonFare = (): Directus.Fare => ({
 })
   
 export const getNDummyFares = (n: number) => [...Object.keys(Array.apply(0, Array(n))).map(setSkeletonFare)];
+
+export const getNRandomStrings = (n: number) => [...Object.keys(Array.apply(0, Array(n))).map(getRandomUUID)];
 

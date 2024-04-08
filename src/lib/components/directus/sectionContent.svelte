@@ -47,11 +47,7 @@
 	const toasts = contents.filter((content) => content.component_name === 'toast');
 
 	const showToast = () => {
-		//if (!toasts || !Array.isArray(toasts) || toasts.length < 1) return;
-
 		const { item, collection } = toasts[0];
-
-		console.log('yo', item);
 
 		if (!itemIsTextContent(item))
 			return addToast({
@@ -106,9 +102,3 @@
 		{/if}
 	</div>
 {/each}
-
-{#if toasts && Array.isArray(toasts) && toasts.length > 0}
-	<button class="button button-tranparent-invert button-fancy" on:click={showToast}
-		>Show toast</button
-	>
-{/if}

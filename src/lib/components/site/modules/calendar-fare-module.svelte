@@ -1,40 +1,37 @@
 <script lang="ts">
-	import {
-		selectedDaysStore,
-		selectedDestination,
-		selectedCalendarMonthStore
-	} from '$lib/public/store';
-	import Heading from '../../copa/typography/heading.svelte';
-	import FareCard from '$lib/components/site/calendar-fare.svelte';
+	import FareCard from '$lib/components/site/fare-card--calendar.svelte';
+	import { getWeekDays, parseDate } from '$lib/public/utils';
 
-	export let section: string;
-	export let module: Directus.FareModule;
-	export let calendar: App.FaresByDateOfDestination;
+	export let calendar: Record<App.DateString, Directus.Fare>;
+	export let monthOfFare: Date;
+	export let labels: Record<string, string>;
+	export let skeleton: boolean;
 
-	$: sectionDays = $selectedDaysStore[section];
+	const dates = Object.keys(calendar).map((date) => ({
+		date: parseDate(date),
+		fare: calendar[date]
+	}));
 
-	$: destination = $selectedDestination?.iata_code;
-
-	$: fareCards =
-		sectionDays && destination && $selectedCalendarMonthStore
-			? Object.values(calendar[destination][sectionDays][$selectedCalendarMonthStore])
-			: [];
-
-	const labels: Record<string, string> = module?.translations[0]
-		? module?.translations[0]?.labels.reduce((acc, lbl) => ({ ...acc, [lbl.name]: lbl.value }), {})
-		: {};
+	const daysOfWeek = getWeekDays();
 </script>
 
-<ul>
-	{#each fareCards as fare}
-		<li>
-			<FareCard {fare} {labels}></FareCard>
-		</li>
-	{:else}
-		<li>
-			<Heading type="display-tiny" style="text-common-white text-center my-normal">
-				{labels['instructions']}
-			</Heading>
-		</li>
+<div
+	class="backdrop-blur-sm bg-backgound-paper/30 border border-backgound-paper/20 bg-blend gap-x-8 grid grid-cols-[repeat(7,_minmax(0,_1fr))] p-16 rounded-lg shadow-medium"
+>
+	{#each daysOfWeek as day}
+		<div class="font-heading font-heading-medium text-center text-common-white uppercase">
+			{day}
+		</div>
 	{/each}
-</ul>
+	<ul class="auto-rows-auto col-full gap-8 grid grid-cols-subgrid mt-16">
+		{#each dates as { date, fare }}
+			{#if skeleton}
+				<div></div>
+			{:else}
+				<li>
+					<FareCard {date} {fare} {labels} {skeleton} {monthOfFare}></FareCard>
+				</li>
+			{/if}
+		{/each}
+	</ul>
+</div>
