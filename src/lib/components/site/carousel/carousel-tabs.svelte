@@ -107,7 +107,7 @@
 				<div
 					class="border-b border-b-transparent col-start-3 group-focus:bg-primary/30 group-focus:border-b-primary/30 p-24 row-start-3 text-common-white z-0"
 				>
-					<div class="max-w-prose wysiwyg">
+					<div class="caret-transparent max-w-prose wysiwyg">
 						{@html description}
 					</div>
 				</div>

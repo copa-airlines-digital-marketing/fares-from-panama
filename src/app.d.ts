@@ -331,8 +331,15 @@ declare global {
       translations: CountryTranslation[]
     }
 
+    type Languages = {
+      code: string,
+      name: string
+    }
+
     type CategoryTranslation = {
-      languages_code: string
+      id: number
+      destinations_category_id: Category
+      languages_code: Languages
       name: string
     }
 
@@ -365,7 +372,7 @@ declare global {
       storefronts: PageStorefront[]
       sections_id: PageStorefrontsSections[]
       sections: Section[]
-      section_content: PageSectionContent[]
+      sections_section_content: PageSectionContent[]
       item: MFAItem
       Text_Content: TextContent[]
       logos: SVGAsset[]
@@ -377,13 +384,17 @@ declare global {
       terms_and_conditions: TermsAndConditions[]
       copyrights: Copyrights[]
       follow_buttons: FollowButtons[]
+      languages: Languages[]
       links: Link[]
       links_url: Link[]
       colors: Color[]
       destinatons: Destination[]
       countries: Country[]
       destination_category: Category[]
+      destination_category_translations: CategoryTranslation[]
       fare_module: FareModule[]
+      viaja_panama_fares: Fares[]
+      destinations: Destination[]
       "item:copyrights": Copyrights[]
       "item:terms_and_conditions": TermsAndConditions[]
       "item:Text_Content": TextContent[]

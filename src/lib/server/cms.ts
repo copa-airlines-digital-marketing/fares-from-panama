@@ -1,4 +1,4 @@
-import { createDirectus, staticToken, rest, readItem, readItems } from "@directus/sdk";
+import { createDirectus, staticToken, rest, readItem, readItems, aggregate, type AggregationOptions } from "@directus/sdk";
 
 // Gets the content of the site
 export const getItems = async function<Schema, Item>({host, token, collection, id, item, items}: Directus.Params<Schema, Item>){
@@ -19,6 +19,4 @@ export const getItems = async function<Schema, Item>({host, token, collection, i
     return e
   }
 }
-
-
 
