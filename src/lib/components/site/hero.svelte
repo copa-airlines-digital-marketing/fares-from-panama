@@ -16,7 +16,7 @@
 </script>
 
 <div
-	class="container-grid bg-gradient-to-br from-primary-ultradark from-20% grid-rows-[minmax(300px,50svh)_auto_auto_auto_1fr] h-svh min-h-max to-primary"
+	class="container-grid bg-gradient-to-br from-primary-ultradark from-20% grid-rows-[minmax(300px,50svh)_auto_auto_auto_1fr] h-svh min-h-max to-primary relative"
 >
 	{#each content as part, index (index)}
 		{@const { component_name, item, theme } = part}

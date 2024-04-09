@@ -55,7 +55,7 @@
 		{#if heroMenuVisible}
 			<button
 				aria-label="Ver menú principal"
-				class="bg-secondary cursor-pointer p-16 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition"
+				class="bg-secondary cursor-pointer p-16 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition z-50"
 				type="button"
 				use:melt={$trigger}
 				transition:fade
@@ -64,7 +64,7 @@
 			</button>
 		{/if}
 		<div
-			class="absolute bg-secondary top-[calc(100%+8px)] flex flex-col justify-center left-1/2 rounded-xl -translate-x-1/2"
+			class="absolute bg-secondary top-[calc(100%+8px)] flex flex-col justify-center left-1/2 rounded-xl -translate-x-1/2 z-50"
 			use:melt={$menubar}
 		>
 			{#each links as linkItem, index (index)}

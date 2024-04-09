@@ -22,7 +22,15 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-{#await data.lazy}
+<DestinationAndFares fares={undefined} destinations={undefined}>
+	<Header additionalClass="absolute z-10"></Header>
+	{#each storefrontSection as sectioM2M}
+		{@const section = sectioM2M.sections_id}
+		<Section {section}></Section>
+	{/each}
+</DestinationAndFares>
+
+<!-- {#await data.lazy}
 	<Interstitial
 		text="Estamos buscando las mejores tarifas para viajar a tú próximo destino..."
 		loading
@@ -39,4 +47,4 @@
 {:catch error}
 	<Interstitial text="Ocurrió un error al intentar descargar las tarifas: {error.message}" error
 	></Interstitial>
-{/await}
+{/await} -->

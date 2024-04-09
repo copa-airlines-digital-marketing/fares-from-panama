@@ -32,11 +32,11 @@ export const load: PageServerLoad = async () => {
       error(404, errorMessage)
 
     return {
-      content,
+      content/* ,
       lazy: Promise.all([
         getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)),
         getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery())
-      ])
+      ]) */
     };
 
   } catch (err) {

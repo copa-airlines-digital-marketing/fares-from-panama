@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Carousel from '$lib/components/site/carousel.svelte';
+	import Carousel from '$lib/components/site/carousel/carousel.svelte';
 	import Copyright from '$lib/components/site/copyright.svelte';
 	import FollowButtons from '$lib/components/site/follow-buttons.svelte';
 	import TermsAndConditions from '$lib/components/site/terms-and-conditions.svelte';

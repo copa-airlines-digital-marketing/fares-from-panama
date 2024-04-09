@@ -11,7 +11,9 @@
 	export let item: Directus.FareModule;
 </script>
 
-{#if component_name === 'budget'}
+{#if !$modulesStore}
+	<div>no fares</div>
+{:else if component_name === 'budget'}
 	<BudgetModule fares={$modulesStore.popular} module={item} {section}></BudgetModule>
 {:else if component_name === 'calendar'}
 	<CalendarModule
