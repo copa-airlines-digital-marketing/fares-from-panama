@@ -47,4 +47,5 @@
 {:catch error}
 	<Interstitial text="Ocurrió un error al intentar descargar las tarifas: {error.message}" error
 	></Interstitial>
-{/await} -->
+{/await}
+ -->

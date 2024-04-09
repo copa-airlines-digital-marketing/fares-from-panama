@@ -4,6 +4,8 @@
 
 	export let carousel: Directus.Carrousel;
 
+	const { description, name, slides } = carousel;
+
 	$: innerWidth = 0;
 
 	$: hasMinWidth = innerWidth >= 960;
@@ -14,8 +16,8 @@
 
 {#if hasMinWidth}
 	<!-- tab version -->
-	<CarouselTabs slides={carousel.slides}></CarouselTabs>
+	<CarouselTabs {slides} {name} {description}></CarouselTabs>
 {:else}
 	<!-- accordion version -->
-	<CarouselAccordion slides={carousel.slides}></CarouselAccordion>
+	<CarouselAccordion {slides} {name} {description}></CarouselAccordion>
 {/if}

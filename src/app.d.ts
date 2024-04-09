@@ -195,6 +195,7 @@ declare global {
 
     type Carrousel = {
       name: string
+      description: string
       autoSlide: boolean
       autoSlideDelayMS: number
       slides: CarrouselSlide[]

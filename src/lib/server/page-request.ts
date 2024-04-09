@@ -58,7 +58,7 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                       'vertical_alignment',
                       {
                         item: {
-                          carrousel: ['name','autoSlide', 'autoSlideDelayMS', 'slides'],
+                          carrousel: ['name', 'description','autoSlide', 'autoSlideDelayMS', 'slides'],
                           copyrights: [
                             'name',
                             {translations: ['copyright']}
