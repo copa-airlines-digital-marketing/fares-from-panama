@@ -48,6 +48,7 @@
 	"dependencies": {
 		"@directus/errors": "^0.2.4",
 		"@directus/sdk": "^15.0.3",
+		"@types/ramda": "^0.29.12",
 		"bits-ui": "^0.20.0",
 		"cmds-tailwind-styles": "^1.1.9",
 		"date-fns": "^3.6.0",
