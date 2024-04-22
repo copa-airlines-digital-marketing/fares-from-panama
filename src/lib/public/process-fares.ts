@@ -22,7 +22,7 @@ const processFare = (destinations: App.Destination) => (accumulator: App.Modules
   budget: {...addBudgetFare(accumulator.budget, fare)},
   ...addFareToCalendar(accumulator.calendarMonths, accumulator.calendar, fare),
   ...addFareToHistogram(accumulator.histogramMonths, accumulator.histogramDays, accumulator.histogram, fare),
-  ...addFareToInterest(accumulator.interestNames, accumulator.interests, destinations, fare),
+  //...addFareToInterest(accumulator.interestNames, accumulator.interests, destinations, fare),
   popular: {...addPopularFare(accumulator.popular, fare)},
   destinations: {...addDestination(accumulator.destinations, destinations, fare )}
 })

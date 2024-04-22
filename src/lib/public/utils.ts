@@ -25,6 +25,8 @@ export const getSectionsFromPage = (page: Directus.Page) => page.storefronts[0]?
 export const itemIsTermsAndConditions = (item: Directus.MFAItem, sectionContent: Directus.PageSectionContent): item is Directus.TermsAndConditions => 
   sectionContent.collection === 'terms_and_conditions' && item != null
 
+export const valueIsDirectusIcon = (value: CollectionID | Icon): value is Icon => value != null && value instanceof Object && 'code' in value
+
 export const getBackgroundColorMap = (colorName: Directus.ColorName) => {
   const map: Record<Directus.ColorName, string> = {
     'alternative-dark-orange': 'bg-alternative-darkorange',

@@ -33,10 +33,8 @@ export const load: PageServerLoad = async () => {
 
     return {
       content/* ,
-      lazy: Promise.all([
-        getDestinations(CMS_HOST, CMS_TOKEN, COLLECTION_DESTINATIONS, getDestinationsQuery(pageSetting)),
-        getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery())
-      ]) */
+      lazy: 
+        getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery()) */
     };
 
   } catch (err) {

@@ -29,7 +29,7 @@
 
 	let isMenuVisible: IntersectionObserverCallback = (entries) => {
 		entries.forEach((entry) => {
-			if (entry.target.id === 'main-nav-trigger' && entry.isIntersecting) {
+			if (entry.target.id === 'inicio' && entry.isIntersecting) {
 				return (heroMenuVisible = false);
 			}
 
@@ -43,7 +43,7 @@
 			rootMargin: '0px',
 			threshold: 1.0
 		});
-		const target = document.getElementById('main-nav-trigger');
+		const target = document.getElementById('inicio');
 		target ? observer.observe(target) : {};
 	});
 </script>

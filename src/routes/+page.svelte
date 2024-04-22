@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
 	import Header from '$lib/components/site/header.svelte';
-	import { destinationsStore } from '$lib/public/store.js';
+	import { processFares } from '$lib/public/process-fares.js';
+	import { destinationsStore, modulesStore } from '$lib/public/store.js';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
@@ -17,9 +18,14 @@
 	const storefrontSection = getSectionsFromPage(site);
 
 	onMount(async () => {
+		console.log('loaded', performance.now() / 1000);
 		var temp = await fetch('/api/destinations', { method: 'GET' });
-
-		destinationsStore.set(await temp.json());
+		var dest = await temp.json();
+		destinationsStore.set(dest);
+		console.log('loaded destinations', performance.now() / 1000);
+		/* 		var fares = await data.lazy;
+		console.log(dest);
+		modulesStore.set(processFares(dest, fares)); */
 	});
 </script>
 
