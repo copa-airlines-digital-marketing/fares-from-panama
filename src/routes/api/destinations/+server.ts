@@ -36,7 +36,6 @@ const destinationFromFares: AggregationOptions<Schema, 'viaja_panama_fares'> = {
   groupBy: ['destination']
 }
 
-
 export const GET: RequestHandler = async() => {
   try {
     const client = createDirectus<Schema>(CMS_HOST).with(staticToken(CMS_TOKEN)).with(rest())

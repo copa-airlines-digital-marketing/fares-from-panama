@@ -17,23 +17,34 @@
 			<BentoBox
 				content={item}
 				headingType="h1"
-				class="col-start-1 col-span-2 row-start-2 row-span-4"
+				class="col-start-1 col-span-4 row-start-2 row-span-2 justify-center"
 			></BentoBox>
 		{:else if component_name === 'fechas' && itemIsNewTextContent(item)}
-			<BentoBox content={item} headingType="h2" class="col-start-3 row-start-3 row-span-2"
+			<BentoBox
+				content={item}
+				headingType="h2"
+				class="col-start-1 row-start-4 row-span-2 justify-end"
 			></BentoBox>
 		{:else if component_name === 'presupuesto' && itemIsNewTextContent(item)}
-			<BentoBox content={item} headingType="h2" class="col-start-4 row-start-3 row-span-2"
+			<BentoBox
+				content={item}
+				headingType="h2"
+				class="col-start-4 row-start-4 row-span-2 justify-end"
 			></BentoBox>
 		{:else if component_name === 'histograma' && itemIsNewTextContent(item)}
-			<BentoBox content={item} headingType="h2" class="col-start-3 row-start-5"></BentoBox>
+			<BentoBox content={item} headingType="h2" class="col-start-2 row-start-5 justify-end"
+			></BentoBox>
 		{:else if component_name === 'interes' && itemIsNewTextContent(item)}
-			<BentoBox content={item} headingType="h2" class="col-start-3 col-span-2 row-start-2"
+			<BentoBox
+				content={item}
+				headingType="h2"
+				class="col-start-2 col-span-2 row-start-4 justify-end"
 			></BentoBox>
 		{:else if component_name === 'consejos' && itemIsNewTextContent(item)}
-			<BentoBox content={item} headingType="h2" class="col-start-4 row-start-5"></BentoBox>
+			<BentoBox content={item} headingType="h2" class="col-start-3 row-start-5 justify-end"
+			></BentoBox>
 		{:else if component_name === 'main-nav' && itemIsNewNavigation(item)}
-			<div class="fixed top-16 right-16 md:right-24 z-10">
+			<div class="fixed top-16 right-16 md:right-24 z-10 justify-end">
 				<MainNav nav={item}></MainNav>
 			</div>
 		{:else}

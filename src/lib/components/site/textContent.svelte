@@ -28,14 +28,14 @@
 	</Heading>
 {/if}
 {#if description}
-	<p
+	<div
 		class={joinClasses(
 			descriptionTheme[theme],
 			'wysiwyg my-8 text-center max-w-prose mx-auto caret-transparent'
 		)}
 	>
 		{@html description}
-	</p>
+	</div>
 {/if}
 {#if call_to_actions}
 	<ul class="grid justify-center gap-16 md:gap-24 caret-transparent">
