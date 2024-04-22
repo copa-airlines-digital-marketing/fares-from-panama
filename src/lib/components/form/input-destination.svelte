@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
-	import Icon from './icon.svelte';
+	import Icon from '../site/icon.svelte';
 	import { fly } from 'svelte/transition';
 	import { destinationsStore, ping, selectedDestination } from '$lib/public/store';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
+	import { isEmpty } from 'ramda';
 	export let item: Directus.FormInput;
 
 	const { placeholder, icon } = item;
@@ -135,40 +136,46 @@
 		use:melt={$menu}
 		transition:fly={{ duration: 150, y: -5 }}
 	>
-		{#each filteredDestinations as destination, index (index)}
-			<li
-				class="p-16 cursor-pointer hover:bg-backgound-lightblue data-[highlighted]:bg-backgound-lightblue data-[selected]:bg-backgound-lightblue grid [grid-template-areas:'dest_iata''ctry_iata'] grid-cols-[1fr_auto] grid-rows-[1fr_auto]"
-				on:m-click={selectDestination(destination)}
-				use:melt={$option(toOption(destination))}
-			>
-				<span class="text-grey-800 font-heading font-heading-medium [grid-area:dest]">
-					<span>{destination.translations[0]?.name || '⚠️ Destino sin nombre'}</span>
-					<span>
-						{#if $isSelected(destination)}
-							<Icon data={icon} class="square-16 fill-secondary inline-block"></Icon>
-						{/if}
+		{#if !isEmpty($destinationsStore)}
+			{#each filteredDestinations as destination, index (index)}
+				<li
+					class="p-16 cursor-pointer hover:bg-backgound-lightblue data-[highlighted]:bg-backgound-lightblue data-[selected]:bg-backgound-lightblue grid [grid-template-areas:'dest_iata''ctry_iata'] grid-cols-[1fr_auto] grid-rows-[1fr_auto]"
+					on:m-click={selectDestination(destination)}
+					use:melt={$option(toOption(destination))}
+				>
+					<span class="text-grey-800 font-heading font-heading-medium [grid-area:dest]">
+						<span>{destination.translations[0]?.name || '⚠️ Destino sin nombre'}</span>
+						<span>
+							{#if $isSelected(destination)}
+								<Icon data={icon} class="square-16 fill-secondary inline-block"></Icon>
+							{/if}
+						</span>
 					</span>
-				</span>
-				<span class="text-primary font-heading font-heading-medium [grid-area:iata] self-center">
-					{destination.iata_code}
-				</span>
-				<span class="text-12/16 text-grey-600 [grid-area:ctry]">
-					{destination.country.translations[0]?.name ||
-						'⚠️ Pais sin nombre: ' + destination.country.code}
-				</span>
-			</li>
+					<span class="text-primary font-heading font-heading-medium [grid-area:iata] self-center">
+						{destination.iata_code}
+					</span>
+					<span class="text-12/16 text-grey-600 [grid-area:ctry]">
+						{destination.country.translations[0]?.name ||
+							'⚠️ Pais sin nombre: ' + destination.country.code}
+					</span>
+				</li>
+			{:else}
+				<li
+					class="p-16 cursor-pointer hover:bg-backgound-lightblue data-[highlighted]:bg-backgound-lightblue data-[selected]:bg-backgound-lightblue grid [grid-template-areas:'icon_dest''icon_ctry'] grid-cols-[auto_1fr] gap-x-4 grid-rows-[1fr_auto]"
+				>
+					<Icon data={IconError} class="square-24 fill-red [grid-area:icon]"></Icon>
+					<span class="text-system-error text-14/20 font-body-medium [grid-area:dest]">
+						No se encontraron resultados.
+					</span>
+					<span class="text-grey-600 text-12/16 [grid-area:ctry]">
+						Por favor, modifica tu búsqueda.
+					</span>
+				</li>
+			{/each}
 		{:else}
-			<li
-				class="p-16 cursor-pointer hover:bg-backgound-lightblue data-[highlighted]:bg-backgound-lightblue data-[selected]:bg-backgound-lightblue grid [grid-template-areas:'icon_dest''icon_ctry'] grid-cols-[auto_1fr] gap-x-4 grid-rows-[1fr_auto]"
-			>
-				<Icon data={IconError} class="square-24 fill-red [grid-area:icon]"></Icon>
-				<span class="text-system-error text-14/20 font-body-medium [grid-area:dest]">
-					No se encontraron resultados.
-				</span>
-				<span class="text-grey-600 text-12/16 [grid-area:ctry]">
-					Por favor, modifica tu búsqueda.
-				</span>
+			<li class="p-16 grid place-content-center">
+				<span class="animate-pulse">cargando destinos</span>
 			</li>
-		{/each}
+		{/if}
 	</ul>
 {/if}

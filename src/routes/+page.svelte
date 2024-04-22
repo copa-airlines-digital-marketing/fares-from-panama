@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
 	import Header from '$lib/components/site/header.svelte';
+	import { destinationsStore } from '$lib/public/store.js';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
 		getTitleTagFromPage
 	} from '$lib/public/utils';
+	import { onMount } from 'svelte';
 
 	export let data;
 
@@ -13,6 +15,12 @@
 	const titleTag = getTitleTagFromPage(site);
 	const description = getMetaDescriptionFromPage(site);
 	const storefrontSection = getSectionsFromPage(site);
+
+	onMount(async () => {
+		var temp = await fetch('/api/destinations', { method: 'GET' });
+
+		destinationsStore.set(await temp.json());
+	});
 </script>
 
 <svelte:head>

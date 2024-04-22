@@ -10,7 +10,9 @@ export const contentIsError = (content: unknown): content is Error => content !=
 
 export const contentIsPage = (content: unknown): content is Directus.Page => content != null && typeof content === 'object' && 'share_image' in content
 
-export const valueIsDestinations = (value: unknown): value is Directus.Destination[] => value != null && Array.isArray(value)  && 'iata_code' in value[0]
+export const valueIsDestinations = (value: unknown): value is Destination[] => value != null && Array.isArray(value) && value.length > 0 && 'iata_code' in value[0]
+
+export const valueIsDestinationOfFare =  (value: unknown): value is {destination: string} => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]
 
 export const valueIsFaresArray = (value: unknown): value is Directus.Fare[] => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]  && 'departure' in value[0] && 'price' in value[0]
 

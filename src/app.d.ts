@@ -16,7 +16,7 @@ declare global {
 
     type DateString = string
 
-    type Destination = Record<IATA, Directus.Destination>
+    type Destination = Record<IATA, Destination>
 
     type BasicFares = Record<IATA, Directus.Fare>
 
@@ -406,7 +406,7 @@ declare global {
     type Params<Schema, Item> = {
       host: string,
       token: string,
-      collection: string,
+      collection: keyof Schema,
       id?: string | number,
       items?: Query<Schema, Item>
       item?: QueryItem<Schema, Item>

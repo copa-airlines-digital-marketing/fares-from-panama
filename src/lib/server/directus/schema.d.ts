@@ -1,8 +1,4 @@
-type CMMarketingDirectusCollections = 'Pages' | 'Sites'
-
 type CollectionID = string | number 
-
-type 
 
 type BaseCollection = {
   id: CollectionID
@@ -12,6 +8,7 @@ type BaseCollection = {
   user_created: string
   user_updated: string
 }
+
 
 type NoStatusBaseCollection = Omit<BaseCollection, 'status'>
 
@@ -29,6 +26,91 @@ type Language = UpdateOnlyBaseCollection & CodeNameObject
 type Lang = BaseCollection & CodeNameObject
 
 type Storefront = NoIdBaseCollecttion & CodeNameObject
+
+type CopaRegion = BaseCollection & {
+  name: string
+  destinations: CollectionID[] | Destination[]
+  sort: number
+}
+
+type GeoRegion = BaseCollection & {
+  sort: number
+  name: string
+  translations: CollectionID[] | GeoRegionTranslation[]
+  destinations: CollectionID[] | Destination[]
+}
+
+type GeoRegionTranslation = {
+  id: number
+  geographical_region_id: CollectionID | GeoRegion
+  languages_code: CollectionID | Language
+  name: string
+  airtrfx_uri: string
+}
+
+type Country = UpdateOnlyBaseCollection & {
+  code: string
+  phone_code: string
+  currency_code: string
+  flag: CollectionID | Icon
+  translations: CollectionID[] | CountryTransaltion[]
+  destintations: CollectionID[] | Destination[]
+}
+
+type CountryTransaltion = {
+  id: number
+  countries_code: CollectionID | Country
+  languages_code: CollectionID | Language
+  name: string
+  airtrfx_uri: string
+}
+
+type Destination = UpdateOnlyBaseCollection & {
+  iata_code: string
+  codeshare: boolean
+  translations: CollectionID[] | DestinationTranslation[]
+  categories: CollectionID[] | DestinationInterest[]
+  region: CollectionID | GeoRegion
+  copa_region: CollectionID | CopaRegion
+  country: CollectionID | Country
+  maketing_category: string
+  flight_duration_from_panama: number
+  time_zone_offset: string
+  hub_floor: string
+  location: string
+  main_image: string
+}
+
+type DestinationTranslation = {
+  id: number
+  destinations_iata_code: CollectionID | Destination
+  languages_code: CollectionID | Language
+  name: string
+  airport_name: string
+  airtrfx_uri: string
+}
+
+type DestinationInterest = {
+  id: number
+  destinations_iata_code: CollectionID | Destination
+  destination_category_id: CollectionID | DestinationCategory
+  sort: number
+}
+
+type DestinationCategory = BaseCollection & {
+  name: string
+  sort: number
+  translations: CollectionID[] | DestinationCategoryTranslation[]
+  destinations: CollectionID[] | DestinationInterest[]
+}
+
+type DestinationCategoryTranslation = {
+  id: number
+  destination_category_id: CollectionID | Destination
+  languages_code: CollectionID | Language
+  name: string
+  airtfx_uri: string
+}
 
 type Logo = BaseCollection & {
   name: string
@@ -229,10 +311,12 @@ type FareModuleLabel = {
   value: string
 }
 
+type MFAItem = CollectionID | TextContent | Navigation | Carrousel | Form | Logo | Icon | TermsAndConditions | FollowButtons |  Copyrights | FareModule
+
 type SectionContent = {
   id: number
   sections_id: CollectionID | Section
-  item: CollectionID | TextContent | Navigation | Carrousel | Form | Logo | Icon | TermsAndConditions | FollowButtons |  Copyrights | FareModule
+  item: MFAItem 
   collection: 'Text_Content' | 'navigation' | 'carrousel' | 'form' | 'logos' | 'icons' | 'terms_and_conditions' | 'follow_buttons' | 'copyrights' | 'fare_module'
   order: number
   component_name: string
@@ -313,12 +397,32 @@ type Site = BaseCollection & {
   pages: CollectionID[] | SitePage[]
 }
 
+type ViajaPanamaFares = BaseCollection & {
+  destination: string
+  days: number
+  departure: string
+  return: string
+  fare: string
+  taxes: string
+  price: string
+  seats: number
+  score: number
+}
 
-type CMMarketingDirectusSchema = {
+
+type Schema = {
   carrousel: Carrousel[]
   colors: Colors[]
+  copa_region: CopaRegion[]
   copyrights: Copyrights[]
   copyrights_translations: CopyrightsTranslations[]
+  countries: Country[]
+  countries_translations: CountryTransaltion[]
+  destination_category: DestinationCategory[]
+  destination_category_translations: DestinationCategoryTranslation[]
+  destinations: Destination[]
+  destinations_interest: DestinationInterest[]
+  destinations_translations: DestinationTranslation[]
   fare_module: FareModule[]
   fare_module_translations: FareModuleTranslations[]
   follow_buttons: FollowButtons[]
@@ -326,6 +430,8 @@ type CMMarketingDirectusSchema = {
   follow_buttons_translations_links: FollowButtonsTranslationsLinks[]
   form: Form[]
   form_translations: FormTranslations[]
+  geographical_region: GeoRegion[]
+  geographical_region_translations: GeoRegionTranslation[]
   icons: Icon[]
   lang: Lang[]
   languages: Language[]
@@ -348,4 +454,5 @@ type CMMarketingDirectusSchema = {
   terms_and_conditions_translations: TermsAndConditionsTranslations[]
   Text_content: TextContent[]
   Text_content_Translations: TextContentTranslations[]
+  viaja_panama_fares: ViajaPanamaFares[]
 }

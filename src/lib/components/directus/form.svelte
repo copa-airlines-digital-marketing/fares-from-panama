@@ -1,7 +1,7 @@
 <script lang="ts">
 	import InputBuscar from '../site/input-buscar.svelte';
 	import InputDays from '../site/input-days.svelte';
-	import InputDestination from '../site/input-destination.svelte';
+	import InputDestination from '../form/input-destination.svelte';
 	import InputSlider from '../site/input-slider.svelte';
 
 	export let section: string;

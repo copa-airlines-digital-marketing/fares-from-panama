@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Hero from '$lib/components/site/hero.svelte';
+	import Hero from '$lib/components/hero/hero.svelte';
 	import Loader from '$lib/components/site/loader.svelte';
 	import { containsDiscounts } from '$lib/public/store';
 	import { getBackgroundColorMap } from '$lib/public/utils';

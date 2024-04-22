@@ -1,5 +1,5 @@
-<script lang="ts">
-	type Heading =
+<script context="module" lang="ts">
+	export type HeadingType =
 		| 'h1'
 		| 'h2'
 		| 'h3'
@@ -8,7 +8,10 @@
 		| 'display-normal'
 		| 'display-small'
 		| 'display-tiny';
-	export let type: Heading;
+</script>
+
+<script lang="ts">
+	export let type: HeadingType;
 	export let style: string | null | undefined;
 </script>
 

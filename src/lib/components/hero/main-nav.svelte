@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { createCollapsible, createMenubar, melt } from '@melt-ui/svelte';
-	import Icon from './icon.svelte';
+	import Icon from '../site/icon.svelte';
 	import { slide, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
 	import { containsDiscounts } from '$lib/public/store';
 
-	export let nav: Directus.Navigation;
+	export let nav: Navigation;
 
 	const { translations, icon } = nav;
 
@@ -29,7 +29,7 @@
 
 	let isMenuVisible: IntersectionObserverCallback = (entries) => {
 		entries.forEach((entry) => {
-			if (entry.target.id === 'hero-nav' && entry.isIntersecting) {
+			if (entry.target.id === 'main-nav-trigger' && entry.isIntersecting) {
 				return (heroMenuVisible = false);
 			}
 
@@ -43,7 +43,7 @@
 			rootMargin: '0px',
 			threshold: 1.0
 		});
-		const target = document.getElementById('hero-nav');
+		const target = document.getElementById('main-nav-trigger');
 		target ? observer.observe(target) : {};
 	});
 </script>

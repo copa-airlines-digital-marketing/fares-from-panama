@@ -1,10 +1,11 @@
 import { CMS_HOST, CMS_TOKEN } from "$env/static/private";
-import { getlanguageCodeFilter } from "$lib/public/utils";
+import { addDestination, transformDestinations } from "$lib/public/destinations-transform";
+import { getlanguageCodeFilter, valueIsDestinationOfFare, valueIsDestinations } from "$lib/public/utils";
 import { COLLECTION_DESTINATIONS, COLLECTION_FARES, DEFAULT_LANGUAGE } from "$lib/server/constants";
 import { aggregate, createDirectus, readItems, rest, staticToken, type AggregationOptions, type Query } from "@directus/sdk";
-import { error, type RequestHandler } from "@sveltejs/kit";
+import { error, json, type RequestHandler } from "@sveltejs/kit";
 
-const destinationQuery: Query<Directus.Schema, Directus.Destination> = {
+const destinationQuery: Query<Schema, Destination> = {
   fields: [
     'iata_code',
     'main_image',
@@ -28,7 +29,7 @@ const destinationQuery: Query<Directus.Schema, Directus.Destination> = {
   }
 }
 
-const destinationFromFares: AggregationOptions<Directus.Schema, 'viaja_panama_fares'> = {
+const destinationFromFares: AggregationOptions<Schema, 'viaja_panama_fares'> = {
   aggregate: {
     
   },
@@ -38,7 +39,7 @@ const destinationFromFares: AggregationOptions<Directus.Schema, 'viaja_panama_fa
 
 export const GET: RequestHandler = async() => {
   try {
-    const client = createDirectus<Directus.Schema>(CMS_HOST).with(staticToken(CMS_TOKEN)).with(rest())
+    const client = createDirectus<Schema>(CMS_HOST).with(staticToken(CMS_TOKEN)).with(rest())
 
     const requests = await Promise.all([
       client.request(readItems(COLLECTION_DESTINATIONS, destinationQuery)),
@@ -47,11 +48,15 @@ export const GET: RequestHandler = async() => {
 
     const [destinations, fromFares] = requests
 
-    console.log('destinations', destinations)
+    if (!valueIsDestinations(destinations))
+      return error(500, new Error('Los destinos descargados no cumplen el formato', { cause: destinations }))
 
-    console.log('fromFares', fromFares)
+    if (!valueIsDestinationOfFare(fromFares))
+      return error(500, new Error('La agrupacion por destino de las tarifas descargada no cumplen el formato', { cause: fromFares }))
 
-    return new Response('ok')
+    const pageDestinations = fromFares.map(addDestination(transformDestinations(destinations)))
+
+    return json(pageDestinations, {status: 200})
   } catch(e) {
     const errorID = crypto.randomUUID()
     console.log(errorID, e)
