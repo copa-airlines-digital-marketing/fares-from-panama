@@ -32,6 +32,7 @@
 	</div>
 {:else}
 	{@const { destination, departure, price, taxes } = fare}
+
 	<a
 		class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full"
 		href={getShoppingEngingeURL(fare)}
@@ -39,15 +40,17 @@
 	>
 		<img
 			class="[grid-area:image] object-cover h-full w-full"
-			src="https://cm-marketing.directus.app/assets/{$destinationsStore[destination]
-				.main_image}?width=800&height=600&fit=cover"
+			src="https://cm-marketing.directus.app/assets/{$destinationsStore[destination]?.main_image ??
+				''}?width=800&height=600&fit=cover"
 			alt=""
 		/>
 		<span class="[grid-area:image] bg-common-black/40 group-hover:bg-red transition-colors"></span>
 		<span class="col-[content] font-heading-medium row-[dest]">
-			<span class="text-24/32">{$destinationsStore[destination].translations[0].name}</span>
+			<span class="text-24/32"
+				>{$destinationsStore[destination]?.translations[0]?.name ?? 'not found'}</span
+			>
 			({destination}),
-			<span class="uppercase">{$destinationsStore[destination].country.code}</span>
+			<span class="uppercase">{$destinationsStore[destination]?.country?.code ?? 'not found'}</span>
 		</span>
 		<span class="col-[content] mb-8 row-[date]">
 			{formatDateForDisplay(parseDate(departure))} -
