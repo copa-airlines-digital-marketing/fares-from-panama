@@ -7,9 +7,7 @@
 	export let additionalClass = '';
 </script>
 
-<header
-	class="bg-primary-ultradark border-2 border-primary-dark m-4 p-16 rounded-lg w-[calc(100%_-_8px)] {additionalClass}"
->
+<header class="bg-primary-ultradark m-4 p-16 w-[calc(100%_-_8px)] {additionalClass}">
 	<div class="container flex gap-16 items-center justify-between mx-auto">
 		<a href="/" title="ir al inicio">
 			<Icon data={tarifasFelicesLogo} class="h-56 lg:h-72" />

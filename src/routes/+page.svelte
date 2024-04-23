@@ -20,10 +20,12 @@
 	onMount(async () => {
 		const destinationsRequest = await fetch('/api/destinations', { method: 'GET' });
 		const destinations = await destinationsRequest.json();
+		console.log(destinations);
 		destinationsStore.set(destinations);
 
 		var fares = await fetch('api/fares', { method: 'GET' });
 		var fjson = await fares.json();
+		console.log(fjson);
 		modulesStore.set(processFares(destinations, fjson));
 	});
 </script>

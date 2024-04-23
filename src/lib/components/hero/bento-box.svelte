@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="bg-primary-ultradark border-2 border-primary-dark cursor-default flex flex-col group gap-8 md:p-24 p-16 overflow-hidden rounded-lg relative {$$restProps.class}"
+	class="bg-primary-ultradark cursor-default flex flex-col gap-8 md:p-24 p-16 overflow-hidden relative {$$restProps.class}"
 >
 	{#if content.translations[0] && isContentTranslation(content.translations)}
 		{@const { title, media, call_to_actions } = content.translations[0]}
@@ -30,7 +30,7 @@
 		{/if}
 		<Heading
 			type={headingType}
-			style="caret-transparent col-start-1 row-start-2 text-common-white z-0"
+			style="caret-transparent col-start-1 mr-32 row-start-2 text-common-white z-0"
 		>
 			{title}
 		</Heading>
