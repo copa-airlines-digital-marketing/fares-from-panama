@@ -78,7 +78,7 @@
 		<div class="text-common-white text-14/20 [grid-area:desde]">
 			{itemLabel[0]}
 		</div>
-		<div class="text-secondary text-20/32 font-heading font-body-medium [grid-area:pty]">
+		<div class="text-secondary text-28/32 font-heading font-body-medium [grid-area:pty]">
 			{itemLabel[1]}
 		</div>
 		<div class="text-common-white text-14/20 [grid-area:hacia]">
@@ -96,7 +96,7 @@
 				use:melt={$input}
 				{placeholder}
 				on:m-keydown={(e) => selectFirstOnEnter(e)}
-				class="pr-24 w-full font-heading text-20/32 text-common-white font-heading-medium placeholder:text-common-white/50 placeholder:font-body-normal bg-transparent border-b border-grey-100 border-spacing-4 hover:border-primary-red focus:placeholder:text-common-white focus:bg-common-white/15 focus:border-red transition-colors outline-none peer"
+				class="pr-24 w-full font-heading text-28/32 text-common-white font-heading-medium placeholder:text-common-white/50 placeholder:font-body-normal bg-transparent border-b border-grey-100 border-spacing-4 hover:border-primary-red focus:placeholder:text-common-white focus:bg-common-white/15 focus:border-red transition-colors outline-none peer"
 			/>
 			{#if !$inputValue}
 				<button
