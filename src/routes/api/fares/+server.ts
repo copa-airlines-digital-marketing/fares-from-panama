@@ -13,18 +13,18 @@ const sample = new Promise((resolve, reject) => {
 export const GET: RequestHandler = async({url}) => {
   try {
 
-    const lastUpdate = url.searchParams.get('lastupdate') 
+   /*  const lastUpdate = url.searchParams.get('lastupdate') 
 
     const severUpdateRequest = await sample
 
     const serverUpdated = await severUpdateRequest.json()
 
     if (lastUpdate && serverUpdated && lastUpdate === serverUpdated.lastUpdate)
-      return json(true, {status: 200}) 
+      return json(true, {status: 200})  */
 
-    const fares = getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery())   
+    const fares = await getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery())   
     
-    return json({}, {status: 200})
+    return json(fares, {status: 200})
   } catch (e) {
     const errorID = crypto.randomUUID()
     console.log(errorID, e)

@@ -9,7 +9,6 @@ type BaseCollection = {
   user_updated: string
 }
 
-
 type NoStatusBaseCollection = Omit<BaseCollection, 'status'>
 
 type NoIdBaseCollecttion = Omit<BaseCollection, 'id'>
@@ -66,6 +65,7 @@ type CountryTransaltion = {
 }
 
 type Destination = UpdateOnlyBaseCollection & {
+  status: string
   iata_code: string
   codeshare: boolean
   translations: CollectionID[] | DestinationTranslation[]
@@ -409,6 +409,11 @@ type ViajaPanamaFares = BaseCollection & {
   score: number
 }
 
+type CollectionUpdated = UpdateOnlyBaseCollection & {
+  collection: string
+  lastUpdate: string
+}
+
 
 type Schema = {
   carrousel: Carrousel[]
@@ -418,6 +423,7 @@ type Schema = {
   copyrights_translations: CopyrightsTranslations[]
   countries: Country[]
   countries_translations: CountryTransaltion[]
+  collection_updated: CollectionUpdated[]
   destination_category: DestinationCategory[]
   destination_category_translations: DestinationCategoryTranslation[]
   destinations: Destination[]

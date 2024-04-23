@@ -18,14 +18,13 @@
 	const storefrontSection = getSectionsFromPage(site);
 
 	onMount(async () => {
-		console.log('loaded', performance.now() / 1000);
-		var temp = await fetch('/api/destinations', { method: 'GET' });
-		var dest = await temp.json();
-		destinationsStore.set(dest);
-		console.log('loaded destinations', performance.now() / 1000);
-		/* 		var fares = await data.lazy;
-		console.log(dest);
-		modulesStore.set(processFares(dest, fares)); */
+		const destinationsRequest = await fetch('/api/destinations', { method: 'GET' });
+		const destinations = await destinationsRequest.json();
+		destinationsStore.set(destinations);
+
+		var fares = await fetch('api/fares', { method: 'GET' });
+		var fjson = await fares.json();
+		modulesStore.set(processFares(destinations, fjson));
 	});
 </script>
 

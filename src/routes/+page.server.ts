@@ -5,6 +5,7 @@ import { getPageQuery, type PageQueryBuilderFunctionParams } from '$lib/server/p
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { contentIsPage } from '$lib/public/utils';
+import { getCollectionUpdatedItem } from '$lib/server/directus/collection-updated';
 
 const pageSetting: PageQueryBuilderFunctionParams = {
   id: 9,
@@ -14,20 +15,28 @@ const pageSetting: PageQueryBuilderFunctionParams = {
 
 const errorMessage = { message: DEFAULT_ERROR_MESSAGE }
 
+const handlePromiseError = (logMessage: string) => (e: unknown) => {
+  console.log(logMessage, e)
+  error(404, errorMessage)
+}
+
 export const load: PageServerLoad = async () => {
 
   try {
 
-    const content = await getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch((err) => {
-      console.log('Location: Home fetch content -', err)
-      error(404, errorMessage)
-    })
+    const requests = await Promise.all([
+      getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch(handlePromiseError('Location: Home fetch content -')),
+      getCollectionUpdatedItem('viaja_panama_fares', CMS_HOST, CMS_TOKEN).catch(handlePromiseError('Loation Home / request collection update / '))
+    ])
+
+    const [content, lastUpdate] = requests
 
     if (!contentIsPage(content))
       error(404, errorMessage)
 
     return {
-      content
+      content,
+      lastUpdate
     };
 
   } catch (err) {
