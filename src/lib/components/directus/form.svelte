@@ -12,7 +12,7 @@
 	const { action } = form;
 </script>
 
-<form class="max-w-[480px] mx-auto">
+<form class="max-w-[400px] mx-auto">
 	{#each form.inputs as input}
 		{@const { value, label } = input}
 		{#if component_name === 'budget'}

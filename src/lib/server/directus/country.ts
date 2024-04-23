@@ -1,4 +1,4 @@
-import type { QueryFields } from "@directus/sdk"
+import type { QueryDeep, QueryFields } from "@directus/sdk"
 import { allIconsFieldsQuery, iconReturnSchema } from "./icon"
 import { z } from "zod"
 
@@ -27,6 +27,16 @@ export const countryReturnFieldsQuery: QueryFields<Schema, Country> = [
   ]},
   {'flag': allIconsFieldsQuery}
 ]
+
+export const getCountryDeepFilter = (lang: string): QueryDeep<Schema, Country> => ({
+  translations: {
+    _filter: {
+      languages_code: {
+        _eq: lang
+      }
+    }
+  }
+})
 
 export const isCountry = (value: unknown): value is countryReturnSchema => countryReturnSchema.safeParse(value).success
 

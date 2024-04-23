@@ -1,4 +1,4 @@
-import type { QueryFields } from "@directus/sdk"
+import type { QueryDeep, QueryFields } from "@directus/sdk"
 import { z } from "zod"
 
 export const interestReturnSchema = z.object({
@@ -20,6 +20,17 @@ export const interestReturnFieldsQuery: QueryFields<Schema, DestinationCategory>
     'airtfx_uri'
   ]}
 ]
+
+export const getInterestDeepLanguageFilter = (lang: string): QueryDeep<Schema, Country> => ({
+  translations: {
+    _filter: {
+      languages_code: {
+        _eq: lang
+      }
+    }
+  }
+})
+
 
 export const isCountry = (value: unknown): value is interestReturnSchema => interestReturnSchema.safeParse(value).success
 
