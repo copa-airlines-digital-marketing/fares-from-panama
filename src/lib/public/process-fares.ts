@@ -1,6 +1,6 @@
 import { addBudgetFare } from "./budget-fares"
 import { addFareToCalendar } from "./calendar-fares"
-import { addDestination } from "./destinations-transform"
+import { addDestination } from "./utils/destinations"
 import { addFareToHistogram } from "./histogram-fares"
 import { addFareToInterest } from "./interest-fares"
 import { addPopularFare } from "./popular-fares"

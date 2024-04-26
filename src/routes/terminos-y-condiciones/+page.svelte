@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from '$lib/components/site/header.svelte';
+	import Header from '$lib/components/header/header.svelte';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
@@ -21,7 +21,7 @@
 </svelte:head>
 
 <div class="grid grid-cols-1 auto-rows-min gap-64">
-	<Header color="bg-primary"></Header>
+	<Header></Header>
 	{#each sections as sectionM2M}
 		{@const section = sectionM2M.sections_id}
 		<Section {section}></Section>

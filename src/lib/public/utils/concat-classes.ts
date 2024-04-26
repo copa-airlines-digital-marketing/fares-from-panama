@@ -1,0 +1,1 @@
+export const concatClasses = (...args: string[]) => args.join(' ')

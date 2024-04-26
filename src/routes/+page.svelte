@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
-	import Header from '$lib/components/site/header.svelte';
 	import { processFares } from '$lib/public/process-fares.js';
 	import { destinationsStore, modulesStore } from '$lib/public/store.js';
 	import {
@@ -36,7 +35,6 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<Header additionalClass="absolute z-10"></Header>
 {#each storefrontSection as sectioM2M}
 	{@const section = sectioM2M.sections_id}
 	<Section {section}></Section>

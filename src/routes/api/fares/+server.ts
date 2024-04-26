@@ -1,34 +1,35 @@
 import { CMS_HOST, CMS_TOKEN } from "$env/static/private";
-import { COLLECTION_FARES } from "$lib/server/constants";
-import { getFares } from "$lib/server/contentProcesing";
-import { getFaresQuery } from "$lib/server/fares-request";
+import { valueIsFaresArray } from "$lib/public/utils";
+import { extractLastUpdated, isCollectionUpdatedArray } from "$lib/public/utils/collection-updated";
+import { faresReturnSchema } from "$lib/public/utils/fares";
+import { getCollectionUpdatedItem } from "$lib/server/directus/collection-updated";
+import { getAllFares } from "$lib/server/directus/fares";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
-
-const sample = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve(json({'lastUpdate':''}, {status: 200}));
-  }, 300);
-});
 
 export const GET: RequestHandler = async({url}) => {
   try {
+    const lastUpdate = url.searchParams.get('lastupdate') 
 
-   /*  const lastUpdate = url.searchParams.get('lastupdate') 
+    const severUpdateRequest = await getCollectionUpdatedItem('viaja_panama_fares', CMS_HOST, CMS_TOKEN)
 
-    const severUpdateRequest = await sample
+    if (isCollectionUpdatedArray(severUpdateRequest) && lastUpdate === extractLastUpdated(severUpdateRequest))
+      return json(null, {status: 200})
 
-    const serverUpdated = await severUpdateRequest.json()
+    const allFaresRequest = await getAllFares(CMS_HOST, CMS_TOKEN) 
 
-    if (lastUpdate && serverUpdated && lastUpdate === serverUpdated.lastUpdate)
-      return json(true, {status: 200})  */
+    if (valueIsFaresArray(allFaresRequest))
+      return json(allFaresRequest, {status: 200})
 
-    const fares = await getFares(CMS_HOST, CMS_TOKEN, COLLECTION_FARES, getFaresQuery())   
-    
-    return json(fares, {status: 200})
+    faresReturnSchema.array().parse(allFaresRequest)
+
+    return error(500)
+
   } catch (e) {
     const errorID = crypto.randomUUID()
-    console.log(errorID, e)
-    return error(500, `An error ocurred on the sever with id: ${errorID}`)
+
+    console.log(errorID, JSON.stringify(e))
+
+    return error(500)
   }
 
 }

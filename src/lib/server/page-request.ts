@@ -102,7 +102,7 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                           }],
                           Text_Content: [
                             'name',
-                            {icon: ['code']}, 
+                            {icon: ['code', 'name', 'image']}, 
                             {
                               'translations': [
                                 'languages_code',
