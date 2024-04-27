@@ -9,19 +9,30 @@
 <div class={concatClasses('grid grid-cols-subgrid grid-rows-subgrid', className)}>
 	{#if content.translations[0] && isContentTranslation(content.translations)}
 		{@const { title, media } = content.translations[0]}
-		<picture class="col-start-1 col-full h-full row-start-1 row-span-full w-full">
+		<picture class="col-start-1 col-full row-start-1 row-span-full">
 			<source
 				media="(min-width: 1367px)"
 				srcset="https://cm-marketing.directus.app/assets/{media}?width=1920"
 			/>
+			<source
+				media="(min-width: 960px)"
+				srcset="https://cm-marketing.directus.app/assets/{media}?width=1368"
+			/>
+			<source
+				media="(min-width: 600px)"
+				srcset="https://cm-marketing.directus.app/assets/{media}?width=960"
+			/>
 			<img
 				alt=""
-				class="col-start-1 col-full h-full object-cover row-start-1 row-span-full w-full"
+				class="h-full object-cover w-full"
 				src="https://cm-marketing.directus.app/assets/{media}?height=1088&width=612"
 			/>
 		</picture>
+		<div
+			class="bg-gradient-to-b col-start-1 col-full from-primary-ultradark row-start-1 row-span-full to-transparent to-30%"
+		></div>
 		<h1
-			class="text-h1 sm:text-h1-sm md:text-h1-md lg:text-h1-lg caret-transparent col-start-2 font-heading font-heading-medium h-full max-w-prose mt-roomy mx-auto row-start-1 text-center text-common-white"
+			class="text-h1 sm:text-h1-sm md:text-h1-md lg:text-h1-lg caret-transparent col-start-2 font-heading font-heading-medium max-w-prose mb-huge mt-roomy mx-auto row-start-1 text-center text-common-white"
 		>
 			{title}
 		</h1>

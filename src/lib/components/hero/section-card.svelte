@@ -2,47 +2,44 @@
 	import { concatClasses } from '$lib/public/utils/concat-classes';
 	import type { TextContentReturnSchema } from '$lib/public/utils/text-content';
 	import { isEmpty } from 'ramda';
-	import Icon from '../site/icon.svelte';
-	import ArrowDown from '$lib/assets/icon-solar-arrow-down-bold.svg?raw';
+	import CardCallToAction from './card-call-to-action.svelte';
 
 	let className: string;
 	export { className as class };
 
 	export let content: TextContentReturnSchema;
+
+	const isInvalidContentForCard = (content: TextContentReturnSchema) => {
+		const { icon, translations } = content;
+		if (!translations || isEmpty(translations))
+			return `No se encontraron traducciones para ${content.name}`;
+
+		if (!icon) return `El contenido (${content.name}) necesita un icono asociado`;
+
+		if (!translations[0].title)
+			return `El contenido (${content.name}) en la traduccion necesita un titulo`;
+
+		const callToActions = translations[0].call_to_actions;
+
+		if (!callToActions || isEmpty(callToActions))
+			return `El contenido (${content.name}) requiere un call to action`;
+
+		return {
+			icon: icon.code,
+			title: translations[0].title,
+			href: callToActions[0].link,
+			linkText: callToActions[0].text
+		};
+	};
+
+	$: validateContent = isInvalidContentForCard(content);
 </script>
 
-<div class={concatClasses(className)}>
-	{#if content.translations && !isEmpty(content.translations)}
-		{@const { icon } = content}
-		{@const { title, call_to_actions } = content.translations[0]}
-		{#if call_to_actions && !isEmpty(call_to_actions)}
-			{@const { link } = call_to_actions[0]}
-			<a
-				href={link}
-				class={concatClasses(
-					'bg-backgound-lightblue border-t-4 border-secondary gap-8 grid items-center my-4 p-8 py-16 rounded-lg shadow-medium text-common-white'
-				)}
-			>
-				{#if icon}
-					<span class="self-start text-primary">
-						<Icon data={icon.code} class="square-32"></Icon>
-					</span>
-				{/if}
-				<span class="text-grey-600">{title}</span>
-				<span class="self-end text-primary">
-					<Icon data={ArrowDown} class="square-24"></Icon>
-				</span>
-			</a>
-		{:else}
-			Este modulo necesita 1 call to action {content.name}
-		{/if}
+<li class={concatClasses(className)}>
+	{#if typeof validateContent === 'object'}
+		{@const { href, icon, linkText, title } = validateContent}
+		<CardCallToAction {icon} {href} {linkText} {title}></CardCallToAction>
 	{:else}
-		No se encontraron traducciones para {content.name}
+		{validateContent}
 	{/if}
-</div>
-
-<style lang="postcss">
-	.grid {
-		grid-template-columns: auto 1fr auto;
-	}
-</style>
+</li>
