@@ -8,7 +8,6 @@
 		selectedDaysStore,
 		selectedDestination
 	} from '$lib/public/store';
-	import { any, equals } from 'ramda';
 	import { isAnyTrue } from '$lib/public/utils/is-any-true';
 
 	$: pulse = isAnyEmpty($destinationsStore, $modulesStore);

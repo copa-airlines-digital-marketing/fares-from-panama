@@ -1,17 +1,9 @@
 import { CMS_HOST, CMS_TOKEN } from '$env/static/private';
-import { COLLECTIONS_PAGES, DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
-import { getPage } from '$lib/server/contentProcesing';
-import { getPageQuery, type PageQueryBuilderFunctionParams } from '$lib/server/page-request';
+import { DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { contentIsPage } from '$lib/public/utils';
 import { getCollectionUpdatedItem } from '$lib/server/directus/collection-updated';
-
-const pageSetting: PageQueryBuilderFunctionParams = {
-  id: 9,
-  defaultLang: DEFAULT_LANGUAGE,
-  defaultStorefront: DEFAULT_STOREFRONT
-}
+import { getPageData } from '$lib/server/directus/page';
+import { isPage, pageReturnSchema } from '$lib/public/directus/page';
 
 const errorMessage = { message: DEFAULT_ERROR_MESSAGE }
 
@@ -20,18 +12,20 @@ const handlePromiseError = (logMessage: string) => (e: unknown) => {
   error(404, errorMessage)
 }
 
-export const load: PageServerLoad = async () => {
+export const load= async() => {
 
   try {
 
     const requests = await Promise.all([
-      getPage(CMS_HOST, CMS_TOKEN, COLLECTIONS_PAGES, pageSetting.id, getPageQuery(pageSetting)).catch(handlePromiseError('Location: Home fetch content -')),
+      getPageData(CMS_HOST, CMS_TOKEN, {id: 9, lang: DEFAULT_LANGUAGE}).catch(handlePromiseError('Page home / getPageData /')),
       getCollectionUpdatedItem('viaja_panama_fares', CMS_HOST, CMS_TOKEN).catch(handlePromiseError('Loation Home / request collection update / '))
     ])
 
     const [content, lastUpdate] = requests
 
-    if (!contentIsPage(content))
+    pageReturnSchema.parse(content)
+
+    if (!isPage(content))
       error(404, errorMessage)
 
     return {

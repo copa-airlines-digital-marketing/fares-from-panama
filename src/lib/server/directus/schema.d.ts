@@ -328,12 +328,14 @@ type SectionContent = {
 
 type Section = BaseCollection & {
   name: string
-  section_id: string
-  landmarki: string
+  section_id?: string
+  landmark?: string
   horizontal_behaviour: string
-  content_horizontal_distribution: string
-  content_vertical_alignment: string
-  content_vertical_distribution: string
+  content_spacing?: string
+  content_horizontal_alignment?: string
+  content_horizontal_distribution?: string
+  content_vertical_alignment?: string
+  content_vertical_distribution?: string
   background_color: CollectionID | Colors
   section_content: CollectionID[] | SectionContent[]
   page_storefronts: CollectionID[] | PageStorefrontSection[]
@@ -341,11 +343,10 @@ type Section = BaseCollection & {
 
 type PageStorefrontSection = {
   id: number
-  page_storefront_id: CollectionID | PageStorefront
-  section_id: CollectionID | Section
+  pages_storefronts_id: CollectionID | PageStorefront
+  sections_id: CollectionID | Section
   sort: number
 }
-
 
 type PageStorefront = {
   id: string
@@ -358,12 +359,14 @@ type PageTranslation = {
   id: string
   pages_id: Pages
   languages_code: Language
+  path: string
   title_tag: string
   meta_description: string
 }
 
 type Pages = BaseCollection & {
-  site?: string
+  name: string
+  site?: CollectionID | Site
   storefronts: CollectionID[] | PageStorefront[]
   share_image?: string
   translations: CollectionID[] | PageTranslation[]
