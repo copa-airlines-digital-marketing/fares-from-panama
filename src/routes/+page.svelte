@@ -1,13 +1,15 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
+	import { setDestinationState } from '$lib/components/destination/context.js';
 	import { processFares } from '$lib/public/process-fares.js';
-	import { destinationsStore, modulesStore } from '$lib/public/store.js';
+	import { modulesStore } from '$lib/public/store.js';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
 		getTitleTagFromPage
 	} from '$lib/public/utils';
 	import { onMount } from 'svelte';
+	import { setDaysContext } from '$lib/components/days';
 
 	export let data;
 
@@ -16,16 +18,25 @@
 	const description = getMetaDescriptionFromPage(site);
 	const storefrontSection = getSectionsFromPage(site);
 
-	onMount(async () => {
-		const destinationsRequest = await fetch('/api/destinations', { method: 'GET' });
-		const destinations = await destinationsRequest.json();
-		console.log(destinations);
-		destinationsStore.set(destinations.reduce((a, c) => ({ ...a, [c.iata_code]: c }), {}));
+	const destinationStore = setDestinationState({});
+	const { days } = setDaysContext({ days: [], selectedDays: {} });
 
-		var fares = await fetch('api/fares', { method: 'GET' });
-		var fjson = await fares.json();
-		console.log(fjson);
-		modulesStore.set(processFares(destinations, fjson));
+	onMount(async () => {
+		const dataRequest = await Promise.all([
+			fetch('/api/destinations', { method: 'GET' }),
+			fetch('/api/days', { method: 'GET' }),
+			fetch('/api/fares', { method: 'GET' })
+		]);
+
+		const [destinationsRequest, daysRequest, faresRequest] = dataRequest;
+
+		const destinations = await destinationsRequest.json();
+		const fares = await faresRequest.json();
+
+		destinationStore.set(destinations.reduce((a, c) => ({ ...a, [c.iata_code]: c }), {}));
+		days.set(await daysRequest.json());
+
+		modulesStore.set(processFares(destinations, fares));
 		console.log($modulesStore);
 	});
 </script>

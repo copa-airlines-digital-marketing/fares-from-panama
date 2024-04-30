@@ -15,7 +15,7 @@
 		itemIsTextContent
 	} from '$lib/components/directus/utils';
 	import { addToast } from '../site/toast.svelte';
-	import FareModules from './fare-modules.svelte';
+	import { FareModule } from '../fare-modules';
 
 	export let section: string;
 	export let contents: Directus.PageSectionContent[];
@@ -82,15 +82,15 @@
 		alignSelf[vertical_alignment],
 		justifySelf[horizontal_alignment]
 	].join(' ')}
-	<div class={className}>
+	<div class={className} data-mode={theme}>
 		{#if itemIsCopyrights(item)}
 			<Copyright copyrights={item}></Copyright>
 		{:else if itemIsFareModule(item)}
-			<FareModules {component_name} {item} {section}></FareModules>
+			<FareModule {component_name} content={item}></FareModule>
 		{:else if itemIsFollowButtons(item)}
 			<FollowButtons followButtons={item}></FollowButtons>
 		{:else if itemIsForm(item)}
-			<Form form={item} {component_name} {theme} {section}></Form>
+			<Form form={item} {component_name} {section}></Form>
 		{:else if itemIsTermsAndConditions(item)}
 			<TermsAndConditions terms={item}></TermsAndConditions>
 		{:else if itemIsCarrousel(item)}

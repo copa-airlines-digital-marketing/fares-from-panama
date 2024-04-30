@@ -19,7 +19,7 @@
 			class="text-grey-600 my-8 text-14/20 text-center caret-transparent relative"
 		>
 			{label}
-			<Tooltip text={placeholder} theme="dark"></Tooltip>
+			<Tooltip text={placeholder}></Tooltip>
 		</label>
 	</div>
 	<Slider.Root

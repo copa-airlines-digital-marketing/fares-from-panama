@@ -14,9 +14,13 @@ export const faresReturnSchema = z.object({
 
 export const fareDestinationReturnSchema = faresReturnSchema.pick({destination: true})
 
+export const fareDaysReturnSchema = faresReturnSchema.pick({days: true})
+
 type faresReturnSchema = z.infer<typeof faresReturnSchema>
 
 type fareDestinationReturnSchema = z.infer<typeof fareDestinationReturnSchema>
+
+type fareDaysReturnSchema = z.infer<typeof fareDaysReturnSchema>
 
 export const defaultFare: faresReturnSchema = {
   destination: 'COPA',
@@ -35,3 +39,5 @@ export const isViajaPanamaFare = (value: unknown): value is faresReturnSchema =>
 export const isViajaPanamaFareArray = (value: unknown): value is faresReturnSchema[] => faresReturnSchema.array().safeParse(value).success
 
 export const isViajaPanamaFareDestinationArray = (value: unknown): value is fareDestinationReturnSchema[] => fareDestinationReturnSchema.array().safeParse(value).success
+
+export const isViajaPanamaFareDaysArray = (value: unknown): value is fareDaysReturnSchema[] => fareDaysReturnSchema.array().safeParse(value).success

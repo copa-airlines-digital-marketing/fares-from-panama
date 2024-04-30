@@ -29,7 +29,7 @@
 			/>
 		</picture>
 		<div
-			class="bg-gradient-to-b col-start-1 col-full from-primary-ultradark row-start-1 row-span-full to-transparent to-30%"
+			class="bg-gradient-to-b col-start-1 col-full from-common-black row-start-1 row-span-full to-transparent to-30%"
 		></div>
 		<h1
 			class="text-h1 sm:text-h1-sm md:text-h1-md lg:text-h1-lg caret-transparent col-start-2 font-heading font-heading-medium max-w-prose mb-huge mt-roomy mx-auto row-start-1 text-center text-common-white"

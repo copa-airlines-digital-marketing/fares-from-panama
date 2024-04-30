@@ -211,7 +211,7 @@ type FormTranslations = {
 type FormInput = {
   name: string
   label: string
-  placehorlder?: string
+  placeholder?: string
   type: string
   value?: string
   required?: boolean

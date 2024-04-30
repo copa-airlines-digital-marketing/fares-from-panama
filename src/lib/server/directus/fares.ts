@@ -15,10 +15,17 @@ export const faresReturnFieldsQuery: QueryFields<Schema, ViajaPanamaFares> = [
   'score'
 ]
 
-export const faresDetinationsGroup: AggregationOptions<Schema, 'viaja_panama_fares'> = {
+export const faresDestinationsGroup: AggregationOptions<Schema, 'viaja_panama_fares'> = {
   aggregate:{},
   groupBy: [
     'destination'
+  ]
+}
+
+export const faresDaysGroup: AggregationOptions<Schema, 'viaja_panama_fares'> = {
+  aggregate:{},
+  groupBy: [
+    'days'
   ]
 }
 
@@ -32,5 +39,10 @@ export const getAllFares = (host: string, token: string) => {
 
 export const getDestinationsOfFares = (host: string, token: string) => {
   const client = createRestClient(host, token)
-  return client.request(aggregate(FARES_COLLECTION_NAME, faresDetinationsGroup))
+  return client.request(aggregate(FARES_COLLECTION_NAME, faresDestinationsGroup))
+}
+
+export const getDaysOfFare = (host: string, token: string) => {
+  const client = createRestClient(host, token)
+  return client.request(aggregate(FARES_COLLECTION_NAME, faresDaysGroup))
 }

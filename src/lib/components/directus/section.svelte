@@ -103,7 +103,7 @@
 	</header>
 {:else if landmark === 'hero'}
 	<div id={section_id}>
-		<Hero content={section_content} section={section_id}></Hero>
+		<Hero content={section_content}></Hero>
 	</div>
 {:else if landmark === 'loading'}
 	<Loader></Loader>

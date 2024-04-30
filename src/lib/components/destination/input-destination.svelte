@@ -2,11 +2,12 @@
 	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
 	import Icon from '../site/icon.svelte';
 	import { fly } from 'svelte/transition';
-	import { destinationsStore, ping, selectedDestination } from '$lib/public/store';
+	import { selectedDestination } from '$lib/public/store';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
 	import { isEmpty } from 'ramda';
+	import { getDestinationsState } from '$lib/components/destination/context';
 	export let item: Directus.FormInput;
 
 	const { placeholder, icon } = item;
@@ -31,6 +32,8 @@
 		closeOnEscape: true,
 		highlightOnHover: true
 	});
+
+	const destinationsStore = getDestinationsState();
 
 	$: if (!$open) {
 		$inputValue = $selected?.label ?? '';
@@ -89,9 +92,6 @@
 				? 'xs:fixed xs:top-0 xs:left-0 xs:p-16 xs:bg-primary xs:z-10'
 				: ''}"
 		>
-			{#if $ping && !$selectedDestination}
-				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
-			{/if}
 			<input
 				use:melt={$input}
 				{placeholder}

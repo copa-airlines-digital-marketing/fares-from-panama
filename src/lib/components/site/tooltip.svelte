@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { selectedDaysStore } from '$lib/public/store';
-	import { createRadioGroup, createTooltip, melt } from '@melt-ui/svelte';
+	import { createTooltip, melt } from '@melt-ui/svelte';
 	import Icon from './icon.svelte';
 	import IconHelpFilled from '$lib/assets/icon-help-filled.svg?raw';
 	import { fly } from 'svelte/transition';
 
 	export let text: string;
-	export let theme: Directus.Theme;
 
 	const {
 		elements: { trigger, content, arrow },
@@ -21,9 +19,7 @@
 </script>
 
 <button
-	class="absolute -right-20 top-1/2 -translate-y-1/2 {theme === 'light'
-		? 'text-common-white'
-		: 'text-primary'}"
+	class="absolute -right-20 top-1/2 -translate-y-1/2 dark:text-common-white text-primary"
 	type="button"
 	use:melt={$trigger}
 	aria-label="¿Qué es esto?"

@@ -4,7 +4,7 @@
 	import { isEmpty } from 'ramda';
 	import CardCallToAction from './card-call-to-action.svelte';
 
-	let className: string;
+	let className: string | null | undefined = undefined;
 	export { className as class };
 
 	export let content: TextContentReturnSchema;

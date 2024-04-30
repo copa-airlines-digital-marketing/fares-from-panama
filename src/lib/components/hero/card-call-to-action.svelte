@@ -17,22 +17,22 @@
 	{href}
 	class={concatClasses(
 		className,
-		'bg-backgound-paper border border-primary-faded group hover:border-primary focus:border-primary grid grid-cols-[auto_1fr_auto] gap-8 h-full items-center md:grid-cols-1 md:grid-rows-[min-content_1fr_auto] md:justify-items-center outline-none rounded-[64px] md:rounded-2xl px-16 py-12 transition-colors'
+		'bg-gradient-to-t from-primary-ultradark group grid grid-cols-[auto_1fr_auto] gap-8 h-full items-center md:grid-cols-1 md:grid-rows-[min-content_1fr_auto] md:justify-items-center outline-none rounded-[64px] md:rounded-2xl px-16 py-12 md:py-24 to-primary transition-colors'
 	)}
 >
-	<span
-		class="bg-backgound-lightblue col-start-1 group-hover:text-primary group-focus:text-primary p-8 md:p-12 rounded-full text-secondary"
-	>
+	<span class="col-start-1 group-hover:text-secondary group-focus:text-secondary text-common-white">
 		<Icon data={icon} class="square-24 md:size-44 transition-colors"></Icon>
 	</span>
 	<span
-		class="font-heading col-start-2 md:col-start-1 font-heading-medium grow md:self-start md:text-center md:text-h3 text-14/20 text-primary-dark"
+		class="font-heading col-start-2 md:col-start-1 font-heading-medium grow md:self-start md:text-center md:text-h3 text-14/20 text-common-white"
 		>{title}</span
 	>
 	<span
-		class="bg-backgound-lightblue col-start-3 flex group-hover:bg-primary group-hover:text-common-white group-focus:bg-primary group-focus:text-common-white justify-between md:col-start-1 md:w-full p-8 md:px-16 md:py-8 rounded-full text-secondary"
+		class="border border-common-white col-start-3 flex group-hover:bg-common-white group-hover:text-secondary group-focus:bg-common-white group-focus:text-secondary justify-between md:col-start-1 md:w-full p-8 md:px-16 md:py-8 rounded-full text-common-white"
 	>
-		<span class="hidden md:inline text-primary md:text-current transition-colors">{linkText}</span>
+		<span class="hidden md:inline text-common-white md:text-current transition-colors"
+			>{linkText}</span
+		>
 		<Icon data={ArrowDown} class="square-24 transition-colors"></Icon>
 	</span>
 </a>

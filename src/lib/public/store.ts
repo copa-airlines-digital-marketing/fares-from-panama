@@ -16,8 +16,6 @@ export const selectedHistogramMonthStore = writable<string>()
 
 export const selectedHistogramDateStore = writable<string>()
 
-export const ping = writable<boolean>(false)
-
 export const containsDiscounts = writable<boolean>(false)
 
 export const modulesStore = writable<App.Modules>()

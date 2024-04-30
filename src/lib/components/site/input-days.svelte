@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ping, selectedDaysStore } from '$lib/public/store';
+	import { selectedDaysStore } from '$lib/public/store';
 	import { createRadioGroup, melt } from '@melt-ui/svelte';
 	import Tooltip from './tooltip.svelte';
 
@@ -32,10 +32,7 @@
 	>
 		<span class="relative">
 			{label}
-			{#if $ping && !$selectedDaysStore[section]}
-				<div class="absolute animate-ping bg-red -left-8 rounded-full size-16 -top-8"></div>
-			{/if}
-			<Tooltip text={placeholder} {theme}></Tooltip>
+			<Tooltip text={placeholder}></Tooltip>
 		</span>
 	</div>
 	<div class="grid auto-cols-auto grid-flow-col gap-16 justify-center">

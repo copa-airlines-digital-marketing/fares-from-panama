@@ -9,9 +9,7 @@
 	export { className as class };
 </script>
 
-<header
-	class="bg-gradient-to-r from-primary p-16 to-secondary via-primary-light via-65% w-full {className}"
->
+<header class="bg-primary-ultradark p-16 to-secondary w-full {className}">
 	<div class="container flex gap-16 items-center justify-between mx-auto">
 		<a href="/" title="ir al inicio">
 			<Icon data={tarifasFelicesLogo} class="h-56 lg:h-72" />

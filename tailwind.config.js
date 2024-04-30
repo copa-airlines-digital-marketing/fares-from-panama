@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 export default {
+  darkMode: ['selector', '[data-mode="dark"]'],
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	presets: [require('cmds-tailwind-styles')],
 	theme: {
