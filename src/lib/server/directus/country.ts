@@ -1,5 +1,5 @@
 import type { QueryDeep, QueryFields } from "@directus/sdk"
-import { allIconsFieldsQuery } from "./icon"
+import { iconQueryFields } from "./icon"
 
 export const COUNTRY_COLLECTION_NAME: keyof Schema = 'countries'
 
@@ -11,7 +11,7 @@ export const countryReturnFieldsQuery: QueryFields<Schema, Country> = [
     'name',
     'airtrfx_uri'
   ]},
-  {'flag': allIconsFieldsQuery}
+  {'flag': iconQueryFields}
 ]
 
 export const getCountryDeepFilter = (lang: string): QueryDeep<Schema, Country> => ({

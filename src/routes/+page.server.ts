@@ -1,9 +1,9 @@
 import { CMS_HOST, CMS_TOKEN } from '$env/static/private';
-import { DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE, DEFAULT_STOREFRONT } from '$lib/server/constants';
+import { DEFAULT_ERROR_MESSAGE, DEFAULT_LANGUAGE } from '$lib/server/constants';
 import { error } from '@sveltejs/kit';
 import { getCollectionUpdatedItem } from '$lib/server/directus/collection-updated';
 import { getPageData } from '$lib/server/directus/page';
-import { isPage, pageReturnSchema } from '$lib/public/directus/page';
+import { isPage } from '$lib/public/directus/page';
 
 const errorMessage = { message: DEFAULT_ERROR_MESSAGE }
 
@@ -22,8 +22,6 @@ export const load= async() => {
     ])
 
     const [content, lastUpdate] = requests
-
-    pageReturnSchema.parse(content)
 
     if (!isPage(content))
       error(404, errorMessage)

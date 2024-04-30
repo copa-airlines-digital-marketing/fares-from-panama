@@ -7,9 +7,7 @@ export const sectionContentQueryFields: QueryFields<Schema, SectionContent> = [
   'component_name',
   'display',
   'horizontal_alignment',
-  {'item': [
-    {}
-  ]},
+  'item',
   'theme',
   'vertical_alignment'
-]
+] as const

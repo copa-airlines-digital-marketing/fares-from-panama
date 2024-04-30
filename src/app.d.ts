@@ -258,12 +258,6 @@ declare global {
     type Theme = 'light' | 'dark'
 
     type PageSectionContent = {
-      "item:Text_Content": TextContent[]
-      "item:navigation": Navigation[]
-      "item:terms_and_conditions": TermsAndConditions[]
-      "item:copyrights": Copyrights[]
-      "item:follow_buttons": FollowButtons[]
-      "item:fare_module": FareModule[]
       collection: ContentCollectionNames
       component_name: string
       display: ContentDisplay
@@ -373,7 +367,6 @@ declare global {
       sections_id: PageStorefrontsSections[]
       sections: Section[]
       sections_section_content: PageSectionContent[]
-      item: MFAItem
       Text_Content: TextContent[]
       logos: SVGAsset[]
       icon: SVGAsset[]

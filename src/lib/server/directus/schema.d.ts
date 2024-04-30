@@ -277,7 +277,6 @@ type FollowButtonsTranslations = {
 type FollowButtonsTranslationsLinks = {
   id: number
   follow_buttons_translations_id: CollectionID | FollowButtonsTranslations
-  languages_code: CollectionID | Language
   links_url: CollectionID | Link
   sort: number
 }
@@ -316,7 +315,7 @@ type MFAItem = CollectionID | TextContent | Navigation | Carrousel | Form | Logo
 type SectionContent = {
   id: number
   sections_id: CollectionID | Section
-  item: MFAItem 
+  item: CollectionID | TextContent | Navigation | Carrousel | Form | Logo | Icon | TermsAndConditions | FollowButtons |  Copyrights | FareModule
   collection: 'Text_Content' | 'navigation' | 'carrousel' | 'form' | 'logos' | 'icons' | 'terms_and_conditions' | 'follow_buttons' | 'copyrights' | 'fare_module'
   order: number
   component_name: string
@@ -461,7 +460,7 @@ type Schema = {
   storefronts: Storefront[]
   terms_and_conditions: TermsAndConditions[]
   terms_and_conditions_translations: TermsAndConditionsTranslations[]
-  Text_content: TextContent[]
-  Text_content_Translations: TextContentTranslations[]
+  Text_Content: TextContent[]
+  Text_Content_translations: TextContentTranslations[]
   viaja_panama_fares: ViajaPanamaFares[]
 }

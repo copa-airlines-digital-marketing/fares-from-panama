@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
-	import Pre from '$lib/pre.svelte';
 	import { processFares } from '$lib/public/process-fares.js';
 	import { destinationsStore, modulesStore } from '$lib/public/store.js';
 	import {
@@ -12,7 +11,7 @@
 
 	export let data;
 
-	/* const site = data.content;
+	const site = data.content;
 	const titleTag = getTitleTagFromPage(site);
 	const description = getMetaDescriptionFromPage(site);
 	const storefrontSection = getSectionsFromPage(site);
@@ -28,15 +27,15 @@
 		console.log(fjson);
 		modulesStore.set(processFares(destinations, fjson));
 		console.log($modulesStore);
-	}); */
+	});
 </script>
 
-<!-- <svelte:head>
+<svelte:head>
 	<title>{titleTag}</title>
 	<meta name="description" content={description} />
 </svelte:head>
- -->
 
-<div class="grid place-content-center min-svh p-roomy bg-backgound-lightblue">
-	<Pre name="test" value={data}></Pre>
-</div>
+{#each storefrontSection as sectioM2M}
+	{@const section = sectioM2M.sections_id}
+	<Section {section}></Section>
+{/each}

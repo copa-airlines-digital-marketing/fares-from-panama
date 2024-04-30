@@ -16,11 +16,11 @@ export const valueIsDestinationOfFare =  (value: unknown): value is {destination
 
 export const valueIsFaresArray = (value: unknown): value is Directus.Fare[] => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]  && 'departure' in value[0] && 'price' in value[0]
 
-export const getTitleTagFromPage = (page: Directus.Page) => page.translations[0]?.title_tag || 'No se econtró el titulo'
+export const getTitleTagFromPage = (page: Pages) => page.translations[0]?.title_tag || 'No se econtró el titulo'
 
-export const getMetaDescriptionFromPage = (page: Directus.Page) => page.translations[0]?.meta_description || 'No se econtró la descripcion'
+export const getMetaDescriptionFromPage = (page: Pages) => page.translations[0]?.meta_description || 'No se econtró la descripcion'
 
-export const getSectionsFromPage = (page: Directus.Page) => page.storefronts[0]?.sections || []
+export const getSectionsFromPage = (page: Pages) => page.storefronts[0]?.sections || []
 
 export const itemIsTermsAndConditions = (item: Directus.MFAItem, sectionContent: Directus.PageSectionContent): item is Directus.TermsAndConditions => 
   sectionContent.collection === 'terms_and_conditions' && item != null
