@@ -16,6 +16,7 @@
 	} from '$lib/components/directus/utils';
 	import { addToast } from '../site/toast.svelte';
 	import { FareModule } from '../fare-modules';
+	import { setContext } from 'svelte';
 
 	export let section: string;
 	export let contents: Directus.PageSectionContent[];
@@ -45,6 +46,8 @@
 	const cleanedContents = contents.filter((content) => content.component_name !== 'toast');
 
 	const toasts = contents.filter((content) => content.component_name === 'toast');
+
+	setContext('section', section);
 
 	const showToast = () => {
 		const { item, collection } = toasts[0];

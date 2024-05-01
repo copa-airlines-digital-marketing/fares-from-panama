@@ -399,7 +399,7 @@ type Site = BaseCollection & {
   pages: CollectionID[] | SitePage[]
 }
 
-type ViajaPanamaFares = BaseCollection & {
+type ViajaPanamaFare = BaseCollection & {
   destination: string
   days: number
   departure: string
@@ -462,5 +462,5 @@ type Schema = {
   terms_and_conditions_translations: TermsAndConditionsTranslations[]
   Text_Content: TextContent[]
   Text_Content_translations: TextContentTranslations[]
-  viaja_panama_fares: ViajaPanamaFares[]
+  viaja_panama_fares: ViajaPanamaFare[]
 }

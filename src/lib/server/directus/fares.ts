@@ -3,7 +3,7 @@ import { createRestClient } from "./clients"
 
 export const FARES_COLLECTION_NAME: keyof Schema = 'viaja_panama_fares'
 
-export const faresReturnFieldsQuery: QueryFields<Schema, ViajaPanamaFares> = [
+export const faresReturnFieldsQuery: QueryFields<Schema, ViajaPanamaFare> = [
   'destination',
   'days',
   'departure',

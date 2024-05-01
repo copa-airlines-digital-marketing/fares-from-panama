@@ -11,7 +11,6 @@
 
 	const onValueChange = ({ detail }: CustomEvent) => {
 		$selected[sectionId] = detail;
-		console.log(detail);
 	};
 </script>
 

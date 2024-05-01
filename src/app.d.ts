@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
+import type { DestinationReturnSchema } from "$lib/public/utils/destinations"
 import type { Query, QueryItem } from "@directus/sdk"
 
 // for information about these interfaces
@@ -16,9 +17,9 @@ declare global {
 
     type DateString = string
 
-    type Destination = Record<IATA, Destination>
+    type Destination = Record<IATA, DestinationReturnSchema>
 
-    type BasicFares = Record<IATA, Directus.Fare>
+    type BasicFares = Record<IATA, ViajaPanamaFare>
 
     type FaresByDays = Record<Days, BasicFares>
 
@@ -26,23 +27,23 @@ declare global {
 
     type BudgetFares = FaresByDays
 
-    type LowestFareByInterest = Record<Days, Record<Interest, Directus.Fare>>
+    type LowestFareByInterest = Record<Days, Record<Interest, ViajaPanamaFare>>
 
     type InterestFares = Record<Days, Record<Interest, BasicFares>>
     
-    type LowestFareByMonthAndDestination = Record<IATA, Record<Days, Record<MonthYear, Directus.Fare>>>
+    type LowestFareByMonthAndDestination = Record<IATA, Record<Days, Record<MonthYear, ViajaPanamaFare>>>
 
-    type FaresByDateOfDestination = Record<IATA, Record<Days, Record<MonthYear, Record<DateString, Directus.Fare>>>>
+    type FaresByDateOfDestination = Record<IATA, Record<Days, Record<MonthYear, Record<DateString, ViajaPanamaFare>>>>
     
-    type LowestFareByMonth = Record<Days, Record<MonthYear, Directus.Fare>>
+    type LowestFareByMonth = Record<Days, Record<MonthYear, ViajaPanamaFare>>
 
-    type LowestFareByDate = Record<Days, Record<MonthYear, Record<DateString, Directus.Fare>>>
+    type LowestFareByDate = Record<Days, Record<MonthYear, Record<DateString, ViajaPanamaFare>>>
     
     type FaresByDate = Record<Days, Record<MonthYear, Record<DateString, BasicFares>>>
 
     type MonthCardData = {
       monthYear: string
-      fare: Directus.Fare
+      fare: ViajaPanamaFare
       count: number
     }
 

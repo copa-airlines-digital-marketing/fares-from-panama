@@ -10,6 +10,6 @@
 
 <div
 	class={concatClasses(className, 'bg-grey-300 rounded h-12 my-4 ease-in-out')}
-	class:animation-pulse={pulse}
+	class:animate-pulse={pulse}
 	style="width: {width ? width : '100%'};"
 ></div>

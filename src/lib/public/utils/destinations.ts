@@ -61,7 +61,7 @@ const toAppDestinationObject = (destination: DestinationReturnSchema): App.Desti
 
 export const transformDestinations = (destinations: DestinationReturnSchema[]): App.Destination => destinations.reduce((accumulator, current) => ({...accumulator, ...toAppDestinationObject(current)}), {})
 
-export const addDestination = curry((destinations: App.Destination, fare: ViajaPanamaFares): DestinationReturnSchema => {
+export const addDestination = curry((destinations: App.Destination, fare: ViajaPanamaFare): DestinationReturnSchema => {
 
   const {destination} = fare
 

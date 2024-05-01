@@ -1,5 +1,5 @@
 import { getContext, setContext } from "svelte"
-import { writable } from "svelte/store"
+import { writable, type Writable } from "svelte/store"
 
 const id = 'fare-modules'
 
@@ -10,5 +10,5 @@ export const setFareModulesContext = (modules: App.Modules = <App.Modules>{}) =>
 }
 
 export const getFareModulesContext = () => {
-  return getContext(id)
+  return getContext<Writable<App.Modules>>(id)
 }

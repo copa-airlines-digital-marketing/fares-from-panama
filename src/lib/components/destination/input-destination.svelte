@@ -2,12 +2,12 @@
 	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
 	import Icon from '../site/icon.svelte';
 	import { fly } from 'svelte/transition';
-	import { selectedDestination } from '$lib/public/store';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
 	import { isEmpty } from 'ramda';
-	import { getDestinationsState } from '$lib/components/destination/context';
+	import { getDestinationsContext } from '$lib/components/destination/context';
+	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
 	export let item: Directus.FormInput;
 
 	const { placeholder, icon } = item;
@@ -15,25 +15,25 @@
 	const itemLabel = item.label.split(' ');
 
 	const toOption = (
-		destination: Directus.Destination
-	): ComboboxOptionProps<Directus.Destination> => ({
+		destination: DestinationReturnSchema
+	): ComboboxOptionProps<DestinationReturnSchema> => ({
 		value: destination,
 		label: destination.translations[0]?.name || 'Not Found'
 	});
+
+	const { all: destinationsStore, selected: selectedDestination } = getDestinationsContext();
 
 	const {
 		elements: { menu, input, option, label },
 		states: { open, inputValue, touchedInput, selected },
 		helpers: { isSelected }
-	} = createCombobox<Directus.Destination>({
+	} = createCombobox<DestinationReturnSchema>({
 		defaultSelected: $selectedDestination ? toOption($selectedDestination) : undefined,
 		forceVisible: true,
 		loop: true,
 		closeOnEscape: true,
 		highlightOnHover: true
 	});
-
-	const destinationsStore = getDestinationsState();
 
 	$: if (!$open) {
 		$inputValue = $selected?.label ?? '';
@@ -71,7 +71,7 @@
 		}
 	};
 
-	const selectDestination = (destination: Directus.Destination) => () => {
+	const selectDestination = (destination: DestinationReturnSchema) => () => {
 		$selectedDestination = destination;
 	};
 </script>

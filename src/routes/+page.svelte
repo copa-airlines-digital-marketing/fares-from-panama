@@ -10,6 +10,10 @@
 	} from '$lib/public/utils';
 	import { onMount } from 'svelte';
 	import { setDaysContext } from '$lib/components/days';
+	import {
+		getFareModulesContext,
+		setFareModulesContext
+	} from '$lib/components/fare-modules/context.js';
 
 	export let data;
 
@@ -18,26 +22,23 @@
 	const description = getMetaDescriptionFromPage(site);
 	const storefrontSection = getSectionsFromPage(site);
 
-	const destinationStore = setDestinationState({});
+	const { all: destinationStore } = setDestinationState({});
 	const { days } = setDaysContext({ days: [], selectedDays: {} });
+	const fareModules = setFareModulesContext();
 
 	onMount(async () => {
-		const dataRequest = await Promise.all([
-			fetch('/api/destinations', { method: 'GET' }),
-			fetch('/api/days', { method: 'GET' }),
-			fetch('/api/fares', { method: 'GET' })
-		]);
-
-		const [destinationsRequest, daysRequest, faresRequest] = dataRequest;
-
-		const destinations = await destinationsRequest.json();
-		const fares = await faresRequest.json();
-
+		const destinationRequest = await fetch('/api/destinations', { method: 'GET' });
+		const destinations = await destinationRequest.json();
 		destinationStore.set(destinations.reduce((a, c) => ({ ...a, [c.iata_code]: c }), {}));
-		days.set(await daysRequest.json());
 
-		modulesStore.set(processFares(destinations, fares));
-		console.log($modulesStore);
+		fetch('/api/days', { method: 'GET' }).then(async (data) => {
+			days.set(await data.json());
+		});
+
+		fetch('/api/fares', { method: 'GET' }).then(async (data) => {
+			const fares = await data.json();
+			fareModules.set(processFares(destinations, fares));
+		});
 	});
 </script>
 

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import Bar from '../skeleton/bar.svelte';
+	import { SkeliBar } from '$lib/components/skeleton';
 
 	export let pulse = false;
 </script>
 
-<div class="border border-common-white flex flex-col h-116 rounded-2xl w-full">
-	<Bar {pulse} width="50%"></Bar>
-	<div class="grow">
-		<Bar {pulse} width="50%"></Bar>
+<div class="bg-backgound-paper flex flex-col h-56 calendar:h-116 p-8 rounded-lg w-full">
+	<SkeliBar {pulse} width="50%"></SkeliBar>
+	<div class="grow hidden calendar:block">
+		<SkeliBar {pulse} width="50%"></SkeliBar>
 	</div>
-	<Bar {pulse} width="50%"></Bar>
+	<SkeliBar {pulse} width="50%"></SkeliBar>
 </div>

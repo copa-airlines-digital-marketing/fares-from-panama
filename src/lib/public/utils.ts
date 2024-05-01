@@ -84,7 +84,7 @@ export const getlanguageCodeFilter = (defaultLang: string, lang?: string) => {
 
 export const toPanamaTimeZone = (date: Date) => toZonedTime(date, "America/Panama")
 
-export const parseDeparture = ({departure}: Directus.Fare) => toPanamaTimeZone(parse(departure, 'yyyy-MM-dd', new Date()))
+export const parseDeparture = ({departure}: ViajaPanamaFare) => toPanamaTimeZone(parse(departure, 'yyyy-MM-dd', new Date()))
 
 export const parseDate = (dateString: string) => toPanamaTimeZone(parse(dateString, 'yyyy-MM-dd', new Date()))
 
@@ -132,7 +132,7 @@ export const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => fa
 
 export const isEmptyObject = (obj: unknown) => obj == null || typeof obj !== 'object' || Object.keys(obj).length === 0
 
-export const getShoppingEngingeURL = (fare: Directus.Fare) => `
+export const getShoppingEngingeURL = (fare: ViajaPanamaFare) => `
 https://shopping.copaair.com/?infants=0&origin=TarifasViajaPanama&adults=1&area1=PTY&area2=${fare.destination}&advanced_air_search=false&date2=${fare.return}&flexible_dates_v2=false&date1=${fare.departure}&roundtrip=true&sf=pa&children=0&langid=es
 `
 
