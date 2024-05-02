@@ -2,6 +2,7 @@
 	import { setContext } from 'svelte';
 	import CalendarFareModule from '../site/modules/calendar-fare-module.svelte';
 	import { CalendarModule } from './calendar';
+	import PopularModule from './popular/popular-module.svelte';
 
 	export let component_name: string;
 	export let content: FareModule;
@@ -25,13 +26,13 @@
 {#if component_name === 'budget'}
 	'Budget Module'
 {:else if component_name === 'calendar'}
-	<CalendarModule></CalendarModule>
+	<CalendarModule />
 {:else if component_name === 'histogram'}
 	'Histogram Module'
 {:else if component_name === 'interest'}
 	'Interest Module'
 {:else if component_name === 'popular'}
-	'Popular module'
+	<PopularModule />
 {:else}
 	<div>⚠️ Unsupported Fare Module {component_name}</div>
 {/if}
