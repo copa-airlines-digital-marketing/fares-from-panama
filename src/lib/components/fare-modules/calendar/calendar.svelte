@@ -64,29 +64,13 @@
 		<div class="relative">
 			<CalendarMonthsSkeleton pulse={isEmpty($modules)} />
 			<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
-			<div class="absolute grid h-full md:place-content-center px-16 py-8 top-0 w-full">
-				<StatusWrapper
-					name={section}
-					{labels}
-					theme={'light'}
-					fares={isEmpty($modules)}
-					destination={!$selectedDestination}
-					days={!$selectedStay[section]}
-					noFares={!!$selectedDestination &&
-						!!selectedStayOfSection &&
-						!(
-							!!calendarMonths &&
-							calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]
-						)}
-				></StatusWrapper>
-			</div>
 		</div>
 	{/if}
 	{#if !($selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)])}
 		<div class="relative">
 			<CalendarGridSkeleton pulse={isEmpty($modules)}></CalendarGridSkeleton>
 			<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
-			<div class="absolute grid h-full md:place-content-center px-16 py-8 top-0 w-full">
+			<div class="absolute grid h-full px-16 py-roomy top-0 w-full">
 				<StatusWrapper
 					name={section}
 					{labels}

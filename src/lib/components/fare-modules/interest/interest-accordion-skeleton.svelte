@@ -11,10 +11,10 @@
 	{#each interest as item}
 		<div class="bg-backgound-paper flex gap-8 items-center h-88 md:h-116 p-8 rounded-lg w-full">
 			<SkeliImage class="!size-76 rounded-full"></SkeliImage>
-			<div class="grow">
+			<div class="grow flex-col">
 				<SkeliBar {pulse} width="10ch"></SkeliBar>
+				<SkeliBar {pulse} width="5ch"></SkeliBar>
 			</div>
-			<SkeliBar {pulse} width="5ch"></SkeliBar>
 		</div>
 	{/each}
 </div>
