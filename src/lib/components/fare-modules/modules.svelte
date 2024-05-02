@@ -4,6 +4,7 @@
 	import { CalendarModule } from './calendar';
 	import PopularModule from './popular/popular-module.svelte';
 	import BudgetModule from './budget/budget-module.svelte';
+	import InterestModule from './interest/interest-module.svelte';
 
 	export let component_name: string;
 	export let content: FareModule;
@@ -31,7 +32,7 @@
 {:else if component_name === 'histogram'}
 	'Histogram Module'
 {:else if component_name === 'interest'}
-	'Interest Module'
+	<InterestModule />
 {:else if component_name === 'popular'}
 	<PopularModule />
 {:else}

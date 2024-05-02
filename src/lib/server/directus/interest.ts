@@ -4,6 +4,7 @@ export const INTEREST_COLLECTION_NAME: keyof Schema = 'destination_category'
 
 export const interestReturnFieldsQuery: QueryFields<Schema, DestinationCategory> = [
   'name',
+  'image',
   {'translations': [
     'name',
     'airtfx_uri'

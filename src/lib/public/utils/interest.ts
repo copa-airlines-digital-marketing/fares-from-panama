@@ -2,6 +2,7 @@ import { z } from "zod"
 
 export const interestReturnSchema = z.object({
   name: z.string(),
+  image: z.string(),
   translations: z.object({
     name: z.string(),
     airtrfx_uri: z.string().optional()

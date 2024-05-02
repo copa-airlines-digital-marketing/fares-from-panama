@@ -37,7 +37,7 @@
 
 		fetch('/api/fares', { method: 'GET' }).then(async (data) => {
 			const fares = await data.json();
-			fareModules.set(processFares(destinations, fares));
+			fareModules.set(processFares($destinationStore, fares));
 		});
 	});
 </script>

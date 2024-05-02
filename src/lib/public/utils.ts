@@ -14,7 +14,7 @@ export const valueIsDestinations = (value: unknown): value is Destination[] => v
 
 export const valueIsDestinationOfFare =  (value: unknown): value is {destination: string} => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]
 
-export const valueIsFaresArray = (value: unknown): value is Directus.Fare[] => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]  && 'departure' in value[0] && 'price' in value[0]
+export const valueIsFaresArray = (value: unknown): value is ViajaPanamaFare[] => value != null && Array.isArray(value) && value.length > 0 && 'destination' in value[0]  && 'departure' in value[0] && 'price' in value[0]
 
 export const getTitleTagFromPage = (page: Pages) => page.translations[0]?.title_tag || 'No se econtró el titulo'
 
@@ -103,13 +103,13 @@ export const getWeekDaysNames = () => eachDayOfInterval({start: startOfWeek(new 
 
 export const formatDateForDisplay = (date: Date) => format(date, 'dd/MM/yyy')
 
-export const fareDepartureIsBeforeExisting = (fare: Directus.Fare, existing: Directus.Fare) => isBefore(parseDeparture(fare), parseDeparture(existing))
+export const fareDepartureIsBeforeExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => isBefore(parseDeparture(fare), parseDeparture(existing))
 
-export const farePriceIsLowerThanExisting = (fare: Directus.Fare, existing: Directus.Fare) => parseInt(fare.price) < parseInt(existing.price)
+export const farePriceIsLowerThanExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => parseInt(fare.price) < parseInt(existing.price)
 
-export const farePriceIsEqualToExisting = (fare: Directus.Fare, existing: Directus.Fare) => parseInt(fare.price) === parseInt(existing.price)
+export const farePriceIsEqualToExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => parseInt(fare.price) === parseInt(existing.price)
 
-const initiateMonth = (fare: Directus.Fare, start: 'week' | 'month' ) => {
+const initiateMonth = (fare: ViajaPanamaFare, start: 'week' | 'month' ) => {
   const departureDate = parseDeparture(fare)
 
   const datesOfMonth = eachDayOfInterval({start: start === 'month' ? startOfMonth(departureDate) : startOfWeek(startOfMonth(departureDate), {weekStartsOn: 1}), end: start === 'month' ? endOfMonth(departureDate) : endOfWeek(endOfMonth(departureDate), {weekStartsOn: 1})})
@@ -117,18 +117,18 @@ const initiateMonth = (fare: Directus.Fare, start: 'week' | 'month' ) => {
   return {...datesOfMonth.reduce((accum, current) => ({...accum,[format(current, 'yyyy-MM-dd')]: {}}), {})}
 }
 
-export const inititeFareMonth = (fare: Directus.Fare): Record<App.DateString, Directus.Fare> => initiateMonth(fare, 'week')
+export const inititeFareMonth = (fare: ViajaPanamaFare): Record<App.DateString, ViajaPanamaFare> => initiateMonth(fare, 'week')
 
-export const inititeHistogramFareMonthDates = (fare: Directus.Fare): Record<App.DateString, App.BasicFares> => initiateMonth(fare, 'month')
+export const inititeHistogramFareMonthDates = (fare: ViajaPanamaFare): Record<App.DateString, App.BasicFares> => initiateMonth(fare, 'month')
 
-export const inititeHistogramFareMonth = (fare: Directus.Fare): Record<App.DateString, Directus.Fare> => initiateMonth(fare, 'month')
+export const inititeHistogramFareMonth = (fare: ViajaPanamaFare): Record<App.DateString, ViajaPanamaFare> => initiateMonth(fare, 'month')
 
 export const getWeekDays = () => {
   const now = toPanamaTimeZone(new Date())
  return  eachDayOfInterval({start: startOfWeek(now, {weekStartsOn: 1}), end: endOfWeek(now, {weekStartsOn: 1})}).map((value) => format(value, 'EEE', {locale: es}))
 }
 
-export const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => farePriceIsLowerThanExisting(fare, existing) || farePriceIsEqualToExisting(fare, existing) && fareDepartureIsBeforeExisting(fare,existing)
+export const isValidToAdd = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => farePriceIsLowerThanExisting(fare, existing) || farePriceIsEqualToExisting(fare, existing) && fareDepartureIsBeforeExisting(fare,existing)
 
 export const isEmptyObject = (obj: unknown) => obj == null || typeof obj !== 'object' || Object.keys(obj).length === 0
 
@@ -149,7 +149,7 @@ export const getFlyingOption = (seed: number) => {
   return flyOptions[Math.floor((seed * 997) % 4)]
 }
 
-export const minFare = (min: number, fare: Directus.Fare) => parseInt(fare.price) < min ? parseInt(fare.price) : min 
+export const minFare = (min: number, fare: ViajaPanamaFare) => parseInt(fare.price) < min ? parseInt(fare.price) : min 
 
 export const dateIsInMonth = (date: Date, month: Date) => {
   return isAfter(date, addDays(startOfMonth(month),-1)) && isBefore(date, endOfMonth(month))

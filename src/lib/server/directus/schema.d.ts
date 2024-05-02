@@ -99,6 +99,7 @@ type DestinationInterest = {
 
 type DestinationCategory = BaseCollection & {
   name: string
+  image: string
   sort: number
   translations: CollectionID[] | DestinationCategoryTranslation[]
   destinations: CollectionID[] | DestinationInterest[]
@@ -106,7 +107,7 @@ type DestinationCategory = BaseCollection & {
 
 type DestinationCategoryTranslation = {
   id: number
-  destination_category_id: CollectionID | Destination
+  destination_category_id: CollectionID | DestinationCategory
   languages_code: CollectionID | Language
   name: string
   airtfx_uri: string

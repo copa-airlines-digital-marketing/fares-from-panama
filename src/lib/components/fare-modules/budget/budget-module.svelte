@@ -21,9 +21,9 @@
 
 	$: budget = $modules.budget;
 
-	$: maxShow = $selectedBudget ? 12 : 12;
-
 	$: selectedStayOfSection = $selectedStay[section];
+
+	$: maxShow = $selectedBudget ? 12 : 12;
 
 	const addShowMax = () => (maxShow += 12);
 </script>
@@ -50,6 +50,7 @@
 						target="_blank"
 					>
 						<img
+							loading="lazy"
 							class="[grid-area:image] object-cover h-full w-full"
 							src="https://cm-marketing.directus.app/assets/{image}?width=800&height=600&fit=cover"
 							alt=""

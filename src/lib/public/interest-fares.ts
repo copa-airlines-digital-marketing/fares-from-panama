@@ -1,7 +1,7 @@
 import { isValidToAdd } from "./utils"
 
 
-const addInterestFare = (module: App.InterestFares, name: App.Interest, fare: Directus.Fare) => {
+const addInterestFare = (module: App.InterestFares, name: App.Interest, fare: ViajaPanamaFare) => {
 
   const {days, destination} = fare
 
@@ -28,7 +28,7 @@ const addInterestFare = (module: App.InterestFares, name: App.Interest, fare: Di
   return {...newModule}
 }
 
-const setLowestFareForInterest = (module: App.LowestFareByInterest, name: App.Interest, fare: Directus.Fare) => {
+const setLowestFareForInterest = (module: App.LowestFareByInterest, name: App.Interest, fare: ViajaPanamaFare) => {
 
   const {days} = fare
 
@@ -52,7 +52,8 @@ const setLowestFareForInterest = (module: App.LowestFareByInterest, name: App.In
   return {...newModule}
 }
 
-export const addFareToInterest = (interestNames: App.LowestFareByInterest, interestModule: App.InterestFares, destinations: App.Destination, fare: Directus.Fare) => {
+export const addFareToInterest = (interestNames: App.LowestFareByInterest, interestModule: App.InterestFares, destinations: App.Destination, fare: ViajaPanamaFare) => {
+  
 const interests = destinations[fare.destination].categories
 
 let byName = {...interestNames}
@@ -60,9 +61,12 @@ let byName = {...interestNames}
 let byInterest = {...interestModule}
 
 interests.forEach(interest => {
-  const interestName  = interest.destination_category_id.translations[0].name
-  byName = setLowestFareForInterest(byName, interestName, fare)
-  byInterest = addInterestFare(byInterest, interestName, fare)
+  const translation = interest.destination_category_id.translations
+  if(translation){
+    const interestName  = translation[0].name
+    byName = setLowestFareForInterest(byName, interestName, fare)
+    byInterest = addInterestFare(byInterest, interestName, fare)
+  }
 });
 
 return {interestNames: byName, interests: byInterest}
