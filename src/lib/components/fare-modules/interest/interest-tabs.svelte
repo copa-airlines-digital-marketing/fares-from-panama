@@ -5,7 +5,7 @@
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import { getFareModulesContext } from '../context';
 	import { fly } from 'svelte/transition';
-	import { filter, isEmpty, isNotNil } from 'ramda';
+	import { isEmpty, isNotNil } from 'ramda';
 	import InterestNameCard from './interest-name-card.svelte';
 	import IntersetFareCard from './interest-fare-card.svelte';
 

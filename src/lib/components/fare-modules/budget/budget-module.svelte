@@ -68,7 +68,7 @@
 						</span>
 						<span class="col-[content] mb-8 row-[date]">
 							{formatDateForDisplay(parseDate(departure))} -
-							{formatDateForDisplay(parseDate(departure))} ·
+							{formatDateForDisplay(parseDate(fare.return))} ·
 							{labels['roundTrip']}
 						</span>
 						<span

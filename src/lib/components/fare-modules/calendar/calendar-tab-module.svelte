@@ -5,7 +5,6 @@
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import { getFareModulesContext } from '../context';
 	import CalendarMonthCard from './calendar-month-card.svelte';
-	import { slide } from 'svelte/transition';
 	import { isEmpty, minBy, prop, reduce } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
 	import { dateIsInMonth, getWeekDays, parseDate, parseDeparture } from '$lib/public/utils';
@@ -36,7 +35,6 @@
 			{#if !isEmpty(months) && months != null}
 				{#each Object.keys(months) as key (key)}
 					{@const fare = months[key]}
-					{@const days = calendar[iata_code][stay][key]}
 					<Tabs.Trigger
 						value={key}
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"

@@ -17,9 +17,9 @@
 
 	const section: string = getContext('section');
 
-	const { calendarMonths } = $modules;
-
 	const labels = getContext<Record<string, string>>('moduleLabels');
+
+	$: calendarMonths = $modules.calendarMonths;
 
 	$: innerWidth = undefined;
 

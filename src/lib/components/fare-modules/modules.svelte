@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import CalendarFareModule from '../site/modules/calendar-fare-module.svelte';
 	import { CalendarModule } from './calendar';
 	import PopularModule from './popular/popular-module.svelte';
 	import BudgetModule from './budget/budget-module.svelte';
 	import InterestModule from './interest/interest-module.svelte';
+	import HistogramModule from './histogram/histogram-module.svelte';
 
 	export let component_name: string;
 	export let content: FareModule;
@@ -30,7 +30,7 @@
 {:else if component_name === 'calendar'}
 	<CalendarModule />
 {:else if component_name === 'histogram'}
-	'Histogram Module'
+	<HistogramModule />
 {:else if component_name === 'interest'}
 	<InterestModule />
 {:else if component_name === 'popular'}
