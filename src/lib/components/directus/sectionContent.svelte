@@ -17,6 +17,7 @@
 	import { addToast } from '../site/toast.svelte';
 	import { FareModule } from '../fare-modules';
 	import { setContext } from 'svelte';
+	import { setBudgetContext } from '../budget/context';
 
 	export let section: string;
 	export let contents: Directus.PageSectionContent[];
@@ -48,6 +49,8 @@
 	const toasts = contents.filter((content) => content.component_name === 'toast');
 
 	setContext('section', section);
+
+	setBudgetContext(0);
 
 	const showToast = () => {
 		const { item, collection } = toasts[0];

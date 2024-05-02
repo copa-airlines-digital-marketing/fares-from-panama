@@ -1,7 +1,7 @@
 <script lang="ts">
+	import InputSlider from '../budget/input-slider.svelte';
 	import { DaysInput } from '../days';
 	import InputDestination from '../destination/input-destination.svelte';
-	import InputSlider from '../site/input-slider.svelte';
 
 	export let section: string;
 	export let form: Directus.Form;

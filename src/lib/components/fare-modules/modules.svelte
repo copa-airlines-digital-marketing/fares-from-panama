@@ -3,6 +3,7 @@
 	import CalendarFareModule from '../site/modules/calendar-fare-module.svelte';
 	import { CalendarModule } from './calendar';
 	import PopularModule from './popular/popular-module.svelte';
+	import BudgetModule from './budget/budget-module.svelte';
 
 	export let component_name: string;
 	export let content: FareModule;
@@ -24,7 +25,7 @@
 </script>
 
 {#if component_name === 'budget'}
-	'Budget Module'
+	<BudgetModule />
 {:else if component_name === 'calendar'}
 	<CalendarModule />
 {:else if component_name === 'histogram'}

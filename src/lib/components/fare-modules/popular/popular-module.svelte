@@ -65,7 +65,7 @@
 {:else}
 	<div class="relative">
 		<PopularSkeleton pulse={isEmpty($modules)}></PopularSkeleton>
-		<div class="absolute bg-grey-100/80 blur h-full top-0 w-full"></div>
+		<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
 		<div class="absolute grid h-full place-content-center px-16 py-8 top-0 w-full">
 			<StatusWrapper
 				name={section}
