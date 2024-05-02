@@ -14,7 +14,7 @@
 	$: $selectedBudgetStore = value[0];
 </script>
 
-<div class="w-full">
+<div class="w-full max-w-[calc(100%-66px-16px)] md:max-w-none mx-auto">
 	<div class="flex justify-center">
 		<label
 			for="{name}-input"

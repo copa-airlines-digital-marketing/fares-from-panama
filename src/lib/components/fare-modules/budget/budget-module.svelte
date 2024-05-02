@@ -17,9 +17,9 @@
 
 	const section: string = getContext('section');
 
-	const { budget } = $modules;
-
 	const labels = getContext<Record<string, string>>('moduleLabels');
+
+	$: budget = $modules.budget;
 
 	$: maxShow = $selectedBudget ? 12 : 12;
 
@@ -28,7 +28,7 @@
 	const addShowMax = () => (maxShow += 12);
 </script>
 
-{#if isNotNil(budget) && !isEmpty(budget) && selectedStayOfSection && isNotNil($selectedBudget)}
+{#if isNotNil($selectedBudget) && !!selectedStayOfSection && isNotNil(budget) && !isEmpty(budget)}
 	{@const fares = Object.values(budget[parseInt(selectedStayOfSection)])
 		.sort((a, b) => parseInt(a.price) - parseInt(b.price))
 		.filter((fare) => parseInt(fare.price) <= $selectedBudget)}
@@ -98,7 +98,7 @@
 	<div class="relative">
 		<BudgetSkeleton pulse={isEmpty(budget)}></BudgetSkeleton>
 		<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
-		<div class="absolute grid h-full place-content-center px-16 py-8 top-0 w-full">
+		<div class="absolute grid h-full md:place-content-center px-16 py-8 top-0 w-full">
 			<StatusWrapper
 				name={section}
 				{labels}

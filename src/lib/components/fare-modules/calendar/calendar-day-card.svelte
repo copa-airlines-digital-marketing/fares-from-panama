@@ -22,7 +22,7 @@
 	const labels = getContext<Record<string, string>>('moduleLabels');
 </script>
 
-{#if isInMonth}
+{#if isInMonth || isBeforeToday(date)}
 	<div
 		class="calendar:aspect-square bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-500 transition-colors w-full"
 	>
@@ -30,7 +30,7 @@
 			{isTab ? getDate(date) : getDayAndDate(date)}
 		</span>
 	</div>
-{:else if (isEmpty(fare) || isBeforeToday(date)) && alternatives}
+{:else if isEmpty(fare) && alternatives}
 	<div
 		class="calendar:aspect-square bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-600 transition-colors w-full"
 	>
@@ -42,7 +42,7 @@
 			<span>{labels['otherStays']}{alternatives}</span>
 		</span>
 	</div>
-{:else if isEmpty(fare) || isBeforeToday(date)}
+{:else if isEmpty(fare)}
 	<div
 		class="calendar:aspect-square cursor-default bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-500 transition-colors w-full"
 	>

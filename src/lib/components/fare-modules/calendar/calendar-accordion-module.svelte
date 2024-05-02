@@ -58,6 +58,7 @@
 											{alternatives}
 											{date}
 											fare={dayFare}
+											isInMonth={false}
 											lowest={lowest.price === dayFare.price}
 										></CalendarDayCard>
 									</li>
