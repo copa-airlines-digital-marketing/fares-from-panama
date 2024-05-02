@@ -15,6 +15,7 @@
 	export let month = false;
 	export let dates = false;
 	export let interest = false;
+	export let noFares = false;
 	export let theme: Directus.Theme;
 
 	const themeColor = theme === 'light' ? 'text-grey-600' : 'text-common-white';
@@ -73,6 +74,13 @@
 		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
 		<Heading type="display-tiny" style="{themeColor} ">
 			{labels['selectDate']}
+		</Heading>
+	</StatusText>
+{:else if noFares}
+	<StatusText>
+		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+		<Heading type="display-tiny" style="{themeColor} ">
+			{labels['stayNotAvailable']}
 		</Heading>
 	</StatusText>
 {/if}

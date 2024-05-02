@@ -2,7 +2,7 @@
 	import { selectedBudgetStore, selectedDaysStore } from '$lib/public/store';
 	import Heading from '../../copa/typography/heading.svelte';
 	import FareCard from '$lib/components/site/fare-card-destination-image.svelte';
-	import StatusWrapper from '../status-wrapper.svelte';
+	import StatusWrapper from '../../skeleton/status-wrapper.svelte';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { getFlyingOption } from '$lib/public/utils';

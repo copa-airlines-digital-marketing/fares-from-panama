@@ -8,7 +8,8 @@
 	import CalendarGridSkeleton from './calendar-grid-skeleton.svelte';
 	import CalendarAccordionModule from './calendar-accordion-module.svelte';
 	import { isEmpty } from 'ramda';
-	import StatusWrapper from '$lib/components/site/status-wrapper.svelte';
+	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
+	import CalendarTabModule from './calendar-tab-module.svelte';
 
 	const { selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
@@ -45,20 +46,62 @@
 					fares={isEmpty($modules)}
 					destination={!$selectedDestination}
 					days={!$selectedStay[section]}
+					noFares={!!$selectedDestination &&
+						!!selectedStayOfSection &&
+						!(
+							!!calendarMonths &&
+							calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]
+						)}
 				></StatusWrapper>
 			</div>
 		</div>
 	{/if}
 {:else}
 	<!-- Tabs para desktop -->
-	{#if $selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]}}
-		calendar month tab
+	{#if $selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]}
+		<CalendarTabModule />
 	{:else}
-		<CalendarMonthsSkeleton pulse={isEmpty($modules)}></CalendarMonthsSkeleton>
+		<div class="relative">
+			<CalendarMonthsSkeleton pulse={isEmpty($modules)} />
+			<div class="absolute bg-grey-100/80 blur h-full top-0 w-full"></div>
+			<div class="absolute grid h-full place-content-center px-16 py-8 top-0 w-full">
+				<StatusWrapper
+					name={section}
+					{labels}
+					theme={'light'}
+					fares={isEmpty($modules)}
+					destination={!$selectedDestination}
+					days={!$selectedStay[section]}
+					noFares={!!$selectedDestination &&
+						!!selectedStayOfSection &&
+						!(
+							!!calendarMonths &&
+							calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]
+						)}
+				></StatusWrapper>
+			</div>
+		</div>
 	{/if}
-	{#if $selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]}}
-		calendar grid
-	{:else}
-		<CalendarGridSkeleton pulse={isEmpty($modules)}></CalendarGridSkeleton>
+	{#if !($selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)])}
+		<div class="relative">
+			<CalendarGridSkeleton pulse={isEmpty($modules)}></CalendarGridSkeleton>
+			<div class="absolute bg-grey-100/80 blur h-full top-0 w-full"></div>
+			<div class="absolute grid h-full place-content-center px-16 py-8 top-0 w-full">
+				<StatusWrapper
+					name={section}
+					{labels}
+					theme={'light'}
+					fares={isEmpty($modules)}
+					destination={!$selectedDestination}
+					days={!$selectedStay[section]}
+					noFares={!!$selectedDestination &&
+						!!selectedStayOfSection &&
+						!(
+							!!calendarMonths &&
+							calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]
+						)}
+				></StatusWrapper>
+			</div>
+		</div>
 	{/if}
 {/if}

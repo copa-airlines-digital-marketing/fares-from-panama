@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StatusWrapper from '../status-wrapper.svelte';
+	import StatusWrapper from '../../skeleton/status-wrapper.svelte';
 	import { selectedDaysStore, selectedDestination } from '$lib/public/store';
 	import { parseDate } from '$lib/public/utils';
 	import { getNDummyFares, getRandomUUID } from '$lib/components/directus/utils';

@@ -17,11 +17,20 @@
 	export let lowest = false;
 	export let isTab = false;
 	export let alternatives: string | undefined = undefined;
+	export let isInMonth = true;
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 </script>
 
-{#if (isEmpty(fare) || isBeforeToday(date)) && alternatives}
+{#if isInMonth}
+	<div
+		class="calendar:aspect-square bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-500 transition-colors w-full"
+	>
+		<span class="[grid-area:dates] font-heading-medium text-14/20 uppercase">
+			{isTab ? getDate(date) : getDayAndDate(date)}
+		</span>
+	</div>
+{:else if (isEmpty(fare) || isBeforeToday(date)) && alternatives}
 	<div
 		class="calendar:aspect-square bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-600 transition-colors w-full"
 	>

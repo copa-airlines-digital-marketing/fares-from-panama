@@ -3,7 +3,7 @@
 	import Heading from '../../copa/typography/heading.svelte';
 	import PlainFare from '../fare-card-plain.svelte';
 	import { getNDummyFares } from '$lib/components/directus/utils';
-	import StatusWrapper from '../status-wrapper.svelte';
+	import StatusWrapper from '../../skeleton/status-wrapper.svelte';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { getFlyingOption } from '$lib/public/utils';
