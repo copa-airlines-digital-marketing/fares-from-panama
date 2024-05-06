@@ -9,8 +9,8 @@
 	const fares = range(0, 12);
 </script>
 
-<div class="flex gap-16">
-	<div>
+<div class="grid grid-cols-4 grid-rows-1 gap-16">
+	<div class="col-start-1 col-span-1">
 		{#each interest as item}
 			<div
 				class="bg-backgound-paper flex gap-8 items-center h-88 md:h-116 p-8 rounded-lg w-full mb-8"
@@ -24,7 +24,7 @@
 		{/each}
 	</div>
 	<div
-		class="auto-rows-min bg-backgound-paper gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-8 rounded-lg w-full"
+		class="auto-rows-min bg-backgound-paper col-start-2 col-span-3 gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-8 rounded-lg w-full self-start"
 	>
 		{#each fares as item}
 			<div

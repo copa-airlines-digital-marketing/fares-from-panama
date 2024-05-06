@@ -4,6 +4,7 @@
 		getDayAndDate,
 		getDayOfWeekName,
 		getMonthName,
+		isBeforeToday,
 		parseDate
 	} from '$lib/public/utils';
 	import { getContext } from 'svelte';
@@ -32,15 +33,17 @@
 {#if !isEmpty(dateKey)}
 	{@const date = parseDate(dateKey)}
 	<span
-		class="caret-transparent flex flex-col gap-8 text-14/20 self-end"
+		class="caret-transparent flex flex-col gap-8 items-center text-14/20 self-end"
 		class:text-grey-500={isEmpty(fare)}
 		class:text-grey-600={!isEmpty(fare)}
 	>
-		{#if !isEmpty(fare)}
+		{#if !isEmpty(fare) && !isBeforeToday(date)}
 			<Tooltip.Root openDelay={0}>
-				<Tooltip.Trigger>
+				<Tooltip.Trigger asChild let:builder>
 					<span
-						class="block w-full group-hover:bg-secondary rounded-t-sm transition-colors shadow-tiny"
+						use:builder.action
+						{...builder}
+						class="block group-hover:bg-secondary rounded-t-sm transition-colors shadow-tiny w-3/4"
 						class:bg-grey-100={isEmpty(fare)}
 						class:bg-primary={!isEmpty(fare)}
 						class:bg-red={selected}
@@ -70,7 +73,7 @@
 			</Tooltip.Root>
 		{:else}
 			<span
-				class="block bg-grey-100 w-full rounded-t-sm shadow-tiny"
+				class="block bg-grey-100 rounded-t-sm shadow-tiny w-3/4"
 				style="height: {calculateHeight(max, parseInt(fare.price))}px;"
 			></span>
 		{/if}

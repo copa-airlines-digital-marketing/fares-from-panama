@@ -14,6 +14,7 @@
 		getFareModulesContext,
 		setFareModulesContext
 	} from '$lib/components/fare-modules/context.js';
+	import { reject } from 'ramda';
 
 	export let data;
 
@@ -37,7 +38,17 @@
 
 		fetch('/api/fares', { method: 'GET' }).then(async (data) => {
 			const fares = await data.json();
-			fareModules.set(processFares($destinationStore, fares));
+			const processPromise = new Promise<App.Modules>((resolve) => {
+				console.log(performance.mark('process'));
+				const processedFares = processFares($destinationStore, fares);
+				console.log(performance.measure('process'));
+				resolve(processedFares);
+			});
+			processPromise
+				.then((result) => {
+					fareModules.set(result);
+				})
+				.catch((err) => {});
 		});
 	});
 </script>

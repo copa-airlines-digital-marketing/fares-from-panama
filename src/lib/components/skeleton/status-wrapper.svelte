@@ -4,6 +4,7 @@
 	import Icon from '$lib/components/site/icon.svelte';
 	import IconInfo from '$lib/assets/icon-solar-info-circle-bold.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
+	import Download from '$lib/assets/icon-solar-cloud-download-bold.svg?raw';
 
 	export let name: string;
 	export let labels: Record<string, string>;
@@ -21,66 +22,71 @@
 	const themeColor = theme === 'light' ? 'text-grey-600' : 'text-common-white';
 </script>
 
-{#if translations}
-	<StatusText>
-		<Icon data={IconError} class="size-24 text-red"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			No translations for {name}
-		</Heading>
-	</StatusText>
-{:else if fares}
-	<StatusText pulse>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['loading']}
-		</Heading>
-	</StatusText>
-{:else if destination}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['selectDestination']}
-		</Heading>
-	</StatusText>
-{:else if days}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['selectDays']}
-		</Heading>
-	</StatusText>
-{:else if budget}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['selectBudget']}
-		</Heading>
-	</StatusText>
-{:else if month}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['selectMonth']}
-		</Heading>
-	</StatusText>
-{:else if interest}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['selectInterest']}
-		</Heading>
-	</StatusText>
-{:else if dates}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['selectDate']}
-		</Heading>
-	</StatusText>
-{:else if noFares}
-	<StatusText>
-		<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
-		<Heading type="display-tiny" style="{themeColor} ">
-			{labels['stayNotAvailable']}
-		</Heading>
-	</StatusText>
-{/if}
+<div
+	class="absolute bg-gradient-to-b from-backgound-paper from-60% px-tiny pb-huge pt-tiny to-transparent rounded-t-xl top-0 w-full"
+>
+	{#if translations}
+		<StatusText>
+			<Icon data={IconError} class="size-24 text-red"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				No translations for {name}
+			</Heading>
+		</StatusText>
+	{:else if fares}
+		<StatusText pulse>
+			<Icon data={Download} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['loading']}
+			</Heading>
+		</StatusText>
+	{:else if destination}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['selectDestination']}
+			</Heading>
+		</StatusText>
+	{:else if days}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['selectDays']}
+			</Heading>
+		</StatusText>
+	{:else if budget}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['selectBudget']}
+			</Heading>
+		</StatusText>
+	{:else if month}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['selectMonth']}
+			</Heading>
+		</StatusText>
+	{:else if interest}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['selectInterest']}
+			</Heading>
+		</StatusText>
+	{:else if dates}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['selectDate']}
+			</Heading>
+		</StatusText>
+	{:else if noFares}
+		<StatusText>
+			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
+			<Heading type="display-tiny" style="{themeColor} ">
+				{labels['stayNotAvailable']}
+			</Heading>
+		</StatusText>
+	{/if}
+</div>

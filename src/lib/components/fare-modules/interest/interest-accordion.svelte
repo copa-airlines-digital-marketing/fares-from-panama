@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Accordion } from 'bits-ui';
 	import { getContext } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
@@ -11,10 +11,11 @@
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
-	const section = getContext('section');
+	const section = getContext<string>('section');
 	const modules = getFareModulesContext();
+	const labels = getContext<Record<string, string>>('moduleLabels');
 
-	const labels = getContext('moduleLabels');
+	let name: string[] = [];
 
 	$: interestNames = $modules.interestNames;
 
@@ -22,7 +23,7 @@
 
 	$: selectedStayOfSection = $selectedStay[section];
 
-	$: name = undefined;
+	$: name = [];
 
 	$: maxShow = name ? 12 : 12;
 
@@ -42,15 +43,16 @@
 					if (translation) return translation[0].name === key;
 					return false;
 				})[0].destination_category_id}
-				<Accordion.Item value="${key}">
+				<Accordion.Item value={key}>
 					<Accordion.Header>
 						<Accordion.Trigger
-							class="w-full border-b border-b-common-white group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
+							class="w-full border-b border-b-common-white group focus:bg-red focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors data-[state='open']:bg-red"
 						>
 							<InterestNameCard
 								count={Object.keys(fares).length}
 								fare={interest}
 								interest={key}
+								selected={name.includes(key)}
 								image={category.image}
 							></InterestNameCard>
 						</Accordion.Trigger>

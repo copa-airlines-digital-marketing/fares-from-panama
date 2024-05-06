@@ -41,13 +41,13 @@
 				{thumb}
 				asChild
 				let:builder
-				class="block square-24 border-8 border-red bg-red rounded-full shadow-medium outline-none transition-all hover:bg-system-error focus:border-grey-75 active:scale-95"
+				class="block square-24 border-8 border-red bg-red rounded-full shadow-medium outline-none hover:bg-system-error focus:border-grey-75 active:scale-95"
 			>
 				<span
 					id="{name}-input"
 					use:builder.action
 					{...builder}
-					class="block square-24 border-8 border-red bg-red rounded-full shadow-medium outline-none transition-all hover:bg-system-error focus:border-grey-75 active:scale-95 top-1/2 -translate-y-1/2 -translate-x-1/2"
+					class="block square-24 border-8 border-red bg-red rounded-full shadow-medium outline-none hover:bg-system-error focus:border-grey-75 active:scale-95 top-1/2 -translate-y-1/2 -translate-x-1/2"
 				>
 					<span
 						class="absolute transition-all top-[calc(100%_+_16px)] block left-1/2 -translate-x-1/2 text-12/16 text-center bg-grey-800 py-4 px-8 rounded text-common-white"

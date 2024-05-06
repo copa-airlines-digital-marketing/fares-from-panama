@@ -11,7 +11,7 @@
 </script>
 
 <span
-	class="calendar:p-12 fare-card--month font-heading grid group-focus:*:!text-primary-dark group-hover:*:!text-primary-dark h-full px-8 py-8 text-12/16 text-primary-dark text-right transition-colors w-full"
+	class="calendar:p-12 fare-card--month font-heading grid group-focus:*:!text-common-white group-hover:*:!text-common-white h-full px-8 py-8 text-12/16 text-primary-dark text-right transition-colors w-full group-data-[state='active']:*:text-common-white"
 >
 	<span class="font-heading-medium [grid-area:month] self-center text-20/24 text-left uppercase">
 		{getMonthName(parseDate(fare.departure))}

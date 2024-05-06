@@ -8,7 +8,8 @@
 	import { formatDateForDisplay, getShoppingEngingeURL, parseDate } from '$lib/public/utils';
 	import BudgetSkeleton from './budget-skeleton.svelte';
 	import { getBudgetContext } from '$lib/components/budget/context';
-	import { fly } from 'svelte/transition';
+	import { blur, fly, scale } from 'svelte/transition';
+	import { quintIn } from 'svelte/easing';
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
@@ -32,10 +33,15 @@
 	{@const fares = Object.values(budget[parseInt(selectedStayOfSection)])
 		.sort((a, b) => parseInt(a.price) - parseInt(b.price))
 		.filter((fare) => parseInt(fare.price) <= $selectedBudget)}
-	<div class="flex font-heading font-heading-medium justify-end px-8 text-grey-600">
-		{fares.length}
-		{labels['destinations']}
-	</div>
+	{#key $selectedBudget}
+		<div
+			in:fly={{ easing: quintIn, x: 5 }}
+			class="flex font-heading font-heading-medium justify-end px-8 text-grey-600"
+		>
+			{fares.length}
+			{labels['destinations']}
+		</div>
+	{/key}
 	<ul
 		class="auto-rows-auto grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-tiny"
 	>
@@ -98,18 +104,15 @@
 {:else}
 	<div class="relative">
 		<BudgetSkeleton pulse={isEmpty(budget)}></BudgetSkeleton>
-		<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
-		<div class="absolute grid h-full md:place-content-center px-16 py-8 top-0 w-full">
-			<StatusWrapper
-				name={section}
-				{labels}
-				theme={'light'}
-				fares={isEmpty($modules)}
-				days={!$selectedStay[section]}
-				budget={!$selectedBudget}
-				noFares={!!selectedStayOfSection && !!budget && !budget[parseInt(selectedStayOfSection)]}
-			></StatusWrapper>
-		</div>
+		<StatusWrapper
+			name={section}
+			{labels}
+			theme={'light'}
+			fares={isEmpty($modules)}
+			days={!$selectedStay[section]}
+			budget={!$selectedBudget}
+			noFares={!!selectedStayOfSection && !!budget && !budget[parseInt(selectedStayOfSection)]}
+		></StatusWrapper>
 	</div>
 {/if}
 

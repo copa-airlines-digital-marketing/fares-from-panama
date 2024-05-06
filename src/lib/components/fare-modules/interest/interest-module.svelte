@@ -39,25 +39,22 @@
 
 {#if innerWidth === undefined}
 	<SkeliView></SkeliView>
-{:else if innerWidth < 960}
+{:else if innerWidth < 1180}
 	{#if showModule}
 		<InterestAccordion />
 	{:else}
 		<div class="relative">
 			<InterestAccordionSkeleton />
-			<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
-			<div class="absolute grid h-full px-16 py-roomy top-0 w-full">
-				<StatusWrapper
-					name={section}
-					{labels}
-					theme={'light'}
-					fares={isNil($modules) || isEmpty($modules)}
-					days={!$selectedStay[section]}
-					noFares={isNotNil(selectedStayOfSection) &&
-						isNotNil(interestNames) &&
-						isNil(interestNames[parseInt(selectedStayOfSection)])}
-				></StatusWrapper>
-			</div>
+			<StatusWrapper
+				name={section}
+				{labels}
+				theme={'light'}
+				fares={isNil($modules) || isEmpty($modules)}
+				days={!$selectedStay[section]}
+				noFares={isNotNil(selectedStayOfSection) &&
+					isNotNil(interestNames) &&
+					isNil(interestNames[parseInt(selectedStayOfSection)])}
+			></StatusWrapper>
 		</div>
 	{/if}
 {:else if showModule}
@@ -65,20 +62,17 @@
 {:else}
 	<div class="relative">
 		<InterestTabsSkeleton />
-		<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
-		<div class="absolute grid h-full px-16 py-roomy top-0 w-full">
-			<StatusWrapper
-				name={section}
-				{labels}
-				theme={'light'}
-				fares={isNil($modules) || isEmpty($modules)}
-				days={!$selectedStay[section]}
-				noFares={!(
-					isNotNil(selectedStayOfSection) &&
-					isNotNil(interestNames) &&
-					isNil(interestNames[parseInt(selectedStayOfSection)])
-				)}
-			></StatusWrapper>
-		</div>
+		<StatusWrapper
+			name={section}
+			{labels}
+			theme={'light'}
+			fares={isNil($modules) || isEmpty($modules)}
+			days={!$selectedStay[section]}
+			noFares={!(
+				isNotNil(selectedStayOfSection) &&
+				isNotNil(interestNames) &&
+				isNil(interestNames[parseInt(selectedStayOfSection)])
+			)}
+		></StatusWrapper>
 	</div>
 {/if}

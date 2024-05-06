@@ -8,6 +8,7 @@
 	import { isEmpty, minBy, prop, reduce } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
 	import { dateIsInMonth, getWeekDays, parseDate, parseDeparture } from '$lib/public/utils';
+	import { fly } from 'svelte/transition';
 
 	const section = getContext<string>('section');
 	const { selected: selectedDestination } = getDestinationsContext();
@@ -60,7 +61,10 @@
 					value={key}
 					class="bg-backgound-paper border-2 border-primary-ultradark my-16 p-8 rounded-lg shadow-medium"
 				>
-					<ul class="auto-rows-auto gap-8 grid calendar:grid-cols-[repeat(7,_minmax(0,_1fr))] p-8">
+					<ul
+						transition:fly={{ y: -5 }}
+						class="auto-rows-auto gap-8 grid calendar:grid-cols-[repeat(7,_minmax(0,_1fr))] p-8"
+					>
 						{#each getWeekDays() as weekday}
 							<li
 								class="caret-transparent font-heading font-heading-medium my-8 text-center text-primary-dark uppercase"

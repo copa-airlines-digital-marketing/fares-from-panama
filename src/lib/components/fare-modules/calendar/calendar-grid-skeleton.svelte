@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="bg-backgound-paper calendar:gap-8 calendar:grid-cols-[repeat(7,_minmax(0,_1fr))] grid grid-cols-1 my-16 px-8 py-8 rounded-lg shadow-medium"
+	class="bg-backgound-paper/80 calendar:gap-8 calendar:grid-cols-[repeat(7,_minmax(0,_1fr))] grid grid-cols-1 my-16 px-8 py-8 rounded-lg"
 >
 	{#each daysOfWeek as dow}
 		<div class="flex justify-center">

@@ -13,16 +13,21 @@
 </script>
 
 <span
-	class="calendar:p-12 fare-card--interest font-heading grid group-focus:*:!text-common-white group-hover:*:!text-common-white h-full px-8 py-8 text-12/16 text-common-white text-right transition-colors w-full"
+	class="calendar:p-16 calendar:max-h-120 fare-card--interest font-heading grid group-focus:*:!text-common-white group-hover:*:!text-common-white h-full overflow-hidden px-8 py-8 text-12/16 text-common-white text-right transition-colors w-full"
 >
-	<span class="[grid-area:img] block rounded-full square-72 md:square-96 overflow-hidden mr-8">
+	<span
+		class="[grid-area:img] block calendar:-m-16 size-72 rounded-full overflow-hidden mr-8 calendar:size-auto calendar:rounded-none"
+	>
 		<img
 			loading="lazy"
 			class="object-cover h-full w-full"
-			src="https://cm-marketing.directus.app/assets/{image}?width=200&height=200&fit=cover"
+			src="https://cm-marketing.directus.app/assets/{image}?width=290&height=120&fit=cover"
 			alt=""
 		/>
 	</span>
+	<span
+		class="[grid-area:img] bg-common-black/40 -m-16 hidden calendar:block group-hover:bg-secondary group-focus:bg-red group-data-[state='active']:bg-red transition-colors"
+	></span>
 	<span class="font-heading-medium [grid-area:interest] self-end text-20/24 text-left">
 		{interest}
 	</span>
@@ -36,7 +41,7 @@
 		${fare.price}
 	</span>
 	<span
-		class="[grid-area:icons] self-center calendar:hidden ml-4 sm:ml-8 transition-transform"
+		class="[grid-area:icons] block self-center calendar:hidden ml-4 sm:ml-8 transition-transform duration-300"
 		class:rotate-180={selected}
 	>
 		<Icon data={Carret} class="size-24 fill-grey-200"></Icon>
@@ -60,9 +65,9 @@
 
 	@media (min-width: 1180px) {
 		.fare-card--interest {
-			grid-template-areas: 'img interest interest' 'img count count' 'img froms price' 'img crncy price';
-			grid-template-columns: auto 1fr auto;
-			grid-template-rows: 1fr 1fr auto auto;
+			grid-template-areas: 'interest interest .' 'count count .' '. froms price' '. crncy price';
+			grid-template-columns: [img-start] auto 1fr auto [img-end];
+			grid-template-rows: [img-start] 1fr 1fr auto auto [img-end];
 		}
 	}
 </style>

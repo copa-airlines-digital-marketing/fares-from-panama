@@ -404,6 +404,8 @@ type ViajaPanamaFare = BaseCollection & {
   destination: string
   days: number
   departure: string
+  'month(departure)': number
+  'year(departure)': number
   return: string
   fare: string
   taxes: string

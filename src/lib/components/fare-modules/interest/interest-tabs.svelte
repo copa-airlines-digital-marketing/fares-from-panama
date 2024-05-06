@@ -32,8 +32,8 @@
 {#if isNotNil(selectedStayOfSection)}
 	{@const stay = parseInt(selectedStayOfSection)}
 	{@const interests = interestNames[stay]}
-	<Tabs.Root bind:value={name} class="flex gap-16">
-		<Tabs.List class="auto-rows-min gap-8 grid grid-cols-1 min-w-max">
+	<Tabs.Root bind:value={name} class="grid grid-cols-4 grid-rows-1 gap-16">
+		<Tabs.List class="auto-rows-min col-start-1 col-span-1 gap-8 grid grid-cols-1 min-w-max">
 			{#if !isEmpty(interests) && interests != null}
 				{#each Object.keys(interests).sort((a, b) => parseInt(interests[a].price) - parseInt(interests[b].price)) as key (key)}
 					{@const interest = interests[key]}
@@ -45,10 +45,11 @@
 					})[0].destination_category_id}
 					<Tabs.Trigger
 						value={key}
-						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
+						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red overflow-hidden shadow-tiny"
 					>
 						<InterestNameCard
 							count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}
+							selected={name === key}
 							fare={interest}
 							interest={key}
 							image={category.image}
@@ -64,12 +65,9 @@
 		{#if !isEmpty(interests) && interests != null}
 			{#each Object.keys(interests).sort((a, b) => parseInt(interests[a].price) - parseInt(interests[b].price)) as key (key)}
 				{@const fares = interestFares[stay][key]}
-				<Tabs.Content
-					value={key}
-					class="bg-backgound-paper border-2 border-primary-ultradark p-8 rounded-lg shadow-medium"
-				>
+				<Tabs.Content value={key} class="col-start-2 col-span-3 self-start">
 					<ul
-						class="auto-rows-fr bg-backgound-paper gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-8"
+						class="auto-rows-fr bg-backgound-paper gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-8 rounded-lg shadow-medium"
 					>
 						{#each Object.keys(fares).sort((a, b) => parseInt(fares[a].price) - parseInt(fares[b].price)) as fareKey, i}
 							{@const fare = fares[fareKey]}

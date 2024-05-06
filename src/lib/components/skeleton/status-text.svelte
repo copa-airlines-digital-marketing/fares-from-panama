@@ -5,7 +5,7 @@
 </script>
 
 <div
-	class="flex justify-center gap-4"
+	class="flex flex-col items-center text-center justify-center gap-4"
 	class:animate-pulse={pulse}
 	transition:slide={{ duration: 350, axis: 'y' }}
 >
