@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Tabs } from 'bits-ui';
 	import { getContext } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
@@ -11,10 +11,10 @@
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
-	const section = getContext('section');
+	const section = getContext<string>('section');
 	const modules = getFareModulesContext();
 
-	const labels = getContext('moduleLabels');
+	const labels = getContext<Record<string, string>>('moduleLabels');
 
 	$: interestNames = $modules.interestNames;
 
@@ -27,6 +27,9 @@
 	$: maxShow = name ? 12 : 12;
 
 	const addShowMax = () => (maxShow += 12);
+
+	const sortInterest = (fares: Record<string, ViajaPanamaFare>) => (a: string, b: string) =>
+		parseInt(fares[a].price) - parseInt(fares[b].price) || a.localeCompare(b);
 </script>
 
 {#if isNotNil(selectedStayOfSection)}
@@ -35,7 +38,7 @@
 	<Tabs.Root bind:value={name} class="grid grid-cols-4 grid-rows-1 gap-16">
 		<Tabs.List class="auto-rows-min col-start-1 col-span-1 gap-8 grid grid-cols-1 min-w-max">
 			{#if !isEmpty(interests) && interests != null}
-				{#each Object.keys(interests).sort((a, b) => parseInt(interests[a].price) - parseInt(interests[b].price)) as key (key)}
+				{#each Object.keys(interests).sort(sortInterest(interests)) as key (key)}
 					{@const interest = interests[key]}
 					{@const fares = interestFares[stay][key]}
 					{@const category = $destinations[interest.destination].categories.filter((value) => {

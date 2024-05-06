@@ -28,6 +28,9 @@
 	$: maxShow = name ? 12 : 12;
 
 	const addShowMax = () => (maxShow += 12);
+
+	const sortInterest = (fares: Record<string, ViajaPanamaFare>) => (a: string, b: string) =>
+		parseInt(fares[a].price) - parseInt(fares[b].price) || a.localeCompare(b);
 </script>
 
 {#if isNotNil(selectedStayOfSection)}
@@ -35,7 +38,7 @@
 	{@const interests = interestNames[stay]}
 	<Accordion.Root class="my-16" multiple bind:value={name}>
 		{#if !isEmpty(interests) && interests != null}
-			{#each Object.keys(interests).sort((a, b) => parseInt(interests[a].price) - parseInt(interests[b].price)) as key (key)}
+			{#each Object.keys(interests).sort(sortInterest(interests)) as key (key)}
 				{@const interest = interests[key]}
 				{@const fares = interestFares[stay][key]}
 				{@const category = $destinations[interest.destination].categories.filter((value) => {
