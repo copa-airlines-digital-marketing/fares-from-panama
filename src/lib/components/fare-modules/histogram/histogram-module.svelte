@@ -8,6 +8,8 @@
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
 	import HistogramTabs from './histogram-tabs.svelte';
 	import HistogramTabsSkeleton from './histogram-tabs-skeleton.svelte';
+	import HistogramAccordion from './histogram-accordion.svelte';
+	import HistogramAccordionSkeleton from './histogram-accordion-skeleton.svelte';
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
@@ -39,10 +41,11 @@
 	<SkeliView></SkeliView>
 {:else if innerWidth < 960}
 	{#if showModule}
-		pending accordion
+		<HistogramAccordion />
 	{:else}
 		<div class="relative">
-			pending skeleton
+			<HistogramAccordionSkeleton pulse={isNil($modules) || isEmpty($modules)}
+			></HistogramAccordionSkeleton>
 			<div class="absolute bg-grey-100/60 blur h-full top-0 w-full"></div>
 			<div class="absolute grid h-full px-16 py-roomy top-0 w-full">
 				<StatusWrapper

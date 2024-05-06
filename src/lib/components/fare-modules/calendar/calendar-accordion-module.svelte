@@ -14,10 +14,11 @@
 	const { selected: selectedDestination } = getDestinationsContext();
 	const { days: allDays, selected: selectedStay } = getDaysContext();
 	const modules = getFareModulesContext();
-	const { calendarMonths, calendar } = $modules;
 
 	const labels = getContext('moduleLabels');
 
+	$: calendarMonths = $modules.calendarMonths;
+	$: calendar = $modules.calendar;
 	$: selectedStayOfSection = $selectedStay[section];
 </script>
 

@@ -1,17 +1,9 @@
 <script lang="ts">
-	import {
-		dateIsInMonth,
-		getDayAndDate,
-		getDayOfWeekName,
-		getMonthName,
-		isBeforeToday,
-		parseDate
-	} from '$lib/public/utils';
+	import { getDayOfWeekName, isBeforeToday, parseDate } from '$lib/public/utils';
 	import { getContext } from 'svelte';
 	import Icon from '$lib/components/site/icon.svelte';
-	import Carret from '$lib/assets/icon-carret-down.svg?raw';
 	import Isotipo from '$lib/assets/tarifas-viaja-panama-isotipo.svg?raw';
-	import { isEmpty, isNotNil } from 'ramda';
+	import { isEmpty } from 'ramda';
 	import { getDate } from 'date-fns';
 	import { Tooltip } from 'bits-ui';
 	import { fly } from 'svelte/transition';
@@ -22,7 +14,6 @@
 	export let lowest: number;
 	export let max: number;
 	export let count: number;
-	export let width: string = '100%';
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
@@ -33,7 +24,7 @@
 {#if !isEmpty(dateKey)}
 	{@const date = parseDate(dateKey)}
 	<span
-		class="caret-transparent flex flex-col gap-8 items-center text-14/20 self-end"
+		class="caret-transparent flex flex-col gap-8 items-center text-14/20 self-end min-w-32"
 		class:text-grey-500={isEmpty(fare)}
 		class:text-grey-600={!isEmpty(fare)}
 	>

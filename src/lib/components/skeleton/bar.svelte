@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class={concatClasses(className, 'bg-grey-300 rounded h-12 my-4 ease-in-out')}
+	class={concatClasses(className, 'bg-grey-300 caret-transparent rounded h-12 my-4 ease-in-out')}
 	class:animate-pulse={pulse}
 	style="width: {width ? width : '100%'};"
 ></div>

@@ -44,7 +44,7 @@
 		{#if !isEmpty(months) && months != null}
 			{#each Object.keys(months) as key (key)}
 				<Tabs.Content value={key}>
-					<HistogramDatesTabs selected={current === key} month={key}></HistogramDatesTabs>
+					<HistogramDatesTabs month={key}></HistogramDatesTabs>
 				</Tabs.Content>
 			{/each}
 		{:else}

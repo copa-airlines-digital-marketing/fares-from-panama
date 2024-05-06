@@ -10,7 +10,6 @@
 	import { isBeforeToday, parseDate } from '$lib/public/utils';
 
 	export let month: string;
-	export let selected: boolean;
 
 	const { selected: selectedStay } = getDaysContext();
 	const section = getContext<string>('section');
@@ -38,7 +37,9 @@
 </script>
 
 <Tabs.Root bind:value={name} class="my-roomy">
-	<Tabs.List class="auto-cols-fr gap-4 grid grid-flow-col grid-rows-1 items-end max-w-full my-16">
+	<Tabs.List
+		class="auto-cols-auto gap-4 grid grid-flow-col grid-rows-1 items-end my-16 overflow-x-auto track"
+	>
 		{#each Object.keys(days) as key (key)}
 			{@const date = days[key]}
 			{@const fares = histogram[stay][month][key]}
@@ -50,7 +51,7 @@
 			<Tabs.Trigger
 				disabled={isEmpty(date) || isBeforeToday(parseDate(date.departure))}
 				value={key}
-				class="group"
+				class="group min-w-32"
 			>
 				<HistogramDayCard
 					count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}
