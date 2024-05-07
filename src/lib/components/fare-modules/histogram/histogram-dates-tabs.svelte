@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tabs } from 'bits-ui';
+	import { ScrollArea, Tabs } from 'bits-ui';
 	import { getContext } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
 	import { getFareModulesContext } from '../context';
@@ -36,38 +36,50 @@
 	const getPriceProp = ({ price }: ViajaPanamaFare) => parseInt(price);
 </script>
 
-<Tabs.Root bind:value={name} class="my-roomy">
-	<Tabs.List
-		class="auto-cols-auto gap-4 grid grid-flow-col grid-rows-1 items-end my-16 overflow-x-auto track"
-	>
-		{#each Object.keys(days) as key (key)}
-			{@const date = days[key]}
-			{@const fares = histogram[stay][month][key]}
-			{@const daysPrice = Object.values(days)
-				.filter((value) => !isEmpty(value))
-				.map(getPriceProp)}
-			{@const lowest = daysPrice.reduce(min, Infinity)}
-			{@const highest = daysPrice.reduce(max, 0)}
-			<Tabs.Trigger
-				disabled={isEmpty(date) || isBeforeToday(parseDate(date.departure))}
-				value={key}
-				class="group min-w-32"
-			>
-				<HistogramDayCard
-					count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}
-					fare={date}
-					dateKey={key}
-					lowest={100}
-					max={300}
-					selected={name === key}
-				></HistogramDayCard>
-			</Tabs.Trigger>
-		{:else}
-			<div class="text-center text-common-white">
-				{labels['noFares']}
-			</div>
-		{/each}
-	</Tabs.List>
+<Tabs.Root bind:value={name}>
+	<ScrollArea.Root class="relative w-full pb-tiny pt-roomy" dir="ltr">
+		<ScrollArea.Viewport class="w-full">
+			<ScrollArea.Content>
+				<Tabs.List class="auto-cols-auto gap-4 grid grid-flow-col grid-rows-1 items-end">
+					{#each Object.keys(days) as key (key)}
+						{@const date = days[key]}
+						{@const fares = histogram[stay][month][key]}
+						{@const daysPrice = Object.values(days)
+							.filter((value) => !isEmpty(value))
+							.map(getPriceProp)}
+						{@const lowest = daysPrice.reduce(min, Infinity)}
+						{@const highest = daysPrice.reduce(max, 0)}
+						<Tabs.Trigger
+							disabled={isEmpty(date) || isBeforeToday(parseDate(date.departure))}
+							value={key}
+							class="group min-w-32 outline-none"
+						>
+							<HistogramDayCard
+								count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}
+								fare={date}
+								dateKey={key}
+								lowest={100}
+								max={300}
+								selected={name === key}
+							></HistogramDayCard>
+						</Tabs.Trigger>
+					{:else}
+						<div class="text-center text-common-white">
+							{labels['noFares']}
+						</div>
+					{/each}
+				</Tabs.List>
+			</ScrollArea.Content>
+		</ScrollArea.Viewport>
+		<ScrollArea.Scrollbar
+			orientation="horizontal"
+			class="flex w-full h-12 touch-none select-none rounded-full border-t border-t-transparent transition-all ease-in-out hover:bg-secondary/30"
+		>
+			<ScrollArea.Thumb
+				class="relative rounded-full bg-secondary opacity-60 transition-opacity hover:opacity-100"
+			/>
+		</ScrollArea.Scrollbar>
+	</ScrollArea.Root>
 	{#each Object.keys(days) as key (key)}
 		{@const fares = histogram[stay][month][key]}
 		{@const validFares = Object.values(fares)

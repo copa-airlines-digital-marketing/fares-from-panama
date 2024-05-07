@@ -124,6 +124,7 @@ const histogramFaresQuery = (days: number, departure: Date): FaresQuery => ({
 
 /* const budgetFaresQuery = (days: number, = )
  */
+
 export const getAllFares = (host: string, token: string) => {
   const client = createRestClient(host, token)
   return client.request(readItems(FARES_COLLECTION_NAME, {

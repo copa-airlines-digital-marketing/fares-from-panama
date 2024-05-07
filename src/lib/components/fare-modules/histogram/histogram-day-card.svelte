@@ -34,7 +34,7 @@
 					<span
 						use:builder.action
 						{...builder}
-						class="block group-hover:bg-secondary rounded-t-sm transition-colors shadow-tiny w-3/4"
+						class="block group-hover:bg-secondary group-focus:scale-110 rounded-t-sm transition-all shadow-tiny w-3/4"
 						class:bg-grey-100={isEmpty(fare)}
 						class:bg-primary={!isEmpty(fare)}
 						class:bg-red={selected}
