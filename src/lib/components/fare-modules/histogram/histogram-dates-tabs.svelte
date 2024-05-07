@@ -7,7 +7,7 @@
 	import { isEmpty, isNotNil, max, min } from 'ramda';
 	import HistogramDayCard from './histogram-day-card.svelte';
 	import HistogramFareCard from './histogram-fare-card.svelte';
-	import { isBeforeToday, parseDate } from '$lib/public/utils';
+	import { isBeforeSweetSpot, isBeforeToday, parseDate } from '$lib/public/utils';
 
 	export let month: string;
 
@@ -34,10 +34,18 @@
 	const addShowMax = () => (maxShow += 12);
 
 	const getPriceProp = ({ price }: ViajaPanamaFare) => parseInt(price);
+
+	const toastFN = getContext<() => void>('showToast');
+
+	const addToast = (dateKey: string) => () => {
+		if (!!toastFN && isBeforeSweetSpot(parseDate(dateKey))) {
+			toastFN();
+		}
+	};
 </script>
 
 <Tabs.Root bind:value={name}>
-	<ScrollArea.Root class="relative w-full pb-tiny pt-roomy" dir="ltr">
+	<ScrollArea.Root class="relative w-full pb-tiny pt-roomy" type="auto" dir="ltr">
 		<ScrollArea.Viewport class="w-full">
 			<ScrollArea.Content>
 				<Tabs.List class="auto-cols-auto gap-4 grid grid-flow-col grid-rows-1 items-end">
@@ -53,6 +61,7 @@
 							disabled={isEmpty(date) || isBeforeToday(parseDate(date.departure))}
 							value={key}
 							class="group min-w-32 outline-none"
+							on:click={addToast(key)}
 						>
 							<HistogramDayCard
 								count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}

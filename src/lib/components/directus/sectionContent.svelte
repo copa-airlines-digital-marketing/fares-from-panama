@@ -71,6 +71,8 @@
 
 		return addToast({ data: item });
 	};
+
+	setContext('showToast', showToast);
 </script>
 
 {#each cleanedContents as content}

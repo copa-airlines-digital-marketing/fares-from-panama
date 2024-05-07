@@ -3,14 +3,17 @@
 		formatDateForDisplay,
 		getDayAndDate,
 		getShoppingEngingeURL,
+		isAfter180Days,
+		isBeforeSweetSpot,
 		isBeforeToday,
 		parseDate
 	} from '$lib/public/utils';
 	import { getContext } from 'svelte';
-	import Icon from '$lib/components/site/icon.svelte';
-	import Isotipo from '$lib/assets/tarifas-viaja-panama-isotipo.svg?raw';
 	import { getDate } from 'date-fns';
 	import { isEmpty } from 'ramda';
+	import Icon from '$lib/components/site/icon.svelte';
+	import Isotipo from '$lib/assets/tarifas-viaja-panama-isotipo.svg?raw';
+	import ArmChair from '$lib/assets/icon-solar-armchair-2-bold.svg?raw';
 
 	export let fare: ViajaPanamaFare;
 	export let date: Date;
@@ -20,9 +23,20 @@
 	export let isInMonth = true;
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
+	const toastFN = getContext<() => void>('showToast');
+
+	const addToast = (url: string) => (e: Event) => {
+		if (!!toastFN && isBeforeSweetSpot(date)) {
+			toastFN();
+			e.preventDefault();
+			setTimeout(() => {
+				open(url, '_blank')?.focus();
+			}, 2500);
+		}
+	};
 </script>
 
-{#if isInMonth || isBeforeToday(date)}
+{#if isInMonth || isBeforeToday(date) || isAfter180Days(date)}
 	<div
 		class="calendar:aspect-square bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-500 transition-colors w-full"
 	>
@@ -53,31 +67,13 @@
 			{labels['dateNotAvailable']}
 		</div>
 	</div>
-{:else if fare.seats === -1}
-	<a
-		class="calendar:aspect-square bg-primary-dark calendar:px-8 calendar:py-4 fare-card--calendar-date focus:bg-red font-heading grid group h-full hover:bg-red px-16 py-8 rounded-xl text-12/16 text-common-white transition-colors w-full"
-		href={getShoppingEngingeURL(fare)}
-		target="_blank"
-	>
-		<span class="[grid-area:dates] font-heading-medium text-14/20 uppercase">
-			{isTab ? getDate(date) : getDayAndDate(date)}
-		</span>
-		<span class="[grid-area:retrn]">
-			{labels['lowSeats']}
-		</span>
-		<span
-			class="[grid-area:price] justify-self-end group-focus:*:textcomns
-group-hover:*:text-common-white self-center"
-		>
-			{labels['checkPrices']}
-		</span>
-	</a>
 {:else if fare.price === '9999999'}
+	{@const url = getShoppingEngingeURL(fare)}
 	<a
 		class="calendar:aspect-square bg-primary-ultradark calendar:px-8 calendar:py-4 fare-card--calendar-date focus:bg-red font-heading grid group h-full hover:bg-red px-16 py-8 rounded-xl text-12/16 text-common-white transition-colors w-full"
-		class:bg-secondary={lowest}
-		href={getShoppingEngingeURL(fare)}
+		href={url}
 		target="_blank"
+		on:click={addToast(url)}
 	>
 		<span class="[grid-area:dates] font-heading-medium text-14/20 uppercase">
 			{isTab ? getDate(date) : getDayAndDate(date)}
@@ -93,10 +89,12 @@ group-hover:*:text-common-white self-center"
 		</span>
 	</a>
 {:else}
+	{@const url = getShoppingEngingeURL(fare)}
 	<a
 		class="calendar:aspect-square bg-primary calendar:px-8 calendar:py-4 fare-card--calendar-date focus:bg-red font-heading grid group h-full hover:bg-red px-16 py-8 rounded-xl text-12/16 text-common-white transition-colors w-full"
 		class:bg-secondary={lowest}
-		href={getShoppingEngingeURL(fare)}
+		on:click={addToast(url)}
+		href={url}
 		target="_blank"
 	>
 		<span class="[grid-area:dates] font-heading-medium text-14/20 uppercase">
@@ -109,7 +107,12 @@ group-hover:*:text-common-white self-center"
 				· {labels['roundTrip']}
 			{/if}
 		</span>
-		{#if lowest}
+		{#if fare.seats === -1}
+			<span class="[grid-area:lowes] calendar:self-start flex font-heading-bold gap-4 items-center">
+				<Icon data={ArmChair} class="w-16"></Icon>
+				<span>{labels['lowSeats']}</span>
+			</span>
+		{:else if lowest}
 			<span class="[grid-area:lowes] calendar:self-start flex font-heading-bold gap-4 items-center">
 				<Icon data={Isotipo} class="fill-current w-16"></Icon>
 				<span>{labels['lowestFare']}</span>

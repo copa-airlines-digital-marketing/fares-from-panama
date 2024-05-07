@@ -39,9 +39,7 @@
 		fetch('/api/fares', { method: 'GET' }).then(async (data) => {
 			const fares = await data.json();
 			const processPromise = new Promise<App.Modules>((resolve) => {
-				console.log(performance.mark('process'));
 				const processedFares = processFares($destinationStore, fares);
-				console.log(performance.measure('process'));
 				resolve(processedFares);
 			});
 			processPromise

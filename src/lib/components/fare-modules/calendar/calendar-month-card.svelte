@@ -18,7 +18,7 @@
 	<span class="font-heading-medium [grid-area:month] self-center text-20/24 text-left uppercase">
 		{getMonthName(parseDate(fare.departure))}
 	</span>
-	{#if lowest}
+	{#if lowest && fare.price !== '9999999'}
 		<span
 			class="[grid-area:lowes] flex font-heading-bold gap-4 items-center sm:self-center sm:ml-4 text-secondary"
 			class:text-common-white={selected}
@@ -28,15 +28,17 @@
 			<span>{labels['lowestFare']}</span>
 		</span>
 	{/if}
-	<span class="[grid-area:froms] self-end">{labels['from']}</span>
-	<span class="[grid-area:crncy] mb-4">{labels['currency']}</span>
-	<span
-		class="[grid-area:price] font-heading-bold ml-4 self-end text-32/40"
-		class:text-common-white={selected || !lowest}
-		class:text-secondary={!selected && lowest}
-	>
-		${fare.price}
-	</span>
+	{#if fare.price !== '9999999'}
+		<span class="[grid-area:froms] self-end">{labels['from']}</span>
+		<span class="[grid-area:crncy] mb-4">{labels['currency']}</span>
+		<span
+			class="[grid-area:price] font-heading-bold ml-4 self-end text-32/40"
+			class:text-common-white={selected || !lowest}
+			class:text-secondary={!selected && lowest}
+		>
+			${fare.price}
+		</span>
+	{/if}
 	<span
 		class="[grid-area:icons] self-center calendar:hidden ml-4 sm:ml-8 transition-transform"
 		class:rotate-180={selected}

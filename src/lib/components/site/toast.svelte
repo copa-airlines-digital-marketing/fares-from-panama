@@ -4,7 +4,9 @@
 		helpers,
 		states: { toasts },
 		actions: { portal }
-	} = createToaster<Directus.TextContent>();
+	} = createToaster<Directus.TextContent>({
+		closeDelay: 2500
+	});
 
 	export const addToast = helpers.addToast;
 </script>
@@ -18,7 +20,7 @@
 </script>
 
 <div
-	class="auto-rows-auto container-grid fixed gap-8 justify-items-center left-1/2 m-8 top-0 -translate-x-1/2 z-50 w-full"
+	class="auto-rows-auto container-grid fixed gap-8 justify-items-center left-1/2 m-8 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full"
 	use:portal
 >
 	{#each $toasts as { id, data: { translations, icon: { code }, name } } (id)}
@@ -27,7 +29,7 @@
 			in:fly={{ duration: 350, y: '-100%' }}
 			out:fly={{ duration: 350, y: '-100%' }}
 			use:melt={$content(id)}
-			class="bg-system-warning flex col-start-2 items-start max-w-[710px] p-16 rounded shadow-medium text-grey-700 w-full"
+			class="bg-secondary flex col-start-2 items-start max-w-[710px] p-16 rounded shadow-medium text-primary w-full"
 		>
 			{#if translations[0]}
 				{@const { description } = translations[0]}

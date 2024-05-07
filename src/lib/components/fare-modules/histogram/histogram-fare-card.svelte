@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { formatDateForDisplay, getShoppingEngingeURL, parseDate } from '$lib/public/utils';
+	import {
+		formatDateForDisplay,
+		getShoppingEngingeURL,
+		isBeforeSweetSpot,
+		parseDate
+	} from '$lib/public/utils';
 	import { getContext } from 'svelte';
 	import { getDestinationsContext } from '$lib/components/destination/context';
 
@@ -8,12 +13,25 @@
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
 	const { all: destinations } = getDestinationsContext();
+
+	const toastFN = getContext<() => void>('showToast');
+
+	const addToast = (url: string) => (e: Event) => {
+		if (!!toastFN && isBeforeSweetSpot(parseDate(fare.departure))) {
+			toastFN();
+			e.preventDefault();
+			setTimeout(() => {
+				open(url, '_blank')?.focus();
+			}, 2500);
+		}
+	};
 </script>
 
 <a
 	class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full"
 	href={getShoppingEngingeURL(fare)}
 	target="_blank"
+	on:click={addToast(getShoppingEngingeURL(fare))}
 >
 	<img
 		loading="lazy"

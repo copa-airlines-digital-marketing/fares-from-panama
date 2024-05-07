@@ -25,7 +25,14 @@ const faresDestinationsGroup: FaresAggregation = {
   aggregate:{},
   groupBy: [
     'destination'
-  ]
+  ],
+  query: {
+    filter: {
+      price: {
+        _neq: '9999999'
+      }
+    }
+  }
 }
 
 const faresDaysGroup: FaresAggregation = {
