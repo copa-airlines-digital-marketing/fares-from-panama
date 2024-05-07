@@ -22,7 +22,9 @@
 			.main_image}?width=800&height=600&fit=cover"
 		alt=""
 	/>
-	<span class="[grid-area:image] bg-common-black/40 group-hover:bg-red transition-colors"></span>
+	<span
+		class="[grid-area:image] bg-common-black/40 group-hover:bg-red group-focus:bg-red transition-colors"
+	></span>
 	<span class="col-[content] font-heading-medium row-[dest]">
 		<span class="text-24/32"
 			>{$destinations[fare.destination]?.translations[0]?.name ?? 'not found'}</span

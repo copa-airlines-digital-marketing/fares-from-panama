@@ -35,7 +35,7 @@
 {#if isNotNil(selectedStayOfSection)}
 	{@const stay = parseInt(selectedStayOfSection)}
 	{@const interests = interestNames[stay]}
-	<Tabs.Root bind:value={name} class="grid grid-cols-4 grid-rows-1 gap-16">
+	<Tabs.Root bind:value={name} class="grid grid-cols-4 grid-rows-1 gap-16" orientation="vertical">
 		<Tabs.List class="auto-rows-min col-start-1 col-span-1 gap-8 grid grid-cols-1 min-w-max">
 			{#if !isEmpty(interests) && interests != null}
 				{#each Object.keys(interests).sort(sortInterest(interests)) as key (key)}
