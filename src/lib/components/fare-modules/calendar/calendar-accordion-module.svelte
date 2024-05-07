@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Accordion } from 'bits-ui';
 	import { getContext } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
@@ -8,9 +8,10 @@
 	import { slide } from 'svelte/transition';
 	import { isEmpty, minBy, prop, reduce } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
-	import { dateIsInMonth, parseDate, parseDeparture } from '$lib/public/utils';
+	import { dateIsInMonth, isBeforeSweetSpot, parseDate, parseDeparture } from '$lib/public/utils';
+	import type { Writable } from 'svelte/store';
 
-	const section = getContext('section');
+	const section = getContext<string>('section');
 	const { selected: selectedDestination } = getDestinationsContext();
 	const { days: allDays, selected: selectedStay } = getDaysContext();
 	const modules = getFareModulesContext();
@@ -20,6 +21,17 @@
 	$: calendarMonths = $modules.calendarMonths;
 	$: calendar = $modules.calendar;
 	$: selectedStayOfSection = $selectedStay[section];
+
+	const toastFN = getContext<() => void>('showToast');
+	const maxAlerts = getContext<number>('maxAlerts');
+	const alertsShown = getContext<Writable<number>>('alertsShown');
+
+	const addToast = (date: Date) => () => {
+		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
+			toastFN();
+			$alertsShown += 1;
+		}
+	};
 </script>
 
 {#if $selectedDestination && selectedStayOfSection}
@@ -39,6 +51,7 @@
 					<Accordion.Header>
 						<Accordion.Trigger
 							class="w-full border-b border-b-common-white group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
+							on:click={addToast(parseDate(fare.departure))}
 						>
 							<CalendarMonthCard {fare} lowest={lowest.price === fare.price} selected={false} />
 						</Accordion.Trigger>

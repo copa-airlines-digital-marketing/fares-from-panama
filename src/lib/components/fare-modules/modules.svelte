@@ -5,6 +5,7 @@
 	import BudgetModule from './budget/budget-module.svelte';
 	import InterestModule from './interest/interest-module.svelte';
 	import HistogramModule from './histogram/histogram-module.svelte';
+	import { writable } from 'svelte/store';
 
 	export let component_name: string;
 	export let content: FareModule;
@@ -23,6 +24,10 @@
 	if (validateTranslation(contenTranslation))
 		setContext('moduleLabels', toLabels(contenTranslation.labels));
 	else setContext('moduleLabels', {});
+
+	setContext('alertsShown', writable(0));
+
+	setContext('maxAlerts', 3);
 </script>
 
 {#if component_name === 'budget'}

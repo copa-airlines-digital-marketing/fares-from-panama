@@ -7,6 +7,7 @@
 	} from '$lib/public/utils';
 	import { getContext } from 'svelte';
 	import { getDestinationsContext } from '$lib/components/destination/context';
+	import type { Writable } from 'svelte/store';
 
 	export let fare: ViajaPanamaFare;
 
@@ -15,10 +16,13 @@
 	const { all: destinations } = getDestinationsContext();
 
 	const toastFN = getContext<() => void>('showToast');
+	const maxAlerts = getContext<number>('maxAlerts');
+	const alertsShown = getContext<Writable<number>>('alertsShown');
 
 	const addToast = (url: string) => (e: Event) => {
-		if (!!toastFN && isBeforeSweetSpot(parseDate(fare.departure))) {
+		if (!!toastFN && isBeforeSweetSpot(parseDate(fare.departure)) && $alertsShown <= maxAlerts) {
 			toastFN();
+			$alertsShown += 1;
 			e.preventDefault();
 			setTimeout(() => {
 				open(url, '_blank')?.focus();

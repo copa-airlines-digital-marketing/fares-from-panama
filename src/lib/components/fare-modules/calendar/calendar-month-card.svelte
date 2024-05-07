@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { getMonthName, parseDate } from '$lib/public/utils';
+	import { getMonthName, isBeforeSweetSpot, parseDate } from '$lib/public/utils';
 	import { getContext } from 'svelte';
 	import Icon from '$lib/components/site/icon.svelte';
 	import Carret from '$lib/assets/icon-carret-down.svg?raw';
 	import Isotipo from '$lib/assets/tarifas-viaja-panama-isotipo.svg?raw';
+	import type { Writable } from 'svelte/store';
 
 	export let fare: ViajaPanamaFare;
 	export let selected = false;

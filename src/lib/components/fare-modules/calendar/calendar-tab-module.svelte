@@ -7,8 +7,15 @@
 	import CalendarMonthCard from './calendar-month-card.svelte';
 	import { isEmpty, minBy, prop, reduce } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
-	import { dateIsInMonth, getWeekDays, parseDate, parseDeparture } from '$lib/public/utils';
+	import {
+		dateIsInMonth,
+		getWeekDays,
+		isBeforeSweetSpot,
+		parseDate,
+		parseDeparture
+	} from '$lib/public/utils';
 	import { fly } from 'svelte/transition';
+	import type { Writable } from 'svelte/store';
 
 	const section = getContext<string>('section');
 	const { selected: selectedDestination } = getDestinationsContext();
@@ -22,6 +29,17 @@
 	$: calendarMonths = $modules.calendarMonths;
 	$: calendar = $modules.calendar;
 	$: selectedStayOfSection = $selectedStay[section];
+
+	const toastFN = getContext<() => void>('showToast');
+	const maxAlerts = getContext<number>('maxAlerts');
+	const alertsShown = getContext<Writable<number>>('alertsShown');
+
+	const addToast = (date: Date) => () => {
+		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
+			toastFN();
+			$alertsShown += 1;
+		}
+	};
 </script>
 
 {#if $selectedDestination && selectedStayOfSection}
@@ -40,6 +58,7 @@
 					<Tabs.Trigger
 						value={key}
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
+						on:click={addToast(parseDate(fare.departure))}
 					>
 						<CalendarMonthCard
 							{fare}

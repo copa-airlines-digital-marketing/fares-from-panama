@@ -14,6 +14,7 @@
 	import Icon from '$lib/components/site/icon.svelte';
 	import Isotipo from '$lib/assets/tarifas-viaja-panama-isotipo.svg?raw';
 	import ArmChair from '$lib/assets/icon-solar-armchair-2-bold.svg?raw';
+	import type { Writable } from 'svelte/store';
 
 	export let fare: ViajaPanamaFare;
 	export let date: Date;
@@ -24,10 +25,13 @@
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 	const toastFN = getContext<() => void>('showToast');
+	const maxAlerts = getContext<number>('maxAlerts');
+	const alertsShown = getContext<Writable<number>>('alertsShown');
 
 	const addToast = (url: string) => (e: Event) => {
-		if (!!toastFN && isBeforeSweetSpot(date)) {
+		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
 			toastFN();
+			$alertsShown += 1;
 			e.preventDefault();
 			setTimeout(() => {
 				open(url, '_blank')?.focus();

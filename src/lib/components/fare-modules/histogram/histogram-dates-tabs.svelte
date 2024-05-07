@@ -8,6 +8,7 @@
 	import HistogramDayCard from './histogram-day-card.svelte';
 	import HistogramFareCard from './histogram-fare-card.svelte';
 	import { isBeforeSweetSpot, isBeforeToday, parseDate } from '$lib/public/utils';
+	import type { Writable } from 'svelte/store';
 
 	export let month: string;
 
@@ -36,10 +37,13 @@
 	const getPriceProp = ({ price }: ViajaPanamaFare) => parseInt(price);
 
 	const toastFN = getContext<() => void>('showToast');
+	const maxAlerts = getContext<number>('maxAlerts');
+	const alertsShown = getContext<Writable<number>>('alertsShown');
 
 	const addToast = (dateKey: string) => () => {
-		if (!!toastFN && isBeforeSweetSpot(parseDate(dateKey))) {
+		if (!!toastFN && isBeforeSweetSpot(parseDate(dateKey)) && $alertsShown <= maxAlerts) {
 			toastFN();
+			$alertsShown += 1;
 		}
 	};
 </script>
