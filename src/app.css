@@ -79,7 +79,7 @@
 
 @layer base{
   .wysiwyg a {
-    @apply text-primary-light hover:underline focus:outline-none focus:underline;
+    @apply text-primary-light dark:text-common-white dark:underline hover:underline focus:outline-none focus:underline;
   }
 }
 
