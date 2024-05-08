@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { ScrollArea, Tabs } from 'bits-ui';
-	import { getContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
 	import { getFareModulesContext } from '../context';
-	import { fly } from 'svelte/transition';
-	import { isEmpty, isNotNil, max, min } from 'ramda';
+	import { fade, fly } from 'svelte/transition';
+	import { bind, isEmpty, isNotNil, max, min } from 'ramda';
 	import HistogramDayCard from './histogram-day-card.svelte';
 	import HistogramFareCard from './histogram-fare-card.svelte';
 	import { isBeforeSweetSpot, isBeforeToday, parseDate } from '$lib/public/utils';
 	import type { Writable } from 'svelte/store';
+	import Icon from '$lib/components/site/icon.svelte';
+	import Scroll from '$lib/assets/icon-solar-round-double-alt-arrow-left-bold.svg?raw';
+	import { quintInOut } from 'svelte/easing';
 
 	export let month: string;
 
@@ -46,6 +49,22 @@
 			$alertsShown += 1;
 		}
 	};
+
+	const indicated = getContext<Writable<number>>('scrollIndicator');
+
+	let scrollIndicator = false;
+
+	onMount(() => {
+		if ($indicated < 2) {
+			setTimeout(() => {
+				scrollIndicator = true;
+			}, 350);
+			setTimeout(() => {
+				scrollIndicator = false;
+			}, 1850);
+			$indicated += 1;
+		}
+	});
 </script>
 
 <Tabs.Root bind:value={name}>
@@ -84,6 +103,15 @@
 				</Tabs.List>
 			</ScrollArea.Content>
 		</ScrollArea.Viewport>
+		{#if scrollIndicator}
+			<div
+				class="absolute backdrop-blur-sm bg-backgound-paper/60 flex-col gap-4 h-full items-center justify-center px-16 top-1/2 -translate-y-1/2 right-0 text-primary flex histogram:hidden"
+				transition:fly={{ x: 10, duration: 750, easing: quintInOut }}
+			>
+				<Icon data={Scroll} class="animate-pulse size-24"></Icon>
+				<p>{labels['moreFares']}</p>
+			</div>
+		{/if}
 		<ScrollArea.Scrollbar
 			orientation="horizontal"
 			class="flex w-full h-12 touch-none select-none rounded-full border-t border-t-transparent transition-all ease-in-out hover:bg-secondary/30"
@@ -100,7 +128,7 @@
 			.sort((a, b) => parseInt(a.price) - parseInt(b.price))}
 		<Tabs.Content value={key} class="">
 			<ul
-				class="auto-rows-fr bg-backgound-paper gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-8"
+				class="auto-rows-fr bg-backgound-paper md:bg-grey-75 gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-8"
 			>
 				{#each validFares as fare, i}
 					{#if i < maxShow}

@@ -7,7 +7,8 @@ export default {
 	theme: {
 		extend: {
 			screens: {
-				calendar: '1180px'
+				calendar: '1180px',
+        histogram: '1256px'
 			},
 			colors: {
 				red: '#e4002b'

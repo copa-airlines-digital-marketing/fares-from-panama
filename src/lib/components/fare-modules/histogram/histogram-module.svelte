@@ -2,7 +2,7 @@
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import { getFareModulesContext } from '../context';
-	import { getContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import { SkeliView } from '$lib/components/skeleton';
 	import { isEmpty, isNil, isNotNil } from 'ramda';
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
@@ -10,6 +10,7 @@
 	import HistogramTabsSkeleton from './histogram-tabs-skeleton.svelte';
 	import HistogramAccordion from './histogram-accordion.svelte';
 	import HistogramAccordionSkeleton from './histogram-accordion-skeleton.svelte';
+	import { writable } from 'svelte/store';
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
@@ -33,13 +34,15 @@
 		isNotNil(labels) &&
 		isNotNil(interestNames) &&
 		isNotNil(interestFares);
+
+	setContext('scrollIndicator', writable(0));
 </script>
 
 <svelte:window bind:innerWidth />
 
 {#if innerWidth === undefined}
 	<SkeliView></SkeliView>
-{:else if innerWidth < 960}
+{:else if innerWidth < 1180}
 	{#if showModule}
 		<HistogramAccordion />
 	{:else}

@@ -17,7 +17,7 @@
 	{/each}
 </div>
 
-<div class="auto-cols-1fr gap-8 grid grid-flow-col my-petit">
+<div class="auto-cols-1fr gap-8 grid grid-flow-col my-petit max-w-full overflow-x-hidden">
 	{#each range(0, 30) as item}
 		<div class="flex flex-col gap-4 items-center">
 			<SkeliBar {pulse} width="3ch" class="h-80"></SkeliBar>
