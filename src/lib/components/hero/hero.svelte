@@ -20,7 +20,7 @@
 		.item;
 </script>
 
-<div class="bg-backgound-lightblue container-grid grid hero-grid md:max-h-svh md:overflow-hidden">
+<div class="bg-backgound-lightblue container-grid grid hero-grid md:h-svh md:overflow-hidden">
 	<Header class="col-start-1 col-full row-start-1 row-span-1"></Header>
 	<BentoBox content={hero} class="col-start-1 col-full row-start-2 row-span-full"></BentoBox>
 	<ul
