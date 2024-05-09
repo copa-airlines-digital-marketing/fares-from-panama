@@ -1,4 +1,5 @@
-import type { QueryDeep, QueryFields } from "@directus/sdk"
+import { readItems, type QueryDeep, type QueryFields, type QueryFilter } from "@directus/sdk"
+import { createRestClient } from "./clients"
 
 export const INTEREST_COLLECTION_NAME: keyof Schema = 'destination_category'
 
@@ -11,6 +12,14 @@ export const interestReturnFieldsQuery: QueryFields<Schema, DestinationCategory>
   ]}
 ]
 
+const interestTranslationFilter = (lang: string): QueryFilter<Schema, DestinationCategory> => ({
+  translations: {
+    languages_code: {
+      _eq: lang
+    }
+  }
+})
+
 export const getInterestDeepLanguageFilter = (lang: string): QueryDeep<Schema, Country> => ({
   translations: {
     _filter: {
@@ -20,3 +29,11 @@ export const getInterestDeepLanguageFilter = (lang: string): QueryDeep<Schema, C
     }
   }
 })
+
+export const getInterestst = (host: string, token: string, lang: string) => {
+  const client = createRestClient(host, token)
+  return client.request(readItems(INTEREST_COLLECTION_NAME, {
+    fields: [...interestReturnFieldsQuery, 'destinations'],
+    filter: interestTranslationFilter(lang)
+  }))
+}

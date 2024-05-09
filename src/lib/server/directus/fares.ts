@@ -129,8 +129,23 @@ const histogramFaresQuery = (days: number, departure: Date): FaresQuery => ({
   ]
 })
 
-/* const budgetFaresQuery = (days: number, = )
- */
+const budgetFaresQuery = (days: number,):FaresAggregation => ({
+  aggregate: {
+    avg: 'taxes',
+    min: 'price'
+  },
+  groupBy: [
+    'destination'
+  ],
+  query: {
+    filter: {
+      _and: [
+        {days: {_eq: days}},
+      ]
+    }
+  }
+})
+
 
 export const getAllFares = (host: string, token: string) => {
   const client = createRestClient(host, token)
@@ -179,4 +194,9 @@ export const getHistogramFares = (host: string, token: string, days: number, dep
     fields: faresReturnFieldsQuery,
     filter: histogramFaresQuery(days, departure)
   }))
+}
+
+export const getLowestByDestinations = (host: string, token: string, days: number) => {
+  const client = createRestClient(host, token)
+  return client.request(aggregate(FARES_COLLECTION_NAME, budgetFaresQuery(days)))
 }
