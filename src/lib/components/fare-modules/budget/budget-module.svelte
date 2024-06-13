@@ -51,9 +51,8 @@
 			{#if i < maxShow}
 				<li in:fly={{ duration: 350, y: '-100%' }} out:fly={{ duration: 350, y: '-100%' }}>
 					<a
-						class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full"
-						href={getShoppingEngingeURL(fare)}
-						target="_blank"
+						class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full group"
+						href="#fechas"
 					>
 						<img
 							loading="lazy"
@@ -81,7 +80,9 @@
 							>{labels['currency']}</span
 						>
 						<span class="col-[price] font-heading-bold row-[labl_/_crcy] text-32/40">${price}</span>
-						<span class="col-[detail_/_price] flex justify-end items-center gap-4">
+						<span
+							class="col-[detail_/_price] row-[cta] text-16/24 flex justify-end items-center gap-4 font-heading-bold translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all"
+						>
 							{labels['viewDates']}
 						</span>
 					</a>

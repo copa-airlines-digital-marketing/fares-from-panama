@@ -12,8 +12,7 @@
 
 <a
 	class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full"
-	href={getShoppingEngingeURL(fare)}
-	target="_blank"
+	href="#fechas"
 >
 	<img
 		loading="lazy"
@@ -33,8 +32,6 @@
 		<span class="uppercase">{$destinations[fare.destination]?.country?.code ?? 'not found'}</span>
 	</span>
 	<span class="col-[content] mb-8 row-[date]">
-		{formatDateForDisplay(parseDate(fare.departure))} -
-		{formatDateForDisplay(parseDate(fare.return))} ·
 		{labels['roundTrip']}
 	</span>
 	<span

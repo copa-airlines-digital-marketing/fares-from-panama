@@ -31,9 +31,8 @@
 			{@const { destination, departure, price, taxes } = fare}
 			<li>
 				<a
-					href={getShoppingEngingeURL(fare)}
+					href="#fechas"
 					class="bg-secondary font-heading grid gap-x-4 h-full hover:bg-red fare-card--plain focus:bg-red py-8 px-16 rounded-xl shadow-medium text-12/16 text-common-white transition-colors"
-					target="_blank"
 				>
 					<span class="font-heading-medium [grid-area:dest]">
 						<span class="text-20/32">{$destinations[destination].translations[0].name}</span>
@@ -41,8 +40,6 @@
 						<span class="uppercase">{$destinations[destination].country.code}</span>
 					</span>
 					<span class="[grid-area:date] mb-24">
-						{formatDateForDisplay(parseDate(departure))} -
-						{formatDateForDisplay(parseDate(fare.return))} ·
 						{labels['roundTrip']}
 					</span>
 					<span class="font-heading-medium [grid-area:taxs] justify-self-end text-14/20 self-end">
