@@ -54,7 +54,7 @@ const setLowestFareForInterest = (module: App.LowestFareByInterest, name: App.In
 
 export const addFareToInterest = (interestNames: App.LowestFareByInterest, interestModule: App.InterestFares, destinations: App.Destination, fare: ViajaPanamaFare) => {
   
-const interests = destinations[fare.destination].categories
+const interests = destinations[fare.destination]?.categories || []
 
 let byName = {...interestNames}
 

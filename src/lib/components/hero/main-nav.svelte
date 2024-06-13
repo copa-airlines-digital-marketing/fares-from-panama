@@ -1,35 +1,17 @@
 <script lang="ts">
-	import { createCollapsible, createMenubar, melt } from '@melt-ui/svelte';
+	import { fade } from 'svelte/transition';
 	import Icon from '../site/icon.svelte';
-	import { slide, fade } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
-	import { containsDiscounts } from '$lib/public/store';
 
 	export let nav: Navigation;
 
 	const { translations, icon } = nav;
 
-	const linksElements: Record<string, HTMLElement> = {};
-
-	const getLinkId = (index: number) => `hero-nav-link-${index}`;
-
-	const {
-		elements: { root, content, trigger },
-		states: { open }
-	} = createCollapsible({
-		forceVisible: true
-	});
-
-	const {
-		elements: { menubar }
-	} = createMenubar();
-
 	let heroMenuVisible = false;
 
 	let isMenuVisible: IntersectionObserverCallback = (entries) => {
 		entries.forEach((entry) => {
-			if (entry.target.id === 'inicio' && entry.isIntersecting) {
+			if (entry.target.id === 'top' && entry.isIntersecting) {
 				return (heroMenuVisible = false);
 			}
 
@@ -43,53 +25,23 @@
 			rootMargin: '0px',
 			threshold: 1.0
 		});
-		const target = document.getElementById('inicio');
+		const target = document.getElementById('top');
 		target ? observer.observe(target) : {};
 	});
 </script>
 
 {#if Array.isArray(translations) && translations.length === 1}
-	{@const { links } = translations[0]}
-
-	<div class="relative" use:melt={$root}>
-		{#if heroMenuVisible}
-			<button
-				aria-label="Ver menú principal"
-				class="bg-secondary cursor-pointer p-16 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition z-50"
-				type="button"
-				use:melt={$trigger}
-				transition:fade
-			>
-				<Icon data={icon.code} class="size-32"></Icon>
-			</button>
-		{/if}
-		<div
-			class="absolute bg-secondary top-[calc(100%+8px)] flex flex-col justify-center left-1/2 rounded-xl -translate-x-1/2 z-50"
-			use:melt={$menubar}
+	{#if heroMenuVisible}
+		<a
+			aria-label="Ir al inicio"
+			class="bg-secondary cursor-pointer p-16 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition z-50"
+			type="button"
+			href="#top"
+			transition:fade
 		>
-			{#each links as linkItem, index (index)}
-				{@const {
-					icon_override: { code },
-					links_url: { url },
-					title
-				} = linkItem}
-				{#if $open && heroMenuVisible && ((title === 'Descuentos' && $containsDiscounts) || title !== 'Descuentos')}
-					<a
-						class="flex flex-col focus:text-primary gap-4 hover:text-primary items-center mx-4 my-8 outline-none text-common-white transition-colors"
-						href={url}
-						{title}
-						use:melt={$content}
-						transition:slide={{ duration: 500, easing: quintOut }}
-					>
-						<span bind:this={linksElements[getLinkId(index + 1)]}>
-							<Icon data={code} class="size-24 fill-current"></Icon>
-						</span>
-						<span class="text-12/16 text-common-white">{title}</span>
-					</a>
-				{/if}
-			{/each}
-		</div>
-	</div>
+			<Icon data={icon.code} class="size-32"></Icon>
+		</a>
+	{/if}
 {:else}
 	<div>⚠️ Navigation translatios are incorrect</div>
 {/if}

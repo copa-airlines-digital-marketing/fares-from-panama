@@ -35,6 +35,9 @@
 {#if isNotNil(selectedStayOfSection)}
 	{@const stay = parseInt(selectedStayOfSection)}
 	{@const interests = interestNames[stay]}
+	<h3 class="text-18/24 font-heading text-common-white lg:text-20/32">
+		{labels['selectOneInterest']}
+	</h3>
 	<Tabs.Root bind:value={name} class="grid grid-cols-4 grid-rows-1 gap-16" orientation="vertical">
 		<Tabs.List class="auto-rows-min col-start-1 col-span-1 gap-8 grid grid-cols-1 min-w-max">
 			{#if !isEmpty(interests) && interests != null}

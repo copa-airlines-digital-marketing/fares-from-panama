@@ -51,10 +51,10 @@
 					src="https://cm-marketing.directus.app/assets/{media}?height=1088&width=612"
 				/>
 			</picture>
-			<div
+			<divs
 				bind:this={overlay}
-				class="animate-pulse data-[loaded='true']:animate-none bg-gradient-to-b col-start-1 ease-in-out h-full from-common-black row-start-1 to-transparent to-30% w-full"
-			></div>
+				class="animate-pulse data-[loaded='true']:animate-none bg-common-black/40 col-start-1 ease-in-out h-full row-start-1 w-full"
+			></divs>
 		</div>
 		<h1
 			class="text-h1 sm:text-h1-sm md:text-h1-md lg:text-h1-lg caret-transparent col-start-2 font-heading font-heading-medium max-w-prose mb-huge mt-roomy mx-auto row-start-1 text-center text-common-white"

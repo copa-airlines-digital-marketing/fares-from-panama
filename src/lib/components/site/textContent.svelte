@@ -31,7 +31,7 @@
 	<div
 		class={joinClasses(
 			descriptionTheme[theme],
-			'wysiwyg my-8 text-center max-w-prose mx-auto caret-transparent'
+			'wysiwyg my-8 text-center mx-auto caret-transparent'
 		)}
 	>
 		{@html description}

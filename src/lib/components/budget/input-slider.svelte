@@ -20,7 +20,7 @@
 			for="{name}-input"
 			class="text-grey-600 my-8 text-14/20 text-center caret-transparent relative"
 		>
-			{label}
+			{@html label}
 			<Tooltip text={placeholder}></Tooltip>
 		</label>
 	</div>

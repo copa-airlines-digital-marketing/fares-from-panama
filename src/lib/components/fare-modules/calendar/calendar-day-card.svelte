@@ -124,7 +124,7 @@ group-hover:*:text-common-white self-center"
 		{/if}
 		<span class="[grid-area:copaf] justify-self-end">
 			{labels['copaFare']}
-			<span class="font-heading-medium text-20/24 calendar:text-12/16">${fare.fare}</span>
+			<span class="calendar:font-heading-bold text-16/24">${fare.fare}</span>
 		</span>
 		<span
 			class="[grid-area:taxes] border-b border-b-grey-200/40 calendar:font-heading-normal font-heading-medium justify-self-end"

@@ -2,7 +2,6 @@
 	import Section from '$lib/components/directus/section.svelte';
 	import { setDestinationState } from '$lib/components/destination/context.js';
 	import { processFares } from '$lib/public/process-fares.js';
-	import { modulesStore } from '$lib/public/store.js';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
@@ -10,11 +9,7 @@
 	} from '$lib/public/utils';
 	import { onMount } from 'svelte';
 	import { setDaysContext } from '$lib/components/days';
-	import {
-		getFareModulesContext,
-		setFareModulesContext
-	} from '$lib/components/fare-modules/context.js';
-	import { reject } from 'ramda';
+	import { setFareModulesContext } from '$lib/components/fare-modules/context.js';
 
 	export let data;
 
@@ -46,7 +41,9 @@
 				.then((result) => {
 					fareModules.set(result);
 				})
-				.catch((err) => {});
+				.catch((err) => {
+					console.log(err);
+				});
 		});
 	});
 </script>

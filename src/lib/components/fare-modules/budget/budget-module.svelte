@@ -5,10 +5,10 @@
 	import { getContext } from 'svelte';
 	import { isEmpty, isNotNil } from 'ramda';
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
-	import { formatDateForDisplay, getShoppingEngingeURL, parseDate } from '$lib/public/utils';
+	import { getShoppingEngingeURL } from '$lib/public/utils';
 	import BudgetSkeleton from './budget-skeleton.svelte';
 	import { getBudgetContext } from '$lib/components/budget/context';
-	import { blur, fly, scale } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { quintIn } from 'svelte/easing';
 
 	const { all: destinations } = getDestinationsContext();
@@ -74,22 +74,16 @@
 							>
 						</span>
 						<span class="col-[content] mb-8 row-[date]">
-							{formatDateForDisplay(parseDate(departure))} -
-							{formatDateForDisplay(parseDate(fare.return))} ·
 							{labels['roundTrip']}
 						</span>
-						<span
-							class="col-[content] font-heading-medium justify-self-end mt-8 row-[taxs] text-14/20 text-grey-100"
-							>{labels['taxesIncluded']}
-							<span class="font-heading-bold text-24/32">${taxes}</span></span
-						>
-						<span class="col-[detail] justify-self-end row-[labl] self-end"
-							>{labels['finalPrice']}</span
-						>
+						<span class="col-[detail] justify-self-end row-[labl] self-end">{labels['from']}</span>
 						<span class="col-[detail] justify-self-end row-[crcy] self-start"
 							>{labels['currency']}</span
 						>
 						<span class="col-[price] font-heading-bold row-[labl_/_crcy] text-32/40">${price}</span>
+						<span class="col-[detail_/_price] flex justify-end items-center gap-4">
+							{labels['viewDates']}
+						</span>
 					</a>
 				</li>
 			{/if}
@@ -125,10 +119,10 @@
 			[dest-start] auto
 			[dest-end date-start] auto
 			[date-end]1fr
-			[taxs-start] auto
-			[taxs-end labl-start] auto
+			[labl-start] auto
 			[labl-end crcy-start] auto
-			[crcy-end] 8px
+			[crcy-end cta-start] auto
+			[cta-end] 8px
 			[image-end];
 	}
 </style>

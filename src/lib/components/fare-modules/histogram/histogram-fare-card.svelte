@@ -60,10 +60,15 @@
 		{labels['roundTrip']}
 	</span>
 	<span
-		class="col-[content] font-heading-medium justify-self-end mt-8 row-[taxs] text-14/20 text-grey-100"
-		>{labels['taxesIncluded']}
-		<span class="font-heading-bold text-24/32">${fare.taxes}</span></span
-	>
+		class="col-[content] font-heading-medium self-end justify-self-end mt-8 row-[fare] text-14/20 text-grey-100"
+		>{labels['copaFare']}
+		<span class="font-heading-bold text-20/24">${fare.fare}</span>
+	</span>
+	<span
+		class="col-[content] font-heading-medium justify-self-end row-[taxs] text-14/20 text-grey-100 block border-b border-grey-300"
+		>{labels['taxes']}
+		<span class="font-heading-bold text-24/32">${fare.taxes}</span>
+	</span>
 	<span class="col-[detail] justify-self-end row-[labl] self-end">{labels['finalPrice']}</span>
 	<span class="col-[detail] justify-self-end row-[crcy] self-start">{labels['currency']}</span>
 	<span class="col-[price] font-heading-bold row-[labl_/_crcy] text-32/40">${fare.price}</span>
@@ -76,8 +81,8 @@
 			[image-start] 8px
 			[dest-start] auto
 			[dest-end date-start] auto
-			[date-end]1fr
-			[taxs-start] auto
+			[date-end fare-start]1fr
+			[fare-end taxs-start] auto
 			[taxs-end labl-start] auto
 			[labl-end crcy-start] auto
 			[crcy-end] 8px
