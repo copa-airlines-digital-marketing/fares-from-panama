@@ -42,18 +42,19 @@
 					<span class="[grid-area:date] mb-24">
 						{labels['roundTrip']}
 					</span>
-					<span class="font-heading-medium [grid-area:taxs] justify-self-end text-14/20 self-end">
-						{labels['taxesIncluded']}
-						<span class="font-heading-bold text-20/24">${taxes}</span>
-					</span>
 					<span class="[grid-area:labl] justify-self-end leading-4 self-end">
-						{labels['finalPrice']}
+						{labels['from']}
 					</span>
 					<span class="[grid-area:crcy] justify-self-end leading-4 self-start">
 						{labels['currency']}
 					</span>
 					<span class="font-heading-bold [grid-area:prce] justify-self-end self-center text-32/40">
 						${price}
+					</span>
+					<span
+						class="col-[cta] row-[labl_/_crcy] text-16/24 place-self-end gap-4 font-heading-medium"
+					>
+						{labels['viewDates']}
 					</span>
 				</a>
 			</li>
@@ -76,12 +77,11 @@
 <style lang="postcss">
 	.fare-card--plain {
 		grid-template-areas:
-			'dest dest'
-			'date date'
-			'taxs taxs'
-			'labl prce'
-			'crcy prce';
-		grid-template-columns: 1fr auto;
-		grid-template-rows: auto 1fr auto auto auto;
+			'dest dest dest'
+			'date date date'
+			'labl prce cta'
+			'crcy prce cta';
+		grid-template-columns: auto auto 1fr;
+		grid-template-rows: auto 1fr auto auto;
 	}
 </style>

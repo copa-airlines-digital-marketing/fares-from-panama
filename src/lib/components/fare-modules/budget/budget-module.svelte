@@ -81,7 +81,7 @@
 						>
 						<span class="col-[price] font-heading-bold row-[labl_/_crcy] text-32/40">${price}</span>
 						<span
-							class="col-[detail_/_price] row-[cta] text-16/24 flex justify-end items-center gap-4 font-heading-bold translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all"
+							class="col-[cta] row-[labl_/_crcy] text-16/24 place-self-end gap-4 font-heading-medium"
 						>
 							{labels['viewDates']}
 						</span>
@@ -114,7 +114,7 @@
 
 <style lang="post-css">
 	.fare-card--destination-image {
-		grid-template-columns: [image-start] 8px [content-start detail-start] 1fr [detail-end price-start] auto [content-end price-end] 8px [image-end];
+		grid-template-columns: [image-start] 8px [content-start detail-start] auto [detail-end price-start] auto [price-end cta-start] 1fr [cta-end content-end] 8px [image-end];
 		grid-template-rows:
 			[image-start] 8px
 			[dest-start] auto
@@ -122,8 +122,7 @@
 			[date-end]1fr
 			[labl-start] auto
 			[labl-end crcy-start] auto
-			[crcy-end cta-start] auto
-			[cta-end] 8px
+			[crcy-end] 8px
 			[image-end];
 	}
 </style>
