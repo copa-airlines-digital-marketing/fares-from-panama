@@ -1,6 +1,7 @@
 <script lang="ts">
 	import TextContent from '$lib/components/site/textContent.svelte';
 	import Quote from '$lib/components/site/quote.svelte';
+	import { ModuleStep } from '../site/module-step';
 
 	export let content: Directus.TextContent;
 	export let component_name: string;
@@ -24,6 +25,8 @@
 	<Quote {theme}>{@html description}</Quote>
 {:else if component_name === 'textContent'}
 	<TextContent {title} {description} {call_to_actions} {theme}></TextContent>
+{:else if component_name === 'search-module-step'}
+	<ModuleStep {title} {description}></ModuleStep>
 {:else}
 	{logUnsupportedComponent(component_name)}
 {/if}

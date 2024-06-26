@@ -15,7 +15,7 @@
 </script>
 
 <div class="w-full max-w-[calc(100%-66px-16px)] md:max-w-none mx-auto">
-	<div class="flex justify-center">
+	<!-- <div class="flex justify-center">
 		<label
 			for="{name}-input"
 			class="text-grey-600 my-8 text-14/20 text-center caret-transparent relative"
@@ -23,7 +23,7 @@
 			{@html label}
 			<Tooltip text={placeholder}></Tooltip>
 		</label>
-	</div>
+	</div> -->
 	<Slider.Root
 		{min}
 		{max}

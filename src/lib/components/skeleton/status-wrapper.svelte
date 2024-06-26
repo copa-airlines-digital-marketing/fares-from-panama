@@ -22,24 +22,25 @@
 	const themeColor = theme === 'light' ? 'text-grey-600' : 'text-common-white';
 </script>
 
-<div
-	class="absolute bg-gradient-to-b from-backgound-paper from-60% px-tiny pb-huge pt-tiny to-transparent rounded-t-xl top-0 w-full"
->
-	{#if translations}
-		<StatusText>
-			<Icon data={IconError} class="size-24 text-red"></Icon>
-			<Heading type="display-tiny" style="{themeColor} ">
-				No translations for {name}
-			</Heading>
-		</StatusText>
-	{:else if fares}
-		<StatusText pulse>
-			<Icon data={Download} class="size-24 text-secondary"></Icon>
-			<Heading type="display-tiny" style="{themeColor} ">
-				{labels['loading']}
-			</Heading>
-		</StatusText>
-	{:else if destination}
+{#if translations || fares}
+	<div
+		class="absolute bg-gradient-to-b from-backgound-paper from-60% px-tiny pb-huge pt-tiny to-transparent rounded-t-xl top-0 w-full"
+	>
+		{#if translations}
+			<StatusText>
+				<Icon data={IconError} class="size-24 text-red"></Icon>
+				<Heading type="display-tiny" style="{themeColor} ">
+					No translations for {name}
+				</Heading>
+			</StatusText>
+		{:else if fares}
+			<StatusText pulse>
+				<Icon data={Download} class="size-24 text-secondary"></Icon>
+				<Heading type="display-tiny" style="{themeColor} ">
+					{labels['loading']}
+				</Heading>
+			</StatusText>
+			<!-- 	{:else if destination}
 		<StatusText>
 			<Icon data={IconInfo} class="size-24 text-secondary"></Icon>
 			<Heading type="display-tiny" style="{themeColor} ">
@@ -87,6 +88,7 @@
 			<Heading type="display-tiny" style="{themeColor} ">
 				{labels['stayNotAvailable']}
 			</Heading>
-		</StatusText>
-	{/if}
-</div>
+		</StatusText> -->
+		{/if}
+	</div>
+{/if}

@@ -22,15 +22,15 @@
 	});
 </script>
 
-<div class="my-32" use:melt={$root}>
-	<div class="mb-16 text-14/20 text-center text-grey-600 dark:text-common-white">
+<div class="mt-16" use:melt={$root}>
+	<!-- <div class="mb-16 text-14/20 text-center text-grey-600 dark:text-common-white">
 		<span class="relative">
 			{label}
 			{#if placeholder}
 				<Tooltip text={placeholder}></Tooltip>
 			{/if}
 		</span>
-	</div>
+	</div> -->
 	<div class="grid auto-cols-auto grid-flow-col gap-16 justify-center">
 		{#each options as option}
 			<button

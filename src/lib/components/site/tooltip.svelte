@@ -33,6 +33,6 @@
 		use:melt={$content}
 	>
 		<div use:melt={$arrow}></div>
-		<p class="text-12/16 text-grey-600">{text}</p>
+		<p class="text-12/16 text-grey-600">{@html text}</p>
 	</div>
 {/if}

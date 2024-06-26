@@ -5,7 +5,7 @@
 	export let pulse = false;
 </script>
 
-<div class="flex justify-end mt-roomy pr-4">
+<div class="flex justify-end pr-4">
 	<SkeliBar width="10ch"></SkeliBar>
 </div>
 <div
