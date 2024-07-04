@@ -5,13 +5,13 @@
 	import { getContext } from 'svelte';
 	import { isEmpty, isNotNil } from 'ramda';
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
-	import { getShoppingEngingeURL } from '$lib/public/utils';
 	import BudgetSkeleton from './budget-skeleton.svelte';
 	import { getBudgetContext } from '$lib/components/budget/context';
 	import { fly } from 'svelte/transition';
 	import { quintIn } from 'svelte/easing';
+	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
 
-	const { all: destinations } = getDestinationsContext();
+	const { all: destinations, selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
 	const selectedBudget = getBudgetContext();
 	const modules = getFareModulesContext();
@@ -27,6 +27,9 @@
 	$: maxShow = $selectedBudget ? 12 : 12;
 
 	const addShowMax = () => (maxShow += 12);
+
+	const handleCardClick = (destination: DestinationReturnSchema) => () =>
+		($selectedDestination = destination);
 </script>
 
 {#if isNotNil($selectedBudget) && !!selectedStayOfSection && isNotNil(budget) && !isEmpty(budget)}
@@ -53,6 +56,7 @@
 					<a
 						class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full group"
 						href="#fechas"
+						on:click={handleCardClick($destinations[destination])}
 					>
 						<img
 							loading="lazy"

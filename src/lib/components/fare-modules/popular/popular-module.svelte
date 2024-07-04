@@ -3,12 +3,12 @@
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import { getFareModulesContext } from '../context';
 	import { getContext } from 'svelte';
-	import { isEmpty, isNotNil, slice } from 'ramda';
+	import { isEmpty, isNotNil } from 'ramda';
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
 	import PopularSkeleton from './popular-skeleton.svelte';
-	import { formatDateForDisplay, getShoppingEngingeURL, parseDate } from '$lib/public/utils';
+	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
 
-	const { all: destinations } = getDestinationsContext();
+	const { all: destinations, selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
 	const modules = getFareModulesContext();
 
@@ -19,6 +19,9 @@
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
 	$: selectedStayOfSection = $selectedStay[section];
+
+	const handleCardClick = (destination: DestinationReturnSchema) => () =>
+		($selectedDestination = destination);
 </script>
 
 {#if isNotNil(popular) && !isEmpty(popular) && selectedStayOfSection}
@@ -28,11 +31,12 @@
 		{#each Object.values(popular[parseInt(selectedStayOfSection)])
 			.sort((a, b) => b.score - a.score)
 			.slice(0, 12) as fare}
-			{@const { destination, departure, price, taxes } = fare}
+			{@const { destination, price } = fare}
 			<li>
 				<a
 					href="#fechas"
 					class="bg-secondary font-heading grid gap-x-4 h-full hover:bg-red fare-card--plain focus:bg-red py-8 px-16 rounded-xl shadow-medium text-12/16 text-common-white transition-colors"
+					on:click={handleCardClick($destinations[destination])}
 				>
 					<span class="font-heading-medium [grid-area:dest]">
 						<span class="text-20/32">{$destinations[destination].translations[0].name}</span>

@@ -1,18 +1,21 @@
 <script lang="ts">
-	import { formatDateForDisplay, getShoppingEngingeURL, parseDate } from '$lib/public/utils';
 	import { getContext } from 'svelte';
 	import { getDestinationsContext } from '$lib/components/destination/context';
+	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
 
 	export let fare: ViajaPanamaFare;
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
-	const { all: destinations } = getDestinationsContext();
+	const { all: destinations, selected } = getDestinationsContext();
+
+	const handleCardClick = (destination: DestinationReturnSchema) => () => ($selected = destination);
 </script>
 
 <a
 	class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full"
 	href="#fechas"
+	on:click={handleCardClick($destinations[fare.destination])}
 >
 	<img
 		loading="lazy"

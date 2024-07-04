@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { Slider } from 'bits-ui';
 	import { getBudgetContext } from './context';
-	import Tooltip from '../site/tooltip.svelte';
 
 	export let input: Directus.FormInput;
 
-	const { label, max, min, name, step, placeholder } = input;
+	const { max, min, name, step } = input;
 
 	let value = [parseInt(input.value)];
 
@@ -15,15 +14,6 @@
 </script>
 
 <div class="w-full max-w-[calc(100%-66px-16px)] md:max-w-none mx-auto">
-	<!-- <div class="flex justify-center">
-		<label
-			for="{name}-input"
-			class="text-grey-600 my-8 text-14/20 text-center caret-transparent relative"
-		>
-			{@html label}
-			<Tooltip text={placeholder}></Tooltip>
-		</label>
-	</div> -->
 	<Slider.Root
 		{min}
 		{max}
