@@ -30,7 +30,7 @@
 	const addShowMax = () => (maxShow += 12);
 
 	const sortInterest = (fares: Record<string, ViajaPanamaFare>) => (a: string, b: string) =>
-		parseInt(fares[a].price) - parseInt(fares[b].price) || a.localeCompare(b);
+		fares[a].price - fares[b].price || a.localeCompare(b);
 </script>
 
 {#if isNotNil(selectedStayOfSection)}
@@ -64,7 +64,7 @@
 						<ul
 							class="auto-rows-fr bg-backgound-paper gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-8"
 						>
-							{#each Object.keys(fares).sort((a, b) => parseInt(fares[a].price) - parseInt(fares[b].price)) as fareKey, i}
+							{#each Object.keys(fares).sort((a, b) => fares[a].price - fares[b].price) as fareKey, i}
 								{@const fare = fares[fareKey]}
 								{#if i < maxShow}
 									<li

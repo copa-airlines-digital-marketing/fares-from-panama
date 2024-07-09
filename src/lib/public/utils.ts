@@ -105,9 +105,9 @@ export const formatDateForDisplay = (date: Date) => format(date, 'dd/MM/yyy')
 
 export const fareDepartureIsBeforeExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => isBefore(parseDeparture(fare), parseDeparture(existing))
 
-export const farePriceIsLowerThanExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => parseInt(fare.price) < parseInt(existing.price)
+export const farePriceIsLowerThanExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => fare.price < existing.price
 
-export const farePriceIsEqualToExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => parseInt(fare.price) === parseInt(existing.price)
+export const farePriceIsEqualToExisting = (fare: ViajaPanamaFare, existing: ViajaPanamaFare) => fare.price === existing.price
 
 const initiateMonth = (fare: ViajaPanamaFare, start: 'week' | 'month' ) => {
   const departureDate = parseDeparture(fare)
@@ -149,7 +149,7 @@ export const getFlyingOption = (seed: number) => {
   return flyOptions[Math.floor((seed * 997) % 4)]
 }
 
-export const minFare = (min: number, fare: ViajaPanamaFare) => parseInt(fare.price) < min ? parseInt(fare.price) : min 
+export const minFare = (min: number, fare: ViajaPanamaFare) => fare.price < min ? fare.price : min 
 
 export const dateIsInMonth = (date: Date, month: Date) => {
   return isAfter(date, addDays(startOfMonth(month),-1)) && isBefore(date, endOfMonth(month))

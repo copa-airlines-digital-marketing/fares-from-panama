@@ -71,7 +71,7 @@
 			{labels['dateNotAvailable']}
 		</div>
 	</div>
-{:else if fare.price === '9999999'}
+{:else if fare.price === 9999999}
 	{@const url = getShoppingEngingeURL(fare)}
 	<a
 		class="calendar:aspect-square bg-primary-ultradark calendar:px-8 calendar:py-4 fare-card--calendar-date focus:bg-red font-heading grid group h-full hover:bg-red px-16 py-8 rounded-xl text-12/16 text-common-white transition-colors w-full"

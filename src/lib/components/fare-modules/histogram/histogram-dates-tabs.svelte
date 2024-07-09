@@ -37,7 +37,7 @@
 
 	const addShowMax = () => (maxShow += 12);
 
-	const getPriceProp = ({ price }: ViajaPanamaFare) => parseInt(price);
+	const getPriceProp = ({ price }: ViajaPanamaFare) => price;
 
 	const toastFN = getContext<() => void>('showToast');
 	const maxAlerts = getContext<number>('maxAlerts');
@@ -87,7 +87,7 @@
 							on:click={addToast(key)}
 						>
 							<HistogramDayCard
-								count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}
+								count={Object.keys(fares).filter((key) => fares[key].price !== 9999999).length}
 								fare={date}
 								dateKey={key}
 								lowest={100}
@@ -124,8 +124,8 @@
 	{#each Object.keys(days) as key (key)}
 		{@const fares = histogram[stay][month][key]}
 		{@const validFares = Object.values(fares)
-			.filter((fare) => !!fare && !isEmpty(fare) && fare.price !== '9999999')
-			.sort((a, b) => parseInt(a.price) - parseInt(b.price))}
+			.filter((fare) => !!fare && !isEmpty(fare) && fare.price !== 9999999)
+			.sort((a, b) => a.price - b.price)}
 		<Tabs.Content value={key} class="">
 			<ul
 				class="auto-rows-fr bg-backgound-paper md:bg-grey-75 gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-8"

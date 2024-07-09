@@ -407,9 +407,9 @@ type ViajaPanamaFare = BaseCollection & {
   'month(departure)': number
   'year(departure)': number
   return: string
-  fare: string
-  taxes: string
-  price: string
+  fare: number
+  taxes: number
+  price: number
   seats: number
   score: number
 }
@@ -466,4 +466,5 @@ type Schema = {
   Text_Content: TextContent[]
   Text_Content_translations: TextContentTranslations[]
   viaja_panama_fares: ViajaPanamaFare[]
+  fares_viaja_panam: ViajaPanamaFare[]
 }

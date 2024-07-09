@@ -29,7 +29,7 @@
 	const addShowMax = () => (maxShow += 12);
 
 	const sortInterest = (fares: Record<string, ViajaPanamaFare>) => (a: string, b: string) =>
-		parseInt(fares[a].price) - parseInt(fares[b].price) || a.localeCompare(b);
+		fares[a].price - fares[b].price || a.localeCompare(b);
 </script>
 
 {#if isNotNil(selectedStayOfSection)}
@@ -51,7 +51,7 @@
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red overflow-hidden shadow-tiny"
 					>
 						<InterestNameCard
-							count={Object.keys(fares).filter((key) => fares[key].price !== '9999999').length}
+							count={Object.keys(fares).filter((key) => fares[key].price !== 9999999).length}
 							selected={name === key}
 							fare={interest}
 							interest={key}
@@ -66,15 +66,15 @@
 			{/if}
 		</Tabs.List>
 		{#if !isEmpty(interests) && interests != null}
-			{#each Object.keys(interests).sort((a, b) => parseInt(interests[a].price) - parseInt(interests[b].price)) as key (key)}
+			{#each Object.keys(interests).sort((a, b) => interests[a].price - interests[b].price) as key (key)}
 				{@const fares = interestFares[stay][key]}
 				<Tabs.Content value={key} class="col-start-2 col-span-3 self-start">
 					<ul
 						class="auto-rows-fr bg-backgound-paper gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-8 rounded-lg shadow-medium"
 					>
-						{#each Object.keys(fares).sort((a, b) => parseInt(fares[a].price) - parseInt(fares[b].price)) as fareKey, i}
+						{#each Object.keys(fares).sort((a, b) => fares[a].price - fares[b].price) as fareKey, i}
 							{@const fare = fares[fareKey]}
-							{#if i < maxShow && fares[fareKey].price !== '9999999'}
+							{#if i < maxShow && fares[fareKey].price !== 9999999}
 								<li in:fly={{ duration: 350, y: '-100%' }} out:fly={{ duration: 350, y: '-100%' }}>
 									<IntersetFareCard {fare} />
 								</li>

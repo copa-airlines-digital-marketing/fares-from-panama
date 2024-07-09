@@ -34,8 +34,8 @@
 
 {#if isNotNil($selectedBudget) && !!selectedStayOfSection && isNotNil(budget) && !isEmpty(budget)}
 	{@const fares = Object.values(budget[parseInt(selectedStayOfSection)])
-		.sort((a, b) => parseInt(a.price) - parseInt(b.price))
-		.filter((fare) => parseInt(fare.price) <= $selectedBudget)}
+		.sort((a, b) => a.price - b.price)
+		.filter((fare) => fare.price <= $selectedBudget)}
 	{#key $selectedBudget}
 		<div
 			in:fly={{ easing: quintIn, x: 5 }}

@@ -38,7 +38,7 @@
 						class:bg-grey-100={isEmpty(fare)}
 						class:bg-primary={!isEmpty(fare)}
 						class:bg-red={selected}
-						style="height: {calculateHeight(max, parseInt(fare.price))}px;"
+						style="height: {calculateHeight(max, fare.price)}px;"
 					></span>
 				</Tooltip.Trigger>
 				<Tooltip.Content transition={fly} transitionConfig={{ y: -5, duration: 350 }}>
@@ -48,7 +48,7 @@
 					<div
 						class="bg-backgound-lightblue border border-primary-ultralight font-heading px-8 py-4 rounded-2xl shadow-medium text-14/20"
 					>
-						{#if lowest === parseInt(fare.price)}
+						{#if lowest === fare.price}
 							<div class="flex gap-4 text-secondary">
 								<Icon data={Isotipo} class="fill-current w-16"></Icon>
 								{labels['lowestFare']}
@@ -65,7 +65,7 @@
 		{:else}
 			<span
 				class="block bg-grey-100 rounded-t-sm shadow-tiny w-3/4"
-				style="height: {calculateHeight(max, parseInt(fare.price))}px;"
+				style="height: {calculateHeight(max, fare.price)}px;"
 			></span>
 		{/if}
 		<span class="">{getDate(date)}</span>

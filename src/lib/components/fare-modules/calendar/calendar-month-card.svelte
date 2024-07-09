@@ -19,7 +19,7 @@
 	<span class="font-heading-medium [grid-area:month] self-center text-20/24 text-left uppercase">
 		{getMonthName(parseDate(fare.departure))}
 	</span>
-	{#if lowest && fare.price !== '9999999'}
+	{#if lowest && fare.price !== 9999999}
 		<span
 			class="[grid-area:lowes] flex font-heading-bold gap-4 items-center sm:self-center sm:ml-4 text-secondary"
 			class:text-common-white={selected}
@@ -29,7 +29,7 @@
 			<span>{labels['lowestFare']}</span>
 		</span>
 	{/if}
-	{#if fare.price !== '9999999'}
+	{#if fare.price !== 9999999}
 		<span class="[grid-area:froms] self-end">{labels['from']}</span>
 		<span class="[grid-area:crncy] mb-4">{labels['currency']}</span>
 		<span

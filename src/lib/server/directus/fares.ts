@@ -7,7 +7,7 @@ type FaresAggregation = AggregationOptions<Schema, 'viaja_panama_fares'>
 
 type FaresQuery = QueryFilter<Schema, ViajaPanamaFare>
 
-const FARES_COLLECTION_NAME: keyof Schema = 'viaja_panama_fares'
+const FARES_COLLECTION_NAME: keyof Schema = 'fares_viaja_panam'
 
 const faresReturnFieldsQuery: QueryFields<Schema, ViajaPanamaFare> = [
   'destination',
@@ -29,7 +29,7 @@ const faresDestinationsGroup: FaresAggregation = {
   query: {
     filter: {
       price: {
-        _neq: '9999999'
+        _neq: 9999999
       }
     }
   }
