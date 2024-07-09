@@ -30,6 +30,11 @@
 
 	const sortInterest = (fares: Record<string, ViajaPanamaFare>) => (a: string, b: string) =>
 		fares[a].price - fares[b].price || a.localeCompare(b);
+
+	const handleClick = (fare: unknown, interest: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Interest', interest, fare });
+	};
 </script>
 
 {#if isNotNil(selectedStayOfSection)}
@@ -49,6 +54,7 @@
 					<Tabs.Trigger
 						value={key}
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red overflow-hidden shadow-tiny"
+						on:click={handleClick(interest, key)}
 					>
 						<InterestNameCard
 							count={Object.keys(fares).filter((key) => fares[key].price !== 9999999).length}

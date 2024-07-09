@@ -34,7 +34,9 @@
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
 
-	const addToast = (date: Date) => () => {
+	const addToast = (date: Date, fare: unknown, month: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Calendar Month', month, fare });
 		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
 			toastFN();
 			$alertsShown += 1;
@@ -58,7 +60,7 @@
 					<Tabs.Trigger
 						value={key}
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
-						on:click={addToast(parseDate(fare.departure))}
+						on:click={addToast(parseDate(fare.departure), fare, key)}
 					>
 						<CalendarMonthCard
 							{fare}

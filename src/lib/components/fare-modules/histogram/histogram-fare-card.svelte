@@ -19,7 +19,9 @@
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
 
-	const addToast = (url: string) => (e: Event) => {
+	const addToast = (url: string, fare: ViajaPanamaFare) => (e: Event) => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Histogram Fare', fare });
 		if (!!toastFN && isBeforeSweetSpot(parseDate(fare.departure)) && $alertsShown <= maxAlerts) {
 			toastFN();
 			$alertsShown += 1;
@@ -35,7 +37,7 @@
 	class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full"
 	href={getShoppingEngingeURL(fare)}
 	target="_blank"
-	on:click={addToast(getShoppingEngingeURL(fare))}
+	on:click={addToast(getShoppingEngingeURL(fare), fare)}
 >
 	<img
 		loading="lazy"

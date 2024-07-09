@@ -11,6 +11,10 @@
 	const selectedBudgetStore = getBudgetContext();
 
 	$: $selectedBudgetStore = value[0];
+
+	const handleChange = (value: unknown[]) => {
+		if (window.dataLayer) window.dataLayer.push({ event: 'budget_change', budget: value[0] });
+	};
 </script>
 
 <div class="w-full max-w-[calc(100%-66px-16px)] md:max-w-none mx-auto">
@@ -21,6 +25,7 @@
 		bind:value
 		let:thumbs
 		class="flex items-center mb-24 h-24 w-full relative caret-transparent touch-none select-none cursor-pointer"
+		onValueChange={handleChange}
 	>
 		<input type="hidden" {name} bind:value />
 		<span class="block w-full bg-grey-200 h-4 rounded-full relative overflow-hidden">

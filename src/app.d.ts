@@ -5,6 +5,9 @@ import type { Query, QueryItem } from "@directus/sdk"
 
 // for information about these interfaces
 declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[]
+  } 
 	namespace App {
 
     type IATA = string

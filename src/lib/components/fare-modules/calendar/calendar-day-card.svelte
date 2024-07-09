@@ -28,7 +28,8 @@
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
 
-	const addToast = (url: string) => (e: Event) => {
+	const addToast = (url: string, fare: unknown) => (e: Event) => {
+		if (window.dataLayer) window.dataLayer.push({ event: 'fare_click', module: 'Calendar', fare });
 		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
 			toastFN();
 			$alertsShown += 1;
@@ -77,7 +78,7 @@
 		class="calendar:aspect-square bg-primary-ultradark calendar:px-8 calendar:py-4 fare-card--calendar-date focus:bg-red font-heading grid group h-full hover:bg-red px-16 py-8 rounded-xl text-12/16 text-common-white transition-colors w-full"
 		href={url}
 		target="_blank"
-		on:click={addToast(url)}
+		on:click={addToast(url, fare)}
 	>
 		<span class="[grid-area:dates] font-heading-medium text-14/20 uppercase">
 			{isTab ? getDate(date) : getDayAndDate(date)}
@@ -97,7 +98,7 @@ group-hover:*:text-common-white self-center"
 	<a
 		class="calendar:aspect-square bg-primary calendar:px-8 calendar:py-4 fare-card--calendar-date focus:bg-red font-heading grid group h-full hover:bg-red px-16 py-8 rounded-xl text-12/16 text-common-white transition-colors w-full"
 		class:bg-secondary={lowest}
-		on:click={addToast(url)}
+		on:click={addToast(url, fare)}
 		href={url}
 		target="_blank"
 	>

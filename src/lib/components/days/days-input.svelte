@@ -10,6 +10,8 @@
 	const { days, selected } = getDaysContext();
 
 	const onValueChange = ({ detail }: CustomEvent) => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'select_days', section: sectionId, days: detail });
 		$selected[sectionId] = detail;
 	};
 </script>

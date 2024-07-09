@@ -31,6 +31,11 @@
 
 	const sortInterest = (fares: Record<string, ViajaPanamaFare>) => (a: string, b: string) =>
 		fares[a].price - fares[b].price || a.localeCompare(b);
+
+	const handleClick = (fare: unknown, interest: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Interest', interest, fare });
+	};
 </script>
 
 {#if isNotNil(selectedStayOfSection)}
@@ -50,6 +55,7 @@
 					<Accordion.Header>
 						<Accordion.Trigger
 							class="w-full border-b border-b-common-white group focus:bg-red focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors data-[state='open']:bg-red"
+							on:click={handleClick(interest, key)}
 						>
 							<InterestNameCard
 								count={Object.keys(fares).length}

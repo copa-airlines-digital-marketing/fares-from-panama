@@ -3,8 +3,8 @@
 	import { getContext, onMount } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
 	import { getFareModulesContext } from '../context';
-	import { fade, fly } from 'svelte/transition';
-	import { bind, isEmpty, isNotNil, max, min } from 'ramda';
+	import { fly } from 'svelte/transition';
+	import { isEmpty, isNotNil, max, min } from 'ramda';
 	import HistogramDayCard from './histogram-day-card.svelte';
 	import HistogramFareCard from './histogram-fare-card.svelte';
 	import { isBeforeSweetSpot, isBeforeToday, parseDate } from '$lib/public/utils';
@@ -43,7 +43,9 @@
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
 
-	const addToast = (dateKey: string) => () => {
+	const addToast = (dateKey: string, fare: unknown, date: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Histogram Date', date, fare });
 		if (!!toastFN && isBeforeSweetSpot(parseDate(dateKey)) && $alertsShown <= maxAlerts) {
 			toastFN();
 			$alertsShown += 1;
@@ -84,7 +86,7 @@
 							disabled={isEmpty(date) || isBeforeToday(parseDate(date.departure))}
 							value={key}
 							class="group min-w-32 outline-none"
-							on:click={addToast(key)}
+							on:click={addToast(key, date, key)}
 						>
 							<HistogramDayCard
 								count={Object.keys(fares).filter((key) => fares[key].price !== 9999999).length}

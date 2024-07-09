@@ -19,6 +19,11 @@
 	let current: string;
 
 	$: selectedStayOfSection = $selectedStay[section];
+
+	const handleClick = (fare: unknown, month: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Histogram Month', month, fare });
+	};
 </script>
 
 {#if selectedStayOfSection}
@@ -33,6 +38,7 @@
 						<Accordion.Trigger
 							value={key}
 							class="w-full border-b border-b-primary-ultradark group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
+							on:click={handleClick(fare, key)}
 						>
 							<HistogramMonthCard {fare} selected={current === key} />
 						</Accordion.Trigger>

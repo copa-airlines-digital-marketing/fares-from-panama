@@ -18,6 +18,11 @@
 	let current: string;
 
 	$: selectedStayOfSection = $selectedStay[section];
+
+	const handleClick = (fare: unknown, month: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Histogram Month', month, fare });
+	};
 </script>
 
 {#if selectedStayOfSection}
@@ -31,6 +36,7 @@
 					<Tabs.Trigger
 						value={key}
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary hover:border-secondary transition-colors data-[state='active']:bg-red data-[state='active']:border-red shadow-tiny"
+						on:click={handleClick(fare, key)}
 					>
 						<HistogramMonthCard {fare} selected={current === key} />
 					</Tabs.Trigger>

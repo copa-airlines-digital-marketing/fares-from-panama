@@ -26,7 +26,9 @@
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
 
-	const addToast = (date: Date) => () => {
+	const addToast = (date: Date, fare: unknown, month: string) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Calendar Month', month, fare });
 		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
 			toastFN();
 			$alertsShown += 1;
@@ -51,7 +53,7 @@
 					<Accordion.Header>
 						<Accordion.Trigger
 							class="w-full border-b border-b-common-white group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
-							on:click={addToast(parseDate(fare.departure))}
+							on:click={addToast(parseDate(fare.departure), fare, key)}
 						>
 							<CalendarMonthCard {fare} lowest={lowest.price === fare.price} selected={false} />
 						</Accordion.Trigger>

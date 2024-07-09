@@ -9,7 +9,11 @@
 
 	const { all: destinations, selected } = getDestinationsContext();
 
-	const handleCardClick = (destination: DestinationReturnSchema) => () => ($selected = destination);
+	const handleCardClick = (destination: DestinationReturnSchema) => () => {
+		if (window.dataLayer)
+			window.dataLayer.push({ event: 'fare_click', module: 'Interest Fare', fare });
+		$selected = destination;
+	};
 </script>
 
 <a

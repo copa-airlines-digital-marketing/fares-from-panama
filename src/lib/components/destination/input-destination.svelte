@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
+	import {
+		createCombobox,
+		melt,
+		type ComboboxOption,
+		type ComboboxOptionProps
+	} from '@melt-ui/svelte';
 	import Icon from '../site/icon.svelte';
 	import { fly } from 'svelte/transition';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
@@ -41,6 +46,11 @@
 
 	$: {
 		$selected = $selectedDestination ? toOption($selectedDestination) : undefined;
+		if ($selectedDestination && window.dataLayer)
+			window.dataLayer.push({
+				event: 'select_destination',
+				value: `${$selectedDestination.translations[0].name} (${$selectedDestination.iata_code})`
+			});
 	}
 
 	$: filteredDestinations = $touchedInput

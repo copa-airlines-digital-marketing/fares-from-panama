@@ -28,8 +28,10 @@
 
 	const addShowMax = () => (maxShow += 12);
 
-	const handleCardClick = (destination: DestinationReturnSchema) => () =>
-		($selectedDestination = destination);
+	const handleCardClick = (destination: DestinationReturnSchema, fare: unknown) => () => {
+		$selectedDestination = destination;
+		if (window.dataLayer) window.dataLayer.push({ event: 'fare_click', module: 'Budget', fare });
+	};
 </script>
 
 {#if isNotNil($selectedBudget) && !!selectedStayOfSection && isNotNil(budget) && !isEmpty(budget)}
@@ -56,7 +58,7 @@
 					<a
 						class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full group"
 						href="#fechas"
-						on:click={handleCardClick($destinations[destination])}
+						on:click={handleCardClick($destinations[destination], fare)}
 					>
 						<img
 							loading="lazy"

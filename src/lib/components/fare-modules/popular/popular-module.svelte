@@ -20,8 +20,10 @@
 
 	$: selectedStayOfSection = $selectedStay[section];
 
-	const handleCardClick = (destination: DestinationReturnSchema) => () =>
-		($selectedDestination = destination);
+	const handleCardClick = (destination: DestinationReturnSchema, fare: unknown) => () => {
+		if (window.dataLayer) window.dataLayer.push({ event: 'fare_click', module: 'Popular', fare });
+		$selectedDestination = destination;
+	};
 </script>
 
 {#if isNotNil(popular) && !isEmpty(popular) && selectedStayOfSection}
@@ -36,7 +38,7 @@
 				<a
 					href="#fechas"
 					class="bg-secondary font-heading grid gap-x-4 h-full hover:bg-red fare-card--plain focus:bg-red py-8 px-16 rounded-xl shadow-medium text-12/16 text-common-white transition-colors"
-					on:click={handleCardClick($destinations[destination])}
+					on:click={handleCardClick($destinations[destination], fare)}
 				>
 					<span class="font-heading-medium [grid-area:dest]">
 						<span class="text-20/32">{$destinations[destination].translations[0].name}</span>
