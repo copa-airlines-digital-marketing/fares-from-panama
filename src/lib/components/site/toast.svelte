@@ -17,6 +17,12 @@
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
+
+	const alternatives = getContext<Writable<null | string[]>>('itineraryAlternatives');
+
+	$: alternativesItineray = $alternatives;
 </script>
 
 <div
@@ -40,6 +46,7 @@
 				{/if}
 				<div class="wysiwyg" use:melt={$description(id)}>
 					{@html description}
+					{alternativesItineray ? alternativesItineray.join(', ') : ''}
 				</div>
 				<button class="ml-32" use:melt={$close(id)} aria-label="close notification">
 					<Icon data={IconCross} class="size-24"></Icon>

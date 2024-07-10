@@ -6,9 +6,10 @@
 	import { getFareModulesContext } from '../context';
 	import CalendarMonthCard from './calendar-month-card.svelte';
 	import { slide } from 'svelte/transition';
-	import { isEmpty, minBy, prop, reduce } from 'ramda';
+	import { isEmpty, prop } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
-	import { dateIsInMonth, isBeforeSweetSpot, parseDate, parseDeparture } from '$lib/public/utils';
+	import { dateIsInMonth, parseDate, parseDeparture } from '$lib/public/utils';
+	import { checkAttractiveFaresExistanceForItinerary, getLowestFareOfMonths } from '.';
 	import type { Writable } from 'svelte/store';
 
 	const section = getContext<string>('section');
@@ -16,34 +17,31 @@
 	const { days: allDays, selected: selectedStay } = getDaysContext();
 	const modules = getFareModulesContext();
 
-	const labels = getContext('moduleLabels');
+	const labels = getContext<Record<string, string>>('moduleLabels');
 
 	$: calendarMonths = $modules.calendarMonths;
 	$: calendar = $modules.calendar;
 	$: selectedStayOfSection = $selectedStay[section];
 
-	const toastFN = getContext<() => void>('showToast');
-	const maxAlerts = getContext<number>('maxAlerts');
-	const alertsShown = getContext<Writable<number>>('alertsShown');
+	const toastFN = getContext<(index?: number) => void>('showToast');
+	const monthsAlternatives = getContext<Writable<null | string[]>>('itineraryAlternatives');
 
-	const addToast = (date: Date, fare: unknown, month: string) => () => {
-		if (window.dataLayer)
-			window.dataLayer.push({ event: 'fare_click', module: 'Calendar Month', month, fare });
-		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
-			toastFN();
-			$alertsShown += 1;
-		}
-	};
+	$: {
+		const alternatives = checkAttractiveFaresExistanceForItinerary(
+			$selectedDestination,
+			$selectedStay[section],
+			calendarMonths
+		);
+		$monthsAlternatives = alternatives;
+		if (alternatives) toastFN(1);
+	}
 </script>
 
 {#if $selectedDestination && selectedStayOfSection}
 	{@const { iata_code } = $selectedDestination}
 	{@const stay = parseInt(selectedStayOfSection)}
 	{@const months = calendarMonths[iata_code][stay]}
-	{@const lowest =
-		!isEmpty(months) && months != null
-			? reduce(minBy(prop('price')), Infinity, Object.values(months))
-			: Infinity}
+	{@const lowest = getLowestFareOfMonths(months)}
 	<Accordion.Root class="my-16" multiple>
 		{#if !isEmpty(months) && months != null}
 			{#each Object.keys(months) as key (key)}
@@ -53,9 +51,8 @@
 					<Accordion.Header>
 						<Accordion.Trigger
 							class="w-full border-b border-b-common-white group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
-							on:click={addToast(parseDate(fare.departure), fare, key)}
 						>
-							<CalendarMonthCard {fare} lowest={lowest.price === fare.price} selected={false} />
+							<CalendarMonthCard {fare} lowest={lowest === fare.price} selected={false} />
 						</Accordion.Trigger>
 					</Accordion.Header>
 					<Accordion.Content transition={slide}>
@@ -75,7 +72,7 @@
 											{date}
 											fare={dayFare}
 											isInMonth={false}
-											lowest={lowest.price === dayFare.price}
+											lowest={lowest === dayFare.price}
 										></CalendarDayCard>
 									</li>
 								{/if}

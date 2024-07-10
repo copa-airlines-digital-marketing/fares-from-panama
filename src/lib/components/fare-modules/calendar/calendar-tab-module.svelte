@@ -1,21 +1,20 @@
 <script lang="ts">
 	import { Tabs } from 'bits-ui';
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import { getFareModulesContext } from '../context';
 	import CalendarMonthCard from './calendar-month-card.svelte';
-	import { isEmpty, min, prop } from 'ramda';
+	import { isEmpty, prop } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
-	import {
-		dateIsInMonth,
-		getWeekDays,
-		isBeforeSweetSpot,
-		parseDate,
-		parseDeparture
-	} from '$lib/public/utils';
+	import { dateIsInMonth, getWeekDays, parseDate, parseDeparture } from '$lib/public/utils';
 	import { fly } from 'svelte/transition';
 	import type { Writable } from 'svelte/store';
+	import {
+		checkAttractiveFaresExistanceForItinerary,
+		checkCloseDates,
+		getLowestFareOfMonths
+	} from '.';
 
 	const section = getContext<string>('section');
 	const { selected: selectedDestination } = getDestinationsContext();
@@ -33,40 +32,17 @@
 	const toastFN = getContext<(index?: number) => void>('showToast');
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
-
-	const addToast = (date: Date, fare: unknown, month: string) => () => {
-		if (window.dataLayer)
-			window.dataLayer.push({ event: 'fare_click', module: 'Calendar Month', month, fare });
-		if (!!toastFN && isBeforeSweetSpot(date) && $alertsShown <= maxAlerts) {
-			toastFN();
-			$alertsShown += 1;
-		}
-	};
-
-	const checkDates = (values: unknown) => {
-		if (!$selectedDestination || !selectedStayOfSection) return;
-
-		const { iata_code } = $selectedDestination;
-
-		const stay = parseInt(selectedStayOfSection);
-
-		const months = calendarMonths[iata_code][stay];
-
-		const lowest =
-			!isEmpty(months) && months !== null
-				? Object.values(months)
-						.map((f) => f.price)
-						.reduce(min, Infinity)
-				: Infinity;
-
-		//return if is normal
-		if (![Infinity, 9999999].includes(lowest)) return;
-
-		if (!!toastFN) toastFN(1);
-	};
+	const monthsAlternatives = getContext<Writable<null | string[]>>('itineraryAlternatives');
 
 	$: {
-		checkDates($selectedStay[section]);
+		const alternatives = checkAttractiveFaresExistanceForItinerary(
+			$selectedDestination,
+			$selectedStay[section],
+			calendarMonths
+		);
+		$monthsAlternatives = alternatives;
+		console.log($monthsAlternatives);
+		if (alternatives) toastFN(1);
 	}
 </script>
 
@@ -74,12 +50,7 @@
 	{@const { iata_code } = $selectedDestination}
 	{@const stay = parseInt(selectedStayOfSection)}
 	{@const months = calendarMonths[iata_code][stay]}
-	{@const lowest =
-		!isEmpty(months) && months != null
-			? Object.values(months)
-					.map((f) => f.price)
-					.reduce(min, Infinity)
-			: Infinity}
+	{@const lowest = getLowestFareOfMonths(months)}
 	<Tabs.Root bind:value={current}>
 		<Tabs.List class="auto-cols-fr gap-8 grid grid-rows-1 grid-flow-col">
 			{#if !isEmpty(months) && months != null}
@@ -88,7 +59,14 @@
 					<Tabs.Trigger
 						value={key}
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
-						on:click={addToast(parseDate(fare.departure), fare, key)}
+						on:click={checkCloseDates(
+							parseDate(fare.departure),
+							fare,
+							key,
+							toastFN,
+							$alertsShown,
+							maxAlerts
+						)}
 					>
 						<CalendarMonthCard {fare} lowest={lowest === fare.price} selected={current === key} />
 					</Tabs.Trigger>

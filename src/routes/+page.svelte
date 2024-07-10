@@ -7,9 +7,10 @@
 		getSectionsFromPage,
 		getTitleTagFromPage
 	} from '$lib/public/utils';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { setDaysContext } from '$lib/components/days';
 	import { setFareModulesContext } from '$lib/components/fare-modules/context.js';
+	import { writable } from 'svelte/store';
 
 	export let data;
 
