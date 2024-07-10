@@ -19,7 +19,6 @@
 	import { setContext } from 'svelte';
 	import { setBudgetContext } from '../budget/context';
 	import { writable } from 'svelte/store';
-	import { symbol } from 'zod';
 
 	export let section: string;
 	export let contents: Directus.PageSectionContent[];
@@ -56,8 +55,8 @@
 
 	setContext('sectionSteps', writable([]));
 
-	const showToast = () => {
-		const { item, collection } = toasts[0];
+	const showToast = (index = 0) => {
+		const { item, collection } = toasts[index];
 
 		if (!itemIsTextContent(item))
 			return addToast({

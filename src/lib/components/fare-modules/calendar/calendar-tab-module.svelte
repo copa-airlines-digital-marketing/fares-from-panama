@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Tabs } from 'bits-ui';
-	import { getContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import { getFareModulesContext } from '../context';
 	import CalendarMonthCard from './calendar-month-card.svelte';
-	import { isEmpty, minBy, prop, reduce } from 'ramda';
+	import { isEmpty, min, prop } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
 	import {
 		dateIsInMonth,
@@ -30,7 +30,7 @@
 	$: calendar = $modules.calendar;
 	$: selectedStayOfSection = $selectedStay[section];
 
-	const toastFN = getContext<() => void>('showToast');
+	const toastFN = getContext<(index?: number) => void>('showToast');
 	const maxAlerts = getContext<number>('maxAlerts');
 	const alertsShown = getContext<Writable<number>>('alertsShown');
 
@@ -42,6 +42,32 @@
 			$alertsShown += 1;
 		}
 	};
+
+	const checkDates = (values: unknown) => {
+		if (!$selectedDestination || !selectedStayOfSection) return;
+
+		const { iata_code } = $selectedDestination;
+
+		const stay = parseInt(selectedStayOfSection);
+
+		const months = calendarMonths[iata_code][stay];
+
+		const lowest =
+			!isEmpty(months) && months !== null
+				? Object.values(months)
+						.map((f) => f.price)
+						.reduce(min, Infinity)
+				: Infinity;
+
+		//return if is normal
+		if (![Infinity, 9999999].includes(lowest)) return;
+
+		if (!!toastFN) toastFN(1);
+	};
+
+	$: {
+		checkDates($selectedStay[section]);
+	}
 </script>
 
 {#if $selectedDestination && selectedStayOfSection}
@@ -50,7 +76,9 @@
 	{@const months = calendarMonths[iata_code][stay]}
 	{@const lowest =
 		!isEmpty(months) && months != null
-			? reduce(minBy(prop('price')), Infinity, Object.values(months))
+			? Object.values(months)
+					.map((f) => f.price)
+					.reduce(min, Infinity)
 			: Infinity}
 	<Tabs.Root bind:value={current}>
 		<Tabs.List class="auto-cols-fr gap-8 grid grid-rows-1 grid-flow-col">
@@ -62,11 +90,7 @@
 						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
 						on:click={addToast(parseDate(fare.departure), fare, key)}
 					>
-						<CalendarMonthCard
-							{fare}
-							lowest={lowest.price === fare.price}
-							selected={current === key}
-						/>
+						<CalendarMonthCard {fare} lowest={lowest === fare.price} selected={current === key} />
 					</Tabs.Trigger>
 				{/each}
 			{:else}
@@ -109,7 +133,7 @@
 									fare={dayFare}
 									isTab={true}
 									isInMonth={!dateIsInMonth(date, parseDeparture(fare))}
-									lowest={lowest.price === dayFare.price}
+									lowest={lowest === dayFare.price}
 								></CalendarDayCard>
 							</li>
 						{/each}
