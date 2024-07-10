@@ -5,7 +5,7 @@
 		states: { toasts },
 		actions: { portal }
 	} = createToaster<Directus.TextContent>({
-		closeDelay: 2500
+		closeDelay: 3500
 	});
 
 	export const addToast = helpers.addToast;
