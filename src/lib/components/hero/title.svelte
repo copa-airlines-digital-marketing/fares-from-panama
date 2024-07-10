@@ -53,7 +53,7 @@
 			</picture>
 			<divs
 				bind:this={overlay}
-				class="animate-pulse data-[loaded='true']:animate-none bg-common-black/40 col-start-1 ease-in-out h-full row-start-1 w-full"
+				class="animate-pulse data-[loaded='true']:animate-none bg-gradient-to-b from-common-black/40 col-start-1 ease-in-out h-full row-start-1 w-full"
 			></divs>
 		</div>
 		<h1

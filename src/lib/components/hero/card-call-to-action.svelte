@@ -17,7 +17,7 @@
 	{href}
 	class={concatClasses(
 		className,
-		'bg-gradient-to-t from-primary-ultradark group grid grid-cols-[auto_1fr_auto] gap-8 h-full items-center md:grid-cols-1 md:grid-rows-[min-content_1fr_auto] md:justify-items-center outline-none rounded-[64px] md:rounded-2xl px-16 py-12 md:py-24 to-primary transition-colors'
+		'bg-primary group grid grid-cols-[auto_1fr_auto] gap-8 h-full items-center md:grid-cols-1 md:grid-rows-[min-content_1fr_auto] md:justify-items-center outline-none rounded-lg px-16 py-12 md:py-24 to-primary transition-colors shadow-large'
 	)}
 >
 	<span class="col-start-1 group-hover:text-secondary group-focus:text-secondary text-common-white">
