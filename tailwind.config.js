@@ -26,5 +26,13 @@ export default {
 				'3/4': '3 / 4'
 			}
 		}
-	}
+	},
+  safelist: [
+    'mt-24',
+    'pr-8',
+    'list-disc',
+    'list-inside',
+    'p-4',
+    'gap-8'
+  ]
 };
