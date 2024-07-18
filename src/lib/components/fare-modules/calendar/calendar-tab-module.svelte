@@ -7,7 +7,13 @@
 	import CalendarMonthCard from './calendar-month-card.svelte';
 	import { isEmpty, prop } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
-	import { dateIsInMonth, getWeekDays, parseDate, parseDeparture } from '$lib/public/utils';
+	import {
+		dateIsInMonth,
+		getWeekDays,
+		isAfter6Months,
+		parseDate,
+		parseDeparture
+	} from '$lib/public/utils';
 	import { fly } from 'svelte/transition';
 	import type { Writable } from 'svelte/store';
 	import {
@@ -56,20 +62,22 @@
 			{#if !isEmpty(months) && months != null}
 				{#each Object.keys(months) as key (key)}
 					{@const fare = months[key]}
-					<Tabs.Trigger
-						value={key}
-						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
-						on:click={checkCloseDates(
-							parseDate(fare.departure),
-							fare,
-							key,
-							toastFN,
-							$alertsShown,
-							maxAlerts
-						)}
-					>
-						<CalendarMonthCard {fare} lowest={lowest === fare.price} selected={current === key} />
-					</Tabs.Trigger>
+					{#if !isAfter6Months(parseDeparture(fare))}
+						<Tabs.Trigger
+							value={key}
+							class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary transition-colors data-[state='active']:bg-red shadow-tiny"
+							on:click={checkCloseDates(
+								parseDate(fare.departure),
+								fare,
+								key,
+								toastFN,
+								$alertsShown,
+								maxAlerts
+							)}
+						>
+							<CalendarMonthCard {fare} lowest={lowest === fare.price} selected={current === key} />
+						</Tabs.Trigger>
+					{/if}
 				{/each}
 			{:else}
 				<div class="text-center text-common-white">

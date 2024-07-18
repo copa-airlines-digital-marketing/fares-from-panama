@@ -3,7 +3,7 @@
 		formatDateForDisplay,
 		getDayAndDate,
 		getShoppingEngingeURL,
-		isAfter180Days,
+		isAfter6Months,
 		isBeforeSweetSpot,
 		isBeforeToday,
 		parseDate
@@ -41,7 +41,7 @@
 	};
 </script>
 
-{#if isInMonth || isBeforeToday(date) || isAfter180Days(date)}
+{#if isInMonth || isBeforeToday(date) || isAfter6Months(date)}
 	<div
 		class="calendar:aspect-square bg-grey-100 calendar:px-8 calendar:py-4 fare-card--calendar-date font-heading grid group h-full px-16 py-8 rounded-xl text-12/16 text-grey-500 transition-colors w-full"
 	>

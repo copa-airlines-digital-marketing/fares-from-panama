@@ -6,6 +6,7 @@
 	import { isEmpty } from 'ramda';
 	import HistogramMonthCard from './histogram-month-card.svelte';
 	import HistogramDatesTabs from './histogram-dates-tabs.svelte';
+	import { isAfter6Months, parseDeparture } from '$lib/public/utils';
 
 	const section = getContext<string>('section');
 	const { selected: selectedStay } = getDaysContext();
@@ -33,13 +34,15 @@
 			{#if !isEmpty(months) && months != null}
 				{#each Object.keys(months) as key (key)}
 					{@const fare = months[key]}
-					<Tabs.Trigger
-						value={key}
-						class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary hover:border-secondary transition-colors data-[state='active']:bg-red data-[state='active']:border-red shadow-tiny"
-						on:click={handleClick(fare, key)}
-					>
-						<HistogramMonthCard {fare} selected={current === key} />
-					</Tabs.Trigger>
+					{#if !isAfter6Months(parseDeparture(fare))}
+						<Tabs.Trigger
+							value={key}
+							class="border-2 border-primary-ultradark group rounded-lg hover:bg-secondary hover:border-secondary transition-colors data-[state='active']:bg-red data-[state='active']:border-red shadow-tiny"
+							on:click={handleClick(fare, key)}
+						>
+							<HistogramMonthCard {fare} selected={current === key} />
+						</Tabs.Trigger>
+					{/if}
 				{/each}
 			{:else}
 				<div class="text-center text-common-white">

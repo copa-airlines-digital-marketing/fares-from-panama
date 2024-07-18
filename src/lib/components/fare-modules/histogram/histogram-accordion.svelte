@@ -7,6 +7,7 @@
 	import HistogramMonthCard from './histogram-month-card.svelte';
 	import HistogramDatesTabs from './histogram-dates-tabs.svelte';
 	import { slide } from 'svelte/transition';
+	import { isAfter6Months, parseDeparture } from '$lib/public/utils';
 
 	const section = getContext<string>('section');
 	const { selected: selectedStay } = getDaysContext();
@@ -33,20 +34,22 @@
 		{#if !isEmpty(months) && months != null}
 			{#each Object.keys(months) as key (key)}
 				{@const fare = months[key]}
-				<Accordion.Item value={key}>
-					<Accordion.Header>
-						<Accordion.Trigger
-							value={key}
-							class="w-full border-b border-b-primary-ultradark group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
-							on:click={handleClick(fare, key)}
-						>
-							<HistogramMonthCard {fare} selected={current === key} />
-						</Accordion.Trigger>
-					</Accordion.Header>
-					<Accordion.Content transition={slide}>
-						<HistogramDatesTabs month={key}></HistogramDatesTabs>
-					</Accordion.Content>
-				</Accordion.Item>
+				{#if !isAfter6Months(parseDeparture(fare))}
+					<Accordion.Item value={key}>
+						<Accordion.Header>
+							<Accordion.Trigger
+								value={key}
+								class="w-full border-b border-b-primary-ultradark group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
+								on:click={handleClick(fare, key)}
+							>
+								<HistogramMonthCard {fare} selected={current === key} />
+							</Accordion.Trigger>
+						</Accordion.Header>
+						<Accordion.Content transition={slide}>
+							<HistogramDatesTabs month={key}></HistogramDatesTabs>
+						</Accordion.Content>
+					</Accordion.Item>
+				{/if}
 			{/each}
 		{:else}
 			<div class="text-center text-common-white">
