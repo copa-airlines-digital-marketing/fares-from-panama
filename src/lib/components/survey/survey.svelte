@@ -90,7 +90,7 @@
 			<Dialog.Content
 				transition={fly}
 				transitionConfig={{ y: 100 }}
-				class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 rounded-lg border border- bg-backgound-paper p-24 shadow-modal outline-none flex flex-col max-w-[92%] sm:max-w-[392px] w-full"
+				class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 rounded-lg border border- bg-backgound-paper p-24 shadow-modal outline-none flex flex-col max-w-[92%] sm:max-w-[392px] w-full max-h-[72vh] overflow-y-auto"
 			>
 				<Dialog.Title>
 					<Heading type="h2" style="text-primary-dark">Feedback</Heading>
