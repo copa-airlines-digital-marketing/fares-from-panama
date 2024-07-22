@@ -90,16 +90,16 @@
 			<Dialog.Content
 				transition={fly}
 				transitionConfig={{ y: 100 }}
-				class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 rounded-lg border border- bg-backgound-paper p-24 shadow-modal outline-none flex flex-col max-w-[92%] sm:max-w-[392px] w-full max-h-[72vh] overflow-y-auto"
+				class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 rounded-lg border border- bg-backgound-paper py-24 shadow-modal outline-none flex flex-col max-w-[92%] sm:max-w-[392px] w-full max-h-[72vh]"
 			>
-				<Dialog.Title>
+				<Dialog.Title class="px-24">
 					<Heading type="h2" style="text-primary-dark">Feedback</Heading>
 					<p class="text-grey-500 max-w-prose mt-8">
 						¿Nos regalas 30 segundos para responder esta encuesta de 4 preguntas? Tus respuestas nos
 						ayudarán a mejorar. ¡Gracias por tu tiempo!
 					</p>
 				</Dialog.Title>
-				<Dialog.Description>
+				<Dialog.Description class="overflow-y-auto px-24">
 					<form on:submit={handleFormSubmit}>
 						<ol class="flex flex-col gap-16 my-petit">
 							<li>
@@ -150,7 +150,7 @@
 					<button
 						use:builder.action
 						{...builder}
-						class="text-primary rounded-full hover:text-primary-light focus:text-primary-light outline-none order-first self-end"
+						class="text-primary rounded-full hover:text-primary-light focus:text-primary-light outline-none order-first self-end px-24"
 						bind:this={close}
 					>
 						<Icon data={IconCross} class="size-36" />
