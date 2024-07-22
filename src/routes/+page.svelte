@@ -7,10 +7,10 @@
 		getSectionsFromPage,
 		getTitleTagFromPage
 	} from '$lib/public/utils';
-	import { onMount, setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import { setDaysContext } from '$lib/components/days';
 	import { setFareModulesContext } from '$lib/components/fare-modules/context.js';
-	import { writable } from 'svelte/store';
+	import { Survey } from '$lib/components/survey';
 
 	export let data;
 
@@ -58,3 +58,5 @@
 	{@const section = sectioM2M.sections_id}
 	<Section {section}></Section>
 {/each}
+
+<Survey></Survey>
