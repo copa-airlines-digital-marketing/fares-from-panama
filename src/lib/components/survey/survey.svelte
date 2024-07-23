@@ -8,9 +8,15 @@
 	import Heading from '../copa/typography/heading.svelte';
 	import Rating from './rating.svelte';
 	import { z } from 'zod';
+	import { createToaster, melt } from '@melt-ui/svelte';
+	import { flip } from 'svelte/animate';
+
+	type ToastData = {
+		text: string;
+	};
 
 	let animate = false;
-	let close: HTMLButtonElement;
+	let closeModal: HTMLButtonElement;
 	let open: HTMLButtonElement;
 
 	const cookieName = 'tfv_answered_survey';
@@ -31,6 +37,13 @@
 
 	const getCookieValue = (name: string) =>
 		document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '';
+
+	const {
+		elements: { content, title, description, close },
+		helpers: { addToast },
+		states: { toasts },
+		actions: { portal }
+	} = createToaster<ToastData>();
 
 	const handleBeforeUnload = (ev: BeforeUnloadEvent) => {
 		const hasAnswered = getCookieValue(cookieName);
@@ -55,7 +68,10 @@
 		});
 		setCookie(cookieName, 'answered', 30);
 		animate = false;
-		if (close) close.click();
+		addToast({
+			data: { text: 'Gracias por responder esta encuesta. ¡Agradecemos mucho tus comentarios!' }
+		});
+		if (closeModal) closeModal.click();
 	};
 
 	onMount(() => {
@@ -151,7 +167,7 @@
 						use:builder.action
 						{...builder}
 						class="text-primary rounded-full hover:text-primary-light focus:text-primary-light outline-none order-first self-end px-24"
-						bind:this={close}
+						bind:this={closeModal}
 					>
 						<Icon data={IconCross} class="size-36" />
 						<span class="sr-only">Cerrar</span>
@@ -161,3 +177,35 @@
 		</Dialog.Portal>
 	</Dialog.Root>
 {/if}
+
+<div
+	use:portal
+	class="fixed right-0 top-0 z-50 m-16 flex flex-col items-end gap-8 md:bottom-0 md:top-auto"
+>
+	{#each $toasts as { id, data } (id)}
+		<div
+			use:melt={$content(id)}
+			animate:flip={{ duration: 500 }}
+			in:fly={{ duration: 150, x: '100%' }}
+			out:fly={{ duration: 150, x: '100%' }}
+			class="rounded bg-system-success text-common-white shadow-medium"
+		>
+			<div
+				class="relative flex w-[24rem] max-w-[calc(100vw-2rem)] items-center justify-between gap-16 p-20"
+			>
+				<div>
+					<div use:melt={$description(id)}>
+						{data.text}
+					</div>
+				</div>
+				<button
+					use:melt={$close(id)}
+					class="absolute right-16 top-16 grid size-24 place-items-center rounded-full text-common-white hover:bg-system-success-faded focus:bg-system-success-faded"
+				>
+					<Icon data={IconCross} class="size-16"></Icon>
+					<span class="sr-only">Cerrar notificiación</span>
+				</button>
+			</div>
+		</div>
+	{/each}
+</div>
