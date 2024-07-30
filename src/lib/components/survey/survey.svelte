@@ -148,7 +148,7 @@
 								/>
 							</li>
 							<li>
-								<Rating name="recommend" count={10}>
+								<Rating name="recommend" count={11} startAt={0}>
 									<span slot="heading">¿Recomendarías esta página a un amigo o familiar?</span>
 									<div slot="lowScore">Extremadamente malas</div>
 									<div slot="highScore">Extremadamente buenas</div>

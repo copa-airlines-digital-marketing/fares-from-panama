@@ -3,9 +3,10 @@
 	import Check from './check.svelte';
 
 	export let count;
+	export let startAt = 1;
 	export let name;
 
-	let scores = Array.from(Array(count).keys()).map((v) => v + 1);
+	let scores = Array.from(Array(count).keys()).map((v) => v + startAt);
 </script>
 
 <Heading type="h4" style="text-grey-700">
