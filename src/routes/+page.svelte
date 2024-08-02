@@ -11,8 +11,6 @@
 	import { setDaysContext } from '$lib/components/days';
 	import { setFareModulesContext } from '$lib/components/fare-modules/context.js';
 	import { Survey } from '$lib/components/survey';
-	import { PUBLIC_STATUS } from '$env/static/public';
-	import Pending from '$lib/components/pending/pending.svelte';
 
 	export let data;
 
@@ -56,13 +54,9 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-{#if PUBLIC_STATUS === 'Released'}
-	{#each storefrontSection as sectioM2M}
-		{@const section = sectioM2M.sections_id}
-		<Section {section}></Section>
-	{/each}
+{#each storefrontSection as sectioM2M}
+	{@const section = sectioM2M.sections_id}
+	<Section {section}></Section>
+{/each}
 
-	<Survey></Survey>
-{:else}
-	<Pending />
-{/if}
+<Survey></Survey>
