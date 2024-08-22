@@ -5,16 +5,18 @@
 	import Header from '$lib/components/header/header.svelte';
 	import Icon from '$lib/components/site/icon.svelte';
 	import Heading from '$lib/components/copa/typography/heading.svelte';
+	import { error } from '@sveltejs/kit';
 </script>
 
 <Header></Header>
 <div
 	class="h-svh grid grid-cols-1 grid-rows-[50svh_min-content_1fr_min-content] md:grid-rows-[50svh_min-content_min-content_1fr] justify-items-center gap-16 container mx-auto"
 >
+{#if $page.error}
 	<div class="grid content-end">
 		<Icon data={NotFound} class="w-152 h-152"></Icon>
 	</div>
-
+{/if}
 	<Heading type="display-normal" style="text-primary text-center">
 		No pudimos encontrar lo que estabas buscando
 	</Heading>

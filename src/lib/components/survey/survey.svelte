@@ -45,16 +45,6 @@
 		actions: { portal }
 	} = createToaster<ToastData>();
 
-	const handleBeforeUnload = (ev: BeforeUnloadEvent) => {
-		const hasAnswered = getCookieValue(cookieName);
-		if (!hasAnswered) {
-			open.click();
-			ev.preventDefault();
-			return 'Podrias contestar esta encuesta?';
-		}
-		return false;
-	};
-
 	const handleFormSubmit = (ev: SubmitEvent) => {
 		ev.preventDefault();
 		const target = ev.target;
@@ -77,7 +67,6 @@
 	onMount(() => {
 		const hasAnswered = getCookieValue(cookieName);
 		if (!hasAnswered) animate = true;
-		window.addEventListener('beforeunload', handleBeforeUnload);
 	});
 </script>
 

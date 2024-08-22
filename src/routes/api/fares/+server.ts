@@ -30,7 +30,7 @@ export const GET: RequestHandler = async({url}) => {
 
     console.log(errorID, JSON.stringify(e))
 
-    return error(500)
+    return error(500, {message: 'Nuestros página se encuentra en mantenimiento, mientras tanto, puedes buscar tu próximo vuelo en copa.com o volver más tarde.'})
   }
 
 }

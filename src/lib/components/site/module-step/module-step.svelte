@@ -15,7 +15,7 @@
 
 <div class="relative w-fit mx-auto">
 	<p
-		class="text-center mx-auto text-20/32 mt-32 mb-16 font-heading font-heading-medium text-primary-dark dark:text-primary-faded"
+		class="text-center mx-auto text-24/32 mt-32 mb-16 font-heading font-heading-medium text-primary-dark dark:text-primary-faded"
 	>
 		{#if title}
 			{currentLength}.

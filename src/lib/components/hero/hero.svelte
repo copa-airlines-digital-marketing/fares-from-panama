@@ -38,7 +38,7 @@
 		</h3>
 	{/if}
 	<ul
-		class="col-start-2 grid grid-cols-1 grid-rows-5 gap-minimal md:grid-cols-[repeat(5,_minmax(0,1fr))] md:grid-rows-1 md:gap-16 row-start-4"
+		class="col-start-2 grid grid-cols-1 grid-rows-5 gap-minimal md:grid-cols-[repeat(4,_minmax(0,1fr))] md:grid-rows-1 md:gap-16 row-start-4"
 	>
 		{#each cards as card}
 			<SectionCard content={card}></SectionCard>

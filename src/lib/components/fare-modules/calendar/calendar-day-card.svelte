@@ -108,9 +108,7 @@ group-hover:*:text-common-white self-center"
 		<span class="[grid-area:retrn] sm:self-center">
 			{labels['return']}
 			{formatDateForDisplay(parseDate(fare.return))}
-			{#if !isTab}
-				· {labels['roundTrip']}
-			{/if}
+			· {labels['roundTrip']}
 		</span>
 		{#if fare.seats === -1}
 			<span class="[grid-area:lowes] calendar:self-start flex font-heading-bold gap-4 items-center">
