@@ -3,6 +3,7 @@ import { getFromStorage, saveToLocalStorage } from "./local-storage"
 import { fareDestinationReturnSchema, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
 import { all, isEmpty, isNil } from "ramda"
 import { addDestination, destinationReturnSchema, isDestinationArray, transformDestinations, type DestinationReturnSchema } from "./destinations"
+import type { InterestReturnSchema } from "./interest"
 
 type FaresRequestParams = {
   days?: string,
@@ -41,6 +42,19 @@ const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams
   byDestination: fetchAPI('by-destination')
 }
 
+const toInterestObjects = (currentLowestsByInterest: App.LowestFareByInterest, fare: fareDestinationReturnSchema, categories: InterestReturnSchema[]) => {
+  let interestObject: App.InterestFares = {}
+  const lowestByInterest: App.LowestFareByInterest = {}
+
+  categories.forEach(category => {
+    //const name = category
+    //interestObject = {...interestObject, [fare.days]: {[category]: {[fare.destination]: {}}}}
+
+  })
+
+  return [interestObject, lowestByInterest]
+}
+
 const toAppDestinations = (destinations: DestinationReturnSchema[]): App.Destination => destinations.reduce(
   (accum, current) => ({...accum, [current.iata_code]: current}), 
   {}
@@ -52,22 +66,26 @@ const processLowestFares = (allDestinations: App.Destination) => (accumulator: L
   if(!destinationOfFare)
     return accumulator
 
-  const categories = destinationOfFare.
+  const categories = destinationOfFare.categories ?? []
 
   const [destinations, lowests, interests, interestLowests] = accumulator 
 
+  const days = fare.days.toString()
+
+  console.log(categories)
+
   return [
     {...destinations, [destinationOfFare.iata_code]: destinationOfFare},
-    {...lowests, [fare.days.toString()]: {[fare.destination]: {price: fare.min.price, score: fare.max.score}}},
-    ,
-    ,
+    {...lowests, [days]: {[fare.destination]: {price: fare.min.price, score: fare.max.score}}},
+    {...interests, },
+    {},
   ]
 }
 
 
 const transformLowest = (destinations: App.Destination, fares: fareDestinationReturnSchema[]): LowestReturnSchema => {
-  fares.reduce(,[])
-  return {}
+  fares.reduce(processLowestFares(destinations),[{},{},{},{}])
+  return [{},{},{},{}]
 }
 
 const getDateFromFares = (response: unknown) => {
@@ -107,7 +125,7 @@ const getDestinationsOfFares = (response: unknown) => {
 
     if(isDestinationArray(destinationResult) && isViajaPanamaFareDestinationArray(lowestsResult)) {
       const allDestinations = toAppDestinations(destinationResult)
-      const [destinations, lowests, interests, interestLowest ] = 
+      const [destinations, lowests, interests, interestLowest ] = transformLowest(allDestinations, lowestsResult)
       console.log('here',lowests.map(addDestination(transformDestinations(destination))).reduce((a, c) => ({ ...a, [c.iata_code]: c }), {}))
       console.log(lowests)
 

@@ -19,6 +19,8 @@ export const destinationReturnSchema = z.object({
 
 export type DestinationReturnSchema = z.infer<typeof destinationReturnSchema>
 
+export type DestinationCategory = z.infer<typeof destinationReturnSchema>
+
 export const defaultDestination: DestinationReturnSchema = {
   iata_code: 'COPA',
   main_image: 'cdcde722-614e-41a1-801f-c56a4aab06f9',

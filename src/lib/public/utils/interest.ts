@@ -9,7 +9,7 @@ export const interestReturnSchema = z.object({
   }).array().optional()
 })
 
-type InterestReturnSchema = z.infer<typeof interestReturnSchema>
+export type InterestReturnSchema = z.infer<typeof interestReturnSchema>
 
 export const isCountry = (value: unknown): value is InterestReturnSchema => interestReturnSchema.safeParse(value).success
 
