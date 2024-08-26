@@ -1,22 +1,21 @@
 import { CMS_HOST, CMS_TOKEN } from "$env/static/private"
 import { isViajaPanamaFareDaysArray } from "$lib/public/utils/fares"
 import { getDaysOfFare } from "$lib/server/directus/fares"
-import { error, json } from "@sveltejs/kit"
+import { json } from "@sveltejs/kit"
 
 export const GET = async() => {
+  const errorID = crypto.randomUUID()
   try {
     const request = await getDaysOfFare(CMS_HOST, CMS_TOKEN)
 
     if (isViajaPanamaFareDaysArray(request))
-      return json(request.map(value => value.days), {status: 200})
+      return json(request, {status: 200})
 
-    return error(500, {message: 'Nuestros página se encuentra en mantenimiento, mientras tanto, puedes buscar tu próximo vuelo en copa.com o volver más tarde.'})
+    console.log('Response is not valid Days response',errorID, JSON.stringify(request))
+    return json([], { status: 204 })
 
   } catch(e) {
-    const errorID = crypto.randomUUID()
-
-    console.log(errorID, JSON.stringify(e))
-
-    return error(500, {message: 'Nuestros página se encuentra en mantenimiento, mientras tanto, puedes buscar tu próximo vuelo en copa.com o volver más tarde.'})
+    console.log('Error while retreiving Days response', errorID, JSON.stringify(e))
+    return json([], { status: 204 })
   }
 }

@@ -21,7 +21,7 @@
 		<img
 			loading="lazy"
 			class="object-cover h-full w-full"
-			src="https://cm-marketing.directus.app/assets/{image}?width=290&height=120&fit=cover"
+			src="https://cm-marketing.directus.app/assets/{image}?width=290&height=120&fit=cover&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
 			alt=""
 		/>
 	</span>

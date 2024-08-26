@@ -25,7 +25,7 @@
 		loading="lazy"
 		class="[grid-area:image] object-cover h-full w-full"
 		src="https://cm-marketing.directus.app/assets/{$destinations[fare.destination]
-			.main_image}?width=800&height=600&fit=cover"
+			.main_image}?width=800&height=600&fit=cover&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
 		alt=""
 	/>
 	<span

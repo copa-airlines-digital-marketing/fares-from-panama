@@ -11,6 +11,7 @@
 	import { setDaysContext } from '$lib/components/days';
 	import { setFareModulesContext } from '$lib/components/fare-modules/context.js';
 	import { Survey } from '$lib/components/survey';
+	import { requestData } from '$lib/public/utils/request-data.js';
 
 	export let data;
 
@@ -24,7 +25,10 @@
 	const fareModules = setFareModulesContext();
 
 	onMount(async () => {
-		const destinationRequest = await fetch('/api/destinations', { method: 'GET' });
+		requestData('days', {}).then((value) => days.set(value));
+		requestData('destinations', {});
+
+		/* const destinationRequest = await fetch('/api/destinations', { method: 'GET' });
 		const destinations = await destinationRequest.json();
 		destinationStore.set(destinations.reduce((a, c) => ({ ...a, [c.iata_code]: c }), {}));
 
@@ -45,7 +49,7 @@
 				.catch((err) => {
 					console.log(err);
 				});
-		});
+		}); */
 	});
 </script>
 

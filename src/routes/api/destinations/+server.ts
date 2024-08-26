@@ -1,9 +1,9 @@
 import { CMS_HOST, CMS_TOKEN } from "$env/static/private";
-import { addDestination, destinationReturnSchema, isDestinationArray, transformDestinations } from "$lib/public/utils/destinations";
+import { destinationReturnSchema, isDestinationArray } from "$lib/public/utils/destinations";
 import { DEFAULT_LANGUAGE } from "$lib/server/constants";
 import { getAllDestinationsInLanguage } from "$lib/server/directus/destinations";
 import { getDestinationsOfFares } from "$lib/server/directus/fares";
-import { error, json, type RequestHandler } from "@sveltejs/kit";
+import { json, type RequestHandler } from "@sveltejs/kit";
 import { fareDestinationReturnSchema, isViajaPanamaFareDestinationArray } from "$lib/public/utils/fares";
 
 export const GET: RequestHandler = async() => {
@@ -16,21 +16,23 @@ export const GET: RequestHandler = async() => {
 
     const [destinations, fromFares] = requests
 
+    console.log(destinations)
+
     if (isDestinationArray(destinations) && isViajaPanamaFareDestinationArray(fromFares))
-      return json(fromFares.map(addDestination(transformDestinations(destinations))), {status: 200})
+      return json(requests, {status: 200})
 
     destinationReturnSchema.array().parse(destinations)
 
     fareDestinationReturnSchema.array().parse(fromFares)
 
-    return error(500, {message: 'Nuestros página se encuentra en mantenimiento, mientras tanto, puedes buscar tu próximo vuelo en copa.com o volver más tarde.'})
+    return json([], {status: 204})
 
   } catch(e) {
     const errorID = crypto.randomUUID()
 
     console.log(errorID, JSON.stringify(e))
 
-    return error(500, {message: 'Nuestros página se encuentra en mantenimiento, mientras tanto, puedes buscar tu próximo vuelo en copa.com o volver más tarde.'})
+    return json([], {status: 204})
   }
 
 }

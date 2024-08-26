@@ -18,25 +18,33 @@ const faresReturnFieldsQuery: QueryFields<Schema, ViajaPanamaFare> = [
   'taxes',
   'price',
   'seats',
-  'score'
+  'score',
+  'updated_at'
 ]
 
 const faresDestinationsGroup: FaresAggregation = {
-  aggregate:{},
+  aggregate:{
+    min: ['price', 'updated_at'],
+    max: 'score'
+  },
   groupBy: [
-    'destination'
+    'destination',
+    'days'
   ],
   query: {
     filter: {
       price: {
         _neq: 9999999
       }
-    }
+    },
+    limit: -1
   }
 }
 
 const faresDaysGroup: FaresAggregation = {
-  aggregate:{},
+  aggregate:{
+    min: 'updated_at'
+  },
   groupBy: [
     'days'
   ]

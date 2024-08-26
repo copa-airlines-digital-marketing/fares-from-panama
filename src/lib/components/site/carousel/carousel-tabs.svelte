@@ -90,14 +90,14 @@
 				<div class="col-start-1 h-huge row-start-1"></div>
 				<div
 					class="bg-cover col-start-1 col-full relative row-start-1 row-span-full -z-10"
-					style="background-image: url('https://cm-marketing.directus.app/assets/{imageID}?width=50');"
+					style="background-image: url('https://cm-marketing.directus.app/assets/{imageID}?width=50&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU');"
 				>
 					<img
 						alt=""
 						bind:this={images[title]}
 						class="absolute data-[loaded]:opacity-100 duration-300 ease-in-out h-full object-cover opacity-0 w-full"
 						loading="lazy"
-						src="https://cm-marketing.directus.app/assets/{imageID}?width=1920"
+						src="https://cm-marketing.directus.app/assets/{imageID}?width=1920&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
 					/>
 					<div
 						bind:this={imageHolders[title]}

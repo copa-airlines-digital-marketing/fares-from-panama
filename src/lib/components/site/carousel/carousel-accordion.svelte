@@ -52,14 +52,14 @@
 				>
 					<span
 						class="bg-center bg-cover block col-start-1 col-full h-full row-start-1 row-span-full relative"
-						style="background-image: url('https://cm-marketing.directus.app/assets/{imageID}?width=20');"
+						style="background-image: url('https://cm-marketing.directus.app/assets/{imageID}?width=20&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU');"
 					>
 						<img
 							alt=""
 							bind:this={images[title]}
 							class="absolute data-[loaded]:opacity-100 duration-300 ease-in-out h-full object-cover opacity-0 transition-opacity w-full"
 							loading="lazy"
-							src="https://cm-marketing.directus.app/assets/{imageID}?width=960"
+							src="https://cm-marketing.directus.app/assets/{imageID}?width=960&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
 						/>
 						<span
 							bind:this={imageHolders[title]}

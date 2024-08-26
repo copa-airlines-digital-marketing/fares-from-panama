@@ -412,6 +412,7 @@ type ViajaPanamaFare = BaseCollection & {
   price: number
   seats: number
   score: number
+  updated_at: string
 }
 
 type CollectionUpdated = UpdateOnlyBaseCollection & {

@@ -9,18 +9,39 @@ export const faresReturnSchema = z.object({
   taxes: z.string(),
   price: z.string(),
   seats: z.number(),
-  score: z.number()
+  score: z.number(),
+  updated_at: z.string()
 })
 
-export const fareDestinationReturnSchema = faresReturnSchema.pick({destination: true})
+export const fareDestinationReturnSchema = z.object({
+  destination: z.string(),
+  days: z.number(),
+  min: z.object({
+    price: z.number(),
+    updated_at: z.string()
+  }),
+  max: z.object({
+    score: z.number()
+  }) 
+})
 
-export const fareDaysReturnSchema = faresReturnSchema.pick({days: true})
+export const fareDaysReturnSchema = z.object({
+  days: z.number(),
+  min: z.object({
+    updated_at: z.string()
+  })
+})
 
 type faresReturnSchema = z.infer<typeof faresReturnSchema>
 
-type fareDestinationReturnSchema = z.infer<typeof fareDestinationReturnSchema>
+export type fareDestinationReturnSchema = z.infer<typeof fareDestinationReturnSchema>
 
-type fareDaysReturnSchema = z.infer<typeof fareDaysReturnSchema>
+type fareDaysReturnSchema = {
+  days: number
+  min: {
+    updated_at: string
+  }
+}
 
 export const defaultFare: faresReturnSchema = {
   destination: 'COPA',
@@ -31,7 +52,8 @@ export const defaultFare: faresReturnSchema = {
   taxes: '0',
   price: '0',
   seats: 1,
-  score: 1
+  score: 1,
+  updated_at: '2024-08-15 00:00:00'
 }
 
 export const isViajaPanamaFare = (value: unknown): value is faresReturnSchema => faresReturnSchema.safeParse(value).success

@@ -1,7 +1,7 @@
-import { curry } from "ramda"
 import { z } from "zod"
 import { countryReturnSchema } from "./country"
 import { interestReturnSchema } from "./interest"
+import type { fareDestinationReturnSchema } from "./fares"
 
 export const destinationReturnSchema = z.object({
   iata_code: z.string(),
@@ -61,7 +61,7 @@ const toAppDestinationObject = (destination: DestinationReturnSchema): App.Desti
 
 export const transformDestinations = (destinations: DestinationReturnSchema[]): App.Destination => destinations.reduce((accumulator, current) => ({...accumulator, ...toAppDestinationObject(current)}), {})
 
-export const addDestination = curry((destinations: App.Destination, fare: ViajaPanamaFare): DestinationReturnSchema => {
+export const addDestination = (destinations: App.Destination) => (fare: fareDestinationReturnSchema): DestinationReturnSchema => {
 
   const {destination} = fare
 
@@ -75,4 +75,4 @@ export const addDestination = curry((destinations: App.Destination, fare: ViajaP
   currentUnknown.iata_code = destination
 
   return currentUnknown
-})
+}
