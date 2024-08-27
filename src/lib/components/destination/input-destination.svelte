@@ -12,6 +12,8 @@
 	import { destinationSchema, isDestination } from '$lib/cms/destination';
 	import { requestData } from '$lib/public/utils/request-data';
 	import { getFareModulesContext } from '../fare-modules';
+	import { sortBy } from 'ramda';
+	import { path } from 'ramda';
 
 	export let item: Directus.FormInput;
 
@@ -189,7 +191,7 @@
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		{#if !isEmpty($destinationsStore)}
-			{#each filteredDestinations as destination, index (index)}
+			{#each sortBy(path( ['translations', 0, 'name'] ), filteredDestinations) as destination, index (index)}
 				<li
 					class="p-16 cursor-pointer hover:bg-backgound-lightblue data-[highlighted]:bg-backgound-lightblue data-[selected]:bg-backgound-lightblue grid [grid-template-areas:'dest_iata''ctry_iata'] grid-cols-[1fr_auto] grid-rows-[1fr_auto]"
 					on:m-click={selectDestination(destination)}

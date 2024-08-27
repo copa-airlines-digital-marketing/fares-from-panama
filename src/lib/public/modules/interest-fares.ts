@@ -22,12 +22,12 @@ const groupByCategory = groupBy(prop('categories'))
 
 const addParams = (cats: object) => (value: object, key: string) => ({...value, ...cats[key]})
 
-const createArrayOfDestinationsAndCategories = pipe(map(mapToCategoriesArray), tap(say('no more')), addParams, mapObjIndexed)
+const createArrayOfDestinationsAndCategories = pipe(map(mapToCategoriesArray), addParams, mapObjIndexed)
 
 const omitDaysAndIata = map(omit(['days', 'iata_code']))
 
 export const getLowestByInterest = (destinations: App.Destination, fares: App.FaresByDays) => {
-  const lowestByDayCategoryAndDestination = map(pipe(createArrayOfDestinationsAndCategories(destinations), omitDaysAndIata, tap(say('hello')), map(unwindDestinations), values, concatReduceBy, groupByCategory), fares)
+  const lowestByDayCategoryAndDestination = map(pipe(createArrayOfDestinationsAndCategories(destinations), omitDaysAndIata, map(unwindDestinations), values, concatReduceBy, groupByCategory), fares)
   const lowestByDayAndCategory = map(map(pipe(values, sortBy(prop('price')), head, omit(['categories']))), lowestByDayCategoryAndDestination)
   return {
     lowestByDayCategoryAndDestination,

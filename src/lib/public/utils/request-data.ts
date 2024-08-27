@@ -1,7 +1,7 @@
 import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
 import { faresReturnSchema, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
-import { all, groupBy, has, isEmpty, isNil, map, objOf, prop, values } from "ramda"
+import { all, groupBy, has, isEmpty, isNil, keys, map, path, pick, prop, sortBy, values } from "ramda"
 import { isDestinationArray, } from "./destinations"
 import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
 import { getLowestByInterest } from "../modules/interest-fares"
@@ -76,8 +76,8 @@ const getDestinationsOfFares = (response: unknown, accumulatedValue?: unknown) =
     const [destinationResult, lowestsResult] = response
 
     if(isDestinationArray(destinationResult) && isViajaPanamaFareDestinationArray(lowestsResult)) {
-      const destinations = map((value) => value[0], groupBy(prop('iata_code'), destinationResult))
       const lowests = getLowestFaresByDestinationAndDays(lowestsResult)
+      const destinations = pick(keys(groupBy(prop('destination'),lowestsResult)),map((value) => value[0], groupBy(prop('iata_code'), destinationResult)))
       const interests = getLowestByInterest(destinations, lowests)
       return {destinations: {
         lowests,
