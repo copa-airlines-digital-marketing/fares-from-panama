@@ -108,7 +108,9 @@ group-hover:*:text-common-white self-center"
 		<span class="[grid-area:retrn] sm:self-center">
 			{labels['return']}
 			{formatDateForDisplay(parseDate(fare.return))}
-			· {labels['roundTrip']}
+		</span>
+		<span class="[grid-area:rtp]">
+			{labels['roundTrip']}
 		</span>
 		{#if fare.seats === -1}
 			<span class="[grid-area:lowes] calendar:self-start flex font-heading-bold gap-4 items-center">
@@ -116,9 +118,11 @@ group-hover:*:text-common-white self-center"
 				<span>{labels['lowSeats']}</span>
 			</span>
 		{:else if lowest}
-			<span class="[grid-area:lowes] calendar:self-start flex font-heading-bold gap-4 items-center">
-				<Icon data={Isotipo} class="fill-current w-16"></Icon>
+			<span
+				class="[grid-area:lowes] calendar:justify-end flex font-heading-bold gap-4 items-center"
+			>
 				<span>{labels['lowestFare']}</span>
+				<Icon data={Isotipo} class="fill-current w-16"></Icon>
 			</span>
 		{/if}
 		<span class="[grid-area:copaf] justify-self-end">
@@ -143,14 +147,14 @@ group-hover:*:text-common-white self-center"
 
 <style lang="postcss">
 	.fare-card--calendar-date {
-		grid-template-areas: 'dates .' 'retrn retrn' 'lowes copaf' '. taxes' '. price';
+		grid-template-areas: 'dates lowes' 'retrn retrn' 'rtp copaf' '. taxes' '. price';
 		grid-template-columns: 1fr auto;
 		grid-template-rows: min-content repeat(4, minmax(0, auto));
 	}
 
 	@media (min-width: 600px) {
 		.fare-card--calendar-date {
-			grid-template-areas: 'dates .' 'retrn copaf' 'lowes taxes' '. price';
+			grid-template-areas: 'dates lowes' 'retrn copaf' 'rtp taxes' '. price';
 			grid-template-columns: 1fr auto;
 			grid-template-rows: min-content repeat(1, minmax(0, auto));
 		}
@@ -158,8 +162,8 @@ group-hover:*:text-common-white self-center"
 
 	@media (min-width: 1180px) {
 		.fare-card--calendar-date {
-			grid-template-areas: 'dates' 'retrn' 'lowes' 'copaf' 'taxes' 'price';
-			grid-template-columns: 1fr;
+			grid-template-areas: 'dates lowes' 'retrn retrn' 'rtp rtp' 'copaf copaf' 'taxes taxes' 'price price';
+			grid-template-columns: auto 1fr;
 			grid-template-rows: repeat(2, minmax(0, auto)) 1fr repeat(3, minmax(0, auto));
 		}
 	}

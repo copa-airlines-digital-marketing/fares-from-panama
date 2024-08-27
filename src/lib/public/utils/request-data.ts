@@ -122,8 +122,6 @@ const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown, a
 
 const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresRequestParams, accumulatedValue?: unknown) => {
 
-  console.log('requesting from server:', key)
-
   try {
     
     const getDataRequest = await requestedDataMap[key](params)
@@ -146,9 +144,7 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
     const lastUpdate = getDateFromFares(data)
     
     const nextUpdate = parseJSON(getFromStorage(window.localStorage, UPDATE_TIME_KEY, (new Date()).toISOString()))
-    
-    console.log('requesting from server')
-    
+        
     if (isBefore(nextUpdate, lastUpdate)) 
       saveToLocalStorage(window.localStorage, UPDATE_TIME_KEY, addHours(lastUpdate, HOURS_TO_CHECK).toISOString())
     
@@ -204,8 +200,6 @@ export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestPar
       return getRequestedData(key, params)
 
     const parsedData = JSON.parse(dataFromLocalStorage)
-
-    console.log(`from local storage: ${key}`)
     
     return Promise.resolve(validateProperData[key]([parsedData], params))
 

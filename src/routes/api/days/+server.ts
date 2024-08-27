@@ -12,10 +12,10 @@ export const GET = async() => {
       return json(request, {status: 200})
 
     console.log('Response is not valid Days response',errorID, JSON.stringify(request))
-    return json([], { status: 204 })
+    return json([], { status: 200 })
 
   } catch(e) {
     console.log('Error while retreiving Days response', errorID, JSON.stringify(e))
-    return json([], { status: 204 })
+    return json([], { status: 200 })
   }
 }
