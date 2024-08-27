@@ -1,7 +1,7 @@
 import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
-import { faresReturnSchema, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
-import { all, groupBy, has, isEmpty, isNil, keys, map, path, pick, prop, sortBy, values } from "ramda"
+import { faresReturnSchema, isViajaPanamaFare, isViajaPanamaFareArray, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
+import { all, groupBy, has, isEmpty, isNil, keys, map, path, pathOr, pick, prop, sortBy, values } from "ramda"
 import { isDestinationArray, } from "./destinations"
 import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
 import { getLowestByInterest } from "../modules/interest-fares"
@@ -44,8 +44,16 @@ const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams
 const getDateFromFares = (response: unknown) => {
   let dateString: string = NOT_FOUND_VALUE
 
-  if (isViajaPanamaFareDaysArray(response))
-    dateString = response[0].min.updated_at
+  const fare = pathOr(response, [1,0], response)
+
+  if (isViajaPanamaFareArray(fare))
+    dateString = fare[0].updated_at
+  
+  if (isViajaPanamaFareDaysArray(fare))
+    dateString = fare[0].min.updated_at
+
+  if (dateString === NOT_FOUND_VALUE)
+    dateString = pathOr(NOT_FOUND_VALUE, ['min', 'updated_at'], fare)
 
   if (dateString === NOT_FOUND_VALUE) 
     return FIRST_DATE
@@ -143,9 +151,9 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
     
     const lastUpdate = getDateFromFares(data)
     
-    const nextUpdate = parseJSON(getFromStorage(window.localStorage, UPDATE_TIME_KEY, (new Date()).toISOString()))
+    const nextUpdate = getFromStorage(window.localStorage, UPDATE_TIME_KEY, NOT_FOUND_VALUE)
         
-    if (isBefore(nextUpdate, lastUpdate)) 
+    if(nextUpdate === NOT_FOUND_VALUE || isBefore(parseJSON(nextUpdate), lastUpdate)) 
       saveToLocalStorage(window.localStorage, UPDATE_TIME_KEY, addHours(lastUpdate, HOURS_TO_CHECK).toISOString())
     
     return values(processedData)
@@ -191,7 +199,7 @@ const validateProperData: Record<keyof KeyReturnTypeMap, (values: unknown, param
 export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {
   const dataFromLocalStorage = getFromStorage(window.localStorage,key, NOT_FOUND_VALUE)
 
-  const nextUpdateFromLocalStorage = getFromStorage(window.localStorage, key, NOT_FOUND_VALUE)
+  const nextUpdateFromLocalStorage = getFromStorage(window.localStorage, UPDATE_TIME_KEY, NOT_FOUND_VALUE)
 
   try {
     const nextUpdate = parseJSON(nextUpdateFromLocalStorage)

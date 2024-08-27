@@ -23,14 +23,14 @@ export const GET: RequestHandler = async() => {
 
     fareDestinationReturnSchema.array().parse(fromFares)
 
-    return json([], {status: 204})
+    return json([], {status: 200})
 
   } catch(e) {
     const errorID = crypto.randomUUID()
 
     console.log(errorID, JSON.stringify(e))
 
-    return json([], {status: 204})
+    return json([], {status: 200})
   }
 
 }
