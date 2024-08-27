@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
-	import { getFareModulesContext } from '../context';
 	import { getContext } from 'svelte';
 	import { SkeliView } from '$lib/components/skeleton';
 	import { isEmpty, isNil, isNotNil } from 'ramda';

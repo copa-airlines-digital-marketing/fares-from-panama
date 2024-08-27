@@ -24,6 +24,14 @@
 	$: innerWidth = undefined;
 
 	$: selectedStayOfSection = $selectedStay[section];
+
+	$: showModule =
+		$selectedDestination &&
+		selectedStayOfSection &&
+		!isEmpty($modules) &&
+		calendarMonths &&
+		calendarMonths[$selectedDestination.iata_code] &&
+		calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)];
 </script>
 
 <svelte:window bind:innerWidth />
@@ -32,53 +40,25 @@
 	<SkeliView></SkeliView>
 {:else if innerWidth < 1180}
 	<!-- Accordion para mobile -->
-	{#if $selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]}
+	{#if showModule}
 		<CalendarAccordionModule />
 	{:else}
 		<div class="relative">
-			<CalendarMonthsSkeleton pulse={isEmpty($modules)} />
-			<StatusWrapper
-				name={section}
-				{labels}
-				theme={'light'}
-				fares={isEmpty($modules)}
-				destination={!$selectedDestination}
-				days={!$selectedStay[section]}
-				noFares={!!$selectedDestination &&
-					!!selectedStayOfSection &&
-					!(
-						!!calendarMonths &&
-						calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]
-					)}
-			></StatusWrapper>
+			<CalendarMonthsSkeleton pulse={!showModule} />
 		</div>
 	{/if}
 {:else}
 	<!-- Tabs para desktop -->
-	{#if $selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]}
+	{#if showModule}
 		<CalendarTabModule />
 	{:else}
 		<div class="relative">
-			<CalendarMonthsSkeleton pulse={isEmpty($modules)} />
-			<StatusWrapper
-				name={section}
-				{labels}
-				theme={'light'}
-				fares={isEmpty($modules)}
-				destination={!$selectedDestination}
-				days={!$selectedStay[section]}
-				noFares={!!$selectedDestination &&
-					!!selectedStayOfSection &&
-					!(
-						!!calendarMonths &&
-						calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)]
-					)}
-			></StatusWrapper>
+			<CalendarMonthsSkeleton pulse={!showModule} />
 		</div>
 	{/if}
-	{#if !($selectedDestination && selectedStayOfSection && !isEmpty($modules) && calendarMonths && calendarMonths[$selectedDestination.iata_code][parseInt(selectedStayOfSection)])}
+	{#if !showModule}
 		<div class="relative">
-			<CalendarGridSkeleton pulse={isEmpty($modules)}></CalendarGridSkeleton>
+			<CalendarGridSkeleton pulse={!showModule}></CalendarGridSkeleton>
 		</div>
 	{/if}
 {/if}

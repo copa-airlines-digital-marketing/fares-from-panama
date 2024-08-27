@@ -1,5 +1,5 @@
 
-import { add, addDays, eachDayOfInterval, endOfMonth, endOfWeek, format, isAfter, isBefore, parse, startOfMonth, startOfWeek } from "date-fns"
+import { add, addDays, differenceInDays, eachDayOfInterval, endOfMonth, endOfWeek, format, isAfter, isBefore, parse, startOfMonth, startOfWeek } from "date-fns"
 import { toZonedTime } from "date-fns-tz"
 import { es } from 'date-fns/locale'
 import type { FlyParams } from "svelte/transition"
@@ -162,3 +162,5 @@ export const isAfter6Months = (date: Date) => isAfter(date, endOfMonth(add(toPan
 export const isBeforeSweetSpot = (date: Date) => isBefore(date, add(toPanamaTimeZone(new Date()), {days: 22}))
 
 export const say = (something: string) => (value: unknown) => console.log(something, value)
+
+export const datesDif = (a: string, b: string) => differenceInDays(parseDate(a), parseDate(b))

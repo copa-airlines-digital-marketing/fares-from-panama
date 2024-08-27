@@ -3,7 +3,6 @@
 	import { getContext } from 'svelte';
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
-	import { getFareModulesContext } from '../context';
 	import { fly, slide } from 'svelte/transition';
 	import { isEmpty, isNotNil } from 'ramda';
 	import InterestNameCard from './interest-name-card.svelte';

@@ -1,70 +1,52 @@
-import { format } from "date-fns"
-import { inititeFareMonth, isEmptyObject, isValidToAdd, parseDeparture } from "../utils"
-import { YEAR_MONTH_FORMAT } from "./constants"
+import { __, apply, ascend, assoc, groupBy, head, last, map, mergeDeepLeft, pipe, prop, sort, sortBy, tail, tap } from "ramda";
+import type { faresReturnSchema } from "../utils/fares";
+import { getMonthName, inititeFareMonth, parseDate, say } from "../utils";
+import { getMonth } from "date-fns/getMonth";
+import { format } from "date-fns";
 
-
-const addFareToCalendarDate = (module: App.FaresByDateOfDestination, fare: Directus.Fare) => {
-
-  const {days, destination, departure} = fare
-
-  const fareMonth = format(parseDeparture(fare), YEAR_MONTH_FORMAT)
-
-  const newModule = {...module} 
-
-  if (!newModule[destination])
-    newModule[destination] = {}
-
-  if (!newModule[destination][days])
-    newModule[destination][days]= {}
-
-  if (!newModule[destination][days][fareMonth])
-    newModule[destination][days][fareMonth]= inititeFareMonth(fare)
-
-  if (isEmptyObject(newModule[destination][days][fareMonth][departure])){
-    newModule[destination][days][fareMonth][departure] = fare
-    return {...newModule}
-  }
-  
-  const existing = newModule[destination][days][fareMonth][departure]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[destination][days][fareMonth][departure] = fare
-    return ({...newModule})
-  }
-
-  return {...newModule}
+type CalendarModules = {
+  calendarMonths: App.LowestFareByMonthAndDestination
+  calendarFares: App.FaresByDateOfDestination
 }
 
-const setLowestFareMonth = (module: App.LowestFareByMonthAndDestination, fare: Directus.Fare) => {
-  const {days, destination} = fare
+const formatDateMonth = (date: Date) => format(date, 'yyyy-MM-01')
 
-  const fareMonth = format(parseDeparture(fare), YEAR_MONTH_FORMAT)
+const getMonthOfDeparture = pipe(prop('departure'), parseDate, formatDateMonth)
 
-  const newModule = {...module} 
+const setMonth = (fare: faresReturnSchema) => ({...fare, month: getMonthOfDeparture(fare)})
 
-  if (!newModule[destination])
-    newModule[destination] = {}
+const groupByDestination = groupBy(prop('destination'))
 
-  if (!newModule[destination][days])
-    newModule[destination][days]= {}
+const groupByDays = map(groupBy(prop('days')))
 
-  if (!newModule[destination][days][fareMonth]){
-    newModule[destination][days][fareMonth] = fare
-    return ({...newModule})
+const groupByMonthYear = map(map(groupBy(prop('month'))))
+
+const groupByDate = map(map(map(groupBy(prop('departure')))))
+
+const processFare = pipe(map(setMonth), groupByDestination, groupByDays, groupByMonthYear)
+
+const sortFn = (a: faresReturnSchema, b: faresReturnSchema) => a.price - b.price
+
+const getLowest = pipe(sort(sortFn), head)
+
+const getLowestsByMonths = map(map(map(getLowest)))
+
+const getLowestByDate = map(map(map(map(getLowest))))
+
+const getCalendarFares = pipe(groupByDate, getLowestByDate)
+
+const prepareCalendarOfDestination = (fares: faresReturnSchema[]): CalendarModules => {
+  const upToMonthsGroup = processFare(fares)
+  const calendarMonths = getLowestsByMonths(upToMonthsGroup)
+  const months = map(map(map(inititeFareMonth)), calendarMonths)
+  const calendarFares = mergeDeepLeft(getCalendarFares(upToMonthsGroup), months)
+  return {
+    calendarMonths,
+    calendarFares
   }
+} 
 
-  const existing = newModule[destination][days][fareMonth]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[destination][days][fareMonth] = fare
-    return ({...newModule})
-  }
-
-  return {...newModule}
+export { 
+  prepareCalendarOfDestination,
+  type CalendarModules
 }
-
-export const addFareToCalendar = (months: App.LowestFareByMonthAndDestination, calendar: App.FaresByDateOfDestination, fare: Directus.Fare) => 
-  ({
-    calendar: addFareToCalendarDate(calendar, fare), 
-    calendarMonths: setLowestFareMonth(months, fare)
-  })

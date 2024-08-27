@@ -1,20 +1,18 @@
 import { z } from "zod"
-import { collectionIDSchema, type BaseCollection, type CollectionID } from ".."
-import { destinationSchema, type Destination } from "../destination"
+import { type BaseCollection, type CollectionID } from ".."
+import { type Destination } from "../destination"
 import { destinationCategoryTranslationSchema, type DestinationCategoryTranslation } from "../category-translations"
 
 type DestinationCategory = BaseCollection & {
-  name: string
+  name?: string
   image: string | null
-  translations?: CollectionID[] | DestinationCategoryTranslation[]
-  destinations?: CollectionID[] | Destination[]
+  translations: DestinationCategoryTranslation[]
 }
 
 const destinationCategorySchema: z.ZodType<DestinationCategory> = z.object({
-  name: z.string(),
+  name: z.optional(z.string()),
   image: z.null().or(z.string()),
-  translations: z.optional(collectionIDSchema.array().or(z.lazy(() => destinationCategoryTranslationSchema ))),
-  destinations: z.optional(collectionIDSchema.array().or(z.lazy(() => destinationSchema )))
+  translations: z.optional(destinationCategoryTranslationSchema.array()),
 })
 
 export {

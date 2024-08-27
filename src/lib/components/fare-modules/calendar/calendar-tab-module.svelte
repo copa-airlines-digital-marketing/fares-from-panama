@@ -9,6 +9,7 @@
 	import CalendarDayCard from './calendar-day-card.svelte';
 	import {
 		dateIsInMonth,
+		datesDif,
 		getWeekDays,
 		isAfter6Months,
 		parseDate,
@@ -103,7 +104,7 @@
 								{weekday}
 							</li>
 						{/each}
-						{#each Object.keys(days) as day}
+						{#each Object.keys(days).sort(datesDif) as day}
 							{@const date = parseDate(day)}
 							{@const dayFare = days[day]}
 							{@const alternatives = $allDays

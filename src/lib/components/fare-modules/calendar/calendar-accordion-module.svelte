@@ -8,7 +8,13 @@
 	import { slide } from 'svelte/transition';
 	import { isEmpty, prop } from 'ramda';
 	import CalendarDayCard from './calendar-day-card.svelte';
-	import { dateIsInMonth, isAfter6Months, parseDate, parseDeparture } from '$lib/public/utils';
+	import {
+		dateIsInMonth,
+		datesDif,
+		isAfter6Months,
+		parseDate,
+		parseDeparture
+	} from '$lib/public/utils';
 	import { checkAttractiveFaresExistanceForItinerary, getLowestFareOfMonths } from '.';
 	import type { Writable } from 'svelte/store';
 
@@ -58,7 +64,7 @@
 						</Accordion.Header>
 						<Accordion.Content transition={slide}>
 							<ul class="auto-rows-fr bg-backgound-paper gap-8 grid grid-cols-1 p-8">
-								{#each Object.keys(days) as day}
+								{#each Object.keys(days).sort(datesDif) as day}
 									{@const date = parseDate(day)}
 									{@const dayFare = days[day]}
 									{@const alternatives = $allDays

@@ -5,9 +5,9 @@ export const faresReturnSchema = z.object({
   days: z.number(),
   departure: z.string(),
   return: z.string(),
-  fare: z.string(),
-  taxes: z.string(),
-  price: z.string(),
+  fare: z.number(),
+  taxes: z.number(),
+  price: z.number(),
   seats: z.number(),
   score: z.number(),
   updated_at: z.string()
@@ -32,7 +32,7 @@ export const fareDaysReturnSchema = z.object({
   })
 })
 
-type faresReturnSchema = z.infer<typeof faresReturnSchema>
+export type faresReturnSchema = z.infer<typeof faresReturnSchema>
 
 export type fareDestinationReturnSchema = z.infer<typeof fareDestinationReturnSchema>
 
@@ -48,9 +48,9 @@ export const defaultFare: faresReturnSchema = {
   days: -1,
   departure: '1944-06-21',
   return: 'undefined',
-  fare: '0',
-  taxes: '0',
-  price: '0',
+  fare: 0,
+  taxes: 0,
+  price: 0,
   seats: 1,
   score: 1,
   updated_at: '2024-08-15 00:00:00'

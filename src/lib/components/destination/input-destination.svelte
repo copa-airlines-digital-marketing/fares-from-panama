@@ -1,19 +1,21 @@
 <script lang="ts">
-	import {
-		createCombobox,
-		melt,
-		type ComboboxOption,
-		type ComboboxOptionProps
-	} from '@melt-ui/svelte';
+	import { createCombobox, melt, type ComboboxOptionProps } from '@melt-ui/svelte';
 	import Icon from '../site/icon.svelte';
 	import { fly } from 'svelte/transition';
 	import CarretDown from '$lib/assets/icon-carret-down.svg?raw';
 	import IconCross from '$lib/assets/icon-cross.svg?raw';
 	import IconError from '$lib/assets/icon-error.svg?raw';
-	import { isEmpty } from 'ramda';
+	import { has, hasPath, isEmpty } from 'ramda';
 	import { getDestinationsContext } from '$lib/components/destination/context';
 	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
+	import { isObject } from '@melt-ui/svelte/internal/helpers';
+	import { destinationSchema, isDestination } from '$lib/cms/destination';
+	import { requestData } from '$lib/public/utils/request-data';
+	import { getFareModulesContext } from '../fare-modules';
+
 	export let item: Directus.FormInput;
+
+	const fareModules = getFareModulesContext();
 
 	const { placeholder, icon } = item;
 
@@ -35,10 +37,18 @@
 	} = createCombobox<DestinationReturnSchema>({
 		defaultSelected: $selectedDestination ? toOption($selectedDestination) : undefined,
 		forceVisible: true,
+		onSelectedChange: handleDestinationChange,
 		loop: true,
 		closeOnEscape: true,
 		highlightOnHover: true
 	});
+
+	let debounceTimer: ReturnType<typeof setTimeout>;
+
+	const debounce = (callback: () => void) => {
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(callback, 450);
+	};
 
 	$: if (!$open) {
 		$inputValue = $selected?.label ?? '';
@@ -84,6 +94,38 @@
 	const selectDestination = (destination: DestinationReturnSchema) => () => {
 		$selectedDestination = destination;
 	};
+
+	function handleDestinationChange(options: unknown) {
+		if (
+			!options ||
+			!isObject(options) ||
+			!has('next', options) ||
+			hasPath(['next', 'disabled'], options)
+		)
+			return;
+
+		const { next } = options;
+
+		if (!next || typeof next !== 'object' || !has('value', next)) return;
+
+		const { value } = next;
+
+		if (!isDestination(value)) return;
+
+		debounce(() => {
+			requestData('calendar', { destination: value.iata_code }).then((value) => {
+				if (!value || !Array.isArray(value)) return;
+
+				const { calendarMonths, calendarFares } = value[0];
+
+				fareModules.set({
+					...$fareModules,
+					calendar: calendarFares,
+					calendarMonths: calendarMonths
+				});
+			});
+		});
+	}
 </script>
 
 <div class="w-full">

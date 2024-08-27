@@ -1,10 +1,12 @@
 import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
-import { isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
-import { all, F, groupBy, isEmpty, isNil, map, prop, values } from "ramda"
+import { faresReturnSchema, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
+import { all, groupBy, has, isEmpty, isNil, map, objOf, prop, values } from "ramda"
 import { isDestinationArray, } from "./destinations"
 import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
 import { getLowestByInterest } from "../modules/interest-fares"
+import { prepareCalendarOfDestination, type CalendarModules } from "../modules/calendar-fares"
+import { isObject } from "@melt-ui/svelte/internal/helpers"
 
 type FaresRequestParams = {
   days?: string,
@@ -17,7 +19,6 @@ type KeyReturnTypeMap = {
   destinations: unknown[]
   calendar: unknown[]
   histogram: unknown[]
-  byDestination: unknown[]
 }
 
 const FIRST_DATE = new Date(2024, 1, 1)
@@ -37,8 +38,7 @@ const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams
   days: fetchAPI('days'),
   destinations: fetchAPI('destinations'),
   calendar: fetchAPI('calendar'),
-  histogram: fetchAPI('histogram'),
-  byDestination: fetchAPI('by-destination')
+  histogram: fetchAPI('histogram')
 }
 
 const getDateFromFares = (response: unknown) => {
@@ -58,7 +58,7 @@ const getDateFromFares = (response: unknown) => {
   }
 }
 
-const getDaysOfFares = (response: unknown) => {
+const getDaysOfFares = (response: unknown, accumulatedValue?: unknown) => {
   if(isViajaPanamaFareDaysArray(response))
     return {
       days: response.map(value => value.days)
@@ -67,7 +67,7 @@ const getDaysOfFares = (response: unknown) => {
   return {}
 }
 
-const getDestinationsOfFares = (response: unknown) => {
+const getDestinationsOfFares = (response: unknown, accumulatedValue?: unknown) => {
   try {
 
     if (!Array.isArray(response))
@@ -93,14 +93,34 @@ const getDestinationsOfFares = (response: unknown) => {
   }
 }
 
-const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown) => Record<string, unknown>> = {
+const getCalendarFares = (response: unknown, currentCalendar?: CalendarModules): {calendar: CalendarModules}  => {
+  try {
+    faresReturnSchema.array().parse(response)
+
+    const calendar = prepareCalendarOfDestination(response)
+    
+    if(!currentCalendar)
+      return {calendar}
+
+    return { calendar:{
+      calendarFares: { ...calendar.calendarFares, ...currentCalendar.calendarFares },
+      calendarMonths: { ...calendar.calendarMonths, ...currentCalendar.calendarMonths }
+    }}
+
+  } catch (error) {
+    console.error(`Error while loading calendar fares for`, error)
+    return <{calendar: CalendarModules}>{}
+  }
+}
+
+const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown, accumulatedValue?: unknown) => Record<string, unknown>> = {
   days: getDaysOfFares,
   destinations: getDestinationsOfFares,
-  calendar: () => {},
+  calendar: getCalendarFares,
   histogram: () => {},
 }
 
-const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {
+const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresRequestParams, accumulatedValue?: unknown) => {
 
   console.log('requesting from server:', key)
 
@@ -110,7 +130,7 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
     
     const data = await getDataRequest.json()
     
-    const processedData = processRequestDataMap[key](data)
+    const processedData = processRequestDataMap[key](data, accumulatedValue)
 
     if(isEmpty(processedData) || isNil(processedData) || all(isNil, values(processedData)) || all(isEmpty, values(processedData)))
       return []
@@ -141,6 +161,37 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
   }
 }
 
+const validateCalendarOnLocalStorage = (values: unknown, params?: FaresRequestParams) => {
+  if(!params || !isObject(params) || !has('destination', params)) 
+    return []
+
+  const { destination } = params
+
+  if(!destination) return []
+
+  if(!values || !Array.isArray(values))
+    return getRequestedData('calendar', params)
+  
+  const calendar = values[0]
+  
+  if(!calendar || !isObject(calendar) || !has('calendarMonths', calendar) || !has('calendarFares', calendar))
+    return getRequestedData('calendar', params)
+  
+  const { calendarMonths, calendarFares } = calendar
+
+  if(!calendarMonths || !isObject(calendarMonths) || !has(destination, calendarMonths) || !calendarFares || !isObject(calendarFares) || !has(destination, calendarFares))
+    return getRequestedData('calendar', params, calendar)
+  
+  return values
+}
+
+const validateProperData: Record<keyof KeyReturnTypeMap, (values: unknown, params?: FaresRequestParams) => unknown> = {
+  days: (values: unknown, params?: FaresRequestParams) =>  values,
+  destinations: (values: unknown, params?: FaresRequestParams) =>  values,
+  calendar: validateCalendarOnLocalStorage,
+  histogram: () => {},
+}
+
 export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {
   const dataFromLocalStorage = getFromStorage(window.localStorage,key, NOT_FOUND_VALUE)
 
@@ -156,7 +207,7 @@ export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestPar
 
     console.log(`from local storage: ${key}`)
     
-    return Promise.resolve([parsedData])
+    return Promise.resolve(validateProperData[key]([parsedData], params))
 
   } catch (error) {
     console.error(error)
