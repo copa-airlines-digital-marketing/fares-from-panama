@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Section from '$lib/components/directus/section.svelte';
 	import { setDestinationState } from '$lib/components/destination/context.js';
-	import { processFares } from '$lib/public/process-fares.js';
 	import {
 		getMetaDescriptionFromPage,
 		getSectionsFromPage,
@@ -12,6 +11,8 @@
 	import { setFareModulesContext } from '$lib/components/fare-modules/context.js';
 	import { Survey } from '$lib/components/survey';
 	import { requestData } from '$lib/public/utils/request-data.js';
+	import { setLowestFaresContext } from '$lib/public/modules/context.js';
+	import { isEmpty } from 'ramda';
 
 	export let data;
 
@@ -22,11 +23,30 @@
 
 	const { all: destinationStore } = setDestinationState({});
 	const { days } = setDaysContext({ days: [], selectedDays: {} });
+	const lowestsFare = setLowestFaresContext();
 	const fareModules = setFareModulesContext();
 
+	const keyToStoreMap = {
+		destinations: destinationStore,
+		lowests: lowestsFare
+	};
+
+	const setDestinations = (key: keyof typeof keyToStoreMap) => (value: unknown) => {
+		if (Array.isArray(value) && value.length !== 4) return keyToStoreMap[key].set(value[0]);
+
+		const [lowests, destinations] = value;
+		destinationStore.set(destinations);
+		lowestsFare.set(lowests);
+	};
+
 	onMount(async () => {
-		requestData('days', {}).then((value) => days.set(value));
-		requestData('destinations', {});
+		requestData('days', {}).then((value) => days.set(value[0]));
+
+		requestData('destinations', {}).then(setDestinations('destinations'));
+
+		if (!isEmpty($lowestsFare)) return;
+
+		requestData('lowests', {}).then(setDestinations('lowests'));
 
 		/* const destinationRequest = await fetch('/api/destinations', { method: 'GET' });
 		const destinations = await destinationRequest.json();

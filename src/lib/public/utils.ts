@@ -160,3 +160,5 @@ export const isBeforeToday = (date: Date) => isBefore(date, toPanamaTimeZone(new
 export const isAfter6Months = (date: Date) => isAfter(date, endOfMonth(add(toPanamaTimeZone(new Date()), {days: 180})))
 
 export const isBeforeSweetSpot = (date: Date) => isBefore(date, add(toPanamaTimeZone(new Date()), {days: 22}))
+
+export const say = (something: string) => (value: unknown) => console.log(something, value)

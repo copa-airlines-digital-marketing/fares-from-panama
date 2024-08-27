@@ -1,9 +1,9 @@
 import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
-import { fareDestinationReturnSchema, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
-import { all, isEmpty, isNil } from "ramda"
-import { addDestination, destinationReturnSchema, isDestinationArray, transformDestinations, type DestinationReturnSchema } from "./destinations"
-import type { InterestReturnSchema } from "./interest"
+import { isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
+import { all, F, groupBy, isEmpty, isNil, map, prop, values } from "ramda"
+import { isDestinationArray, } from "./destinations"
+import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
 
 type FaresRequestParams = {
   days?: string,
@@ -14,12 +14,11 @@ type FaresRequestParams = {
 type KeyReturnTypeMap = {
   days: number[]
   destinations: unknown[]
+  lowests: unknown[]
   calendar: unknown[]
   histogram: unknown[]
   byDestination: unknown[]
 }
-
-type LowestReturnSchema =  [App.Destination, App.FaresByDays, App.InterestFares, App.LowestFareByInterest]
 
 const FIRST_DATE = new Date(2024, 1, 1)
 
@@ -37,55 +36,10 @@ const fetchAPI = (name: string) => (data: FaresRequestParams) => {
 const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams) => Promise<Response>> = {
   days: fetchAPI('days'),
   destinations: fetchAPI('destinations'),
+  lowests: fetchAPI('destinations'),
   calendar: fetchAPI('calendar'),
   histogram: fetchAPI('histogram'),
   byDestination: fetchAPI('by-destination')
-}
-
-const toInterestObjects = (currentLowestsByInterest: App.LowestFareByInterest, fare: fareDestinationReturnSchema, categories: InterestReturnSchema[]) => {
-  let interestObject: App.InterestFares = {}
-  const lowestByInterest: App.LowestFareByInterest = {}
-
-  categories.forEach(category => {
-    //const name = category
-    //interestObject = {...interestObject, [fare.days]: {[category]: {[fare.destination]: {}}}}
-
-  })
-
-  return [interestObject, lowestByInterest]
-}
-
-const toAppDestinations = (destinations: DestinationReturnSchema[]): App.Destination => destinations.reduce(
-  (accum, current) => ({...accum, [current.iata_code]: current}), 
-  {}
-)
-
-const processLowestFares = (allDestinations: App.Destination) => (accumulator: LowestReturnSchema, fare: fareDestinationReturnSchema) => {
-  const destinationOfFare = allDestinations[fare.destination]
-  
-  if(!destinationOfFare)
-    return accumulator
-
-  const categories = destinationOfFare.categories ?? []
-
-  const [destinations, lowests, interests, interestLowests] = accumulator 
-
-  const days = fare.days.toString()
-
-  console.log(categories)
-
-  return [
-    {...destinations, [destinationOfFare.iata_code]: destinationOfFare},
-    {...lowests, [days]: {[fare.destination]: {price: fare.min.price, score: fare.max.score}}},
-    {...interests, },
-    {},
-  ]
-}
-
-
-const transformLowest = (destinations: App.Destination, fares: fareDestinationReturnSchema[]): LowestReturnSchema => {
-  fares.reduce(processLowestFares(destinations),[{},{},{},{}])
-  return [{},{},{},{}]
 }
 
 const getDateFromFares = (response: unknown) => {
@@ -93,7 +47,6 @@ const getDateFromFares = (response: unknown) => {
 
   if (isViajaPanamaFareDaysArray(response))
     dateString = response[0].min.updated_at
-
 
   if (dateString === NOT_FOUND_VALUE) 
     return FIRST_DATE
@@ -107,15 +60,15 @@ const getDateFromFares = (response: unknown) => {
 }
 
 const getDaysOfFares = (response: unknown) => {
-  let result: number[] = []
   if(isViajaPanamaFareDaysArray(response))
-    result = response.map(value => value.days)
+    return {
+      days: response.map(value => value.days)
+    }
 
-  return result
+  return {}
 }
 
 const getDestinationsOfFares = (response: unknown) => {
-  let result: {destinations?: App.Destination, lowests?: fareDestinationReturnSchema[]} = {}
   try {
 
     if (!Array.isArray(response))
@@ -124,33 +77,25 @@ const getDestinationsOfFares = (response: unknown) => {
     const [destinationResult, lowestsResult] = response
 
     if(isDestinationArray(destinationResult) && isViajaPanamaFareDestinationArray(lowestsResult)) {
-      const allDestinations = toAppDestinations(destinationResult)
-      const [destinations, lowests, interests, interestLowest ] = transformLowest(allDestinations, lowestsResult)
-      console.log('here',lowests.map(addDestination(transformDestinations(destination))).reduce((a, c) => ({ ...a, [c.iata_code]: c }), {}))
-      console.log(lowests)
-
+      return {
+        lowests: getLowestFaresByDestinationAndDays(lowestsResult),
+        destinations: map((value) => value[0], groupBy(prop('iata_code'), destinationResult))
+      }
     }
-
     return {}
 
   } catch (error) {
     console.error('Error while loading destinations and lowests', error)
     return {}
   }
-  //destinations.reduce((a, c) => ({ ...a, [c.iata_code]: c }), {})
 }
 
-const getBestFaresByDestination = (response: unknown) => {
-  console.log(this, response)
-  return [null]  
-}
-
-const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown) => unknown[]> = {
+const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown) => Record<string, unknown>> = {
   days: getDaysOfFares,
   destinations: getDestinationsOfFares,
-  calendar: () => [null],
-  histogram: () => [null],
-  byDestination: getBestFaresByDestination
+  lowests: getDestinationsOfFares,
+  calendar: () => {},
+  histogram: () => {},
 }
 
 const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {
@@ -165,10 +110,16 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
     
     const processedData = processRequestDataMap[key](data)
 
-    if(isEmpty(processedData) || all(isNil, processedData))
-      return processedData
+    if(isEmpty(processedData) || isNil(processedData) || all(isNil, values(processedData)) || all(isEmpty, values(processedData)))
+      return []
 
-    saveToLocalStorage(window.localStorage, key, data)
+    Object.keys(processedData).map(key => {
+      try {
+        saveToLocalStorage(window.localStorage, key, processedData[key])
+      } catch (error) {
+        console.error('error while saving to localStorage', error)
+      }
+    })
     
     const lastUpdate = getDateFromFares(data)
     
@@ -178,8 +129,10 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
     
     if (isBefore(nextUpdate, lastUpdate)) 
       saveToLocalStorage(window.localStorage, UPDATE_TIME_KEY, addHours(lastUpdate, HOURS_TO_CHECK).toISOString())
+
+    console.log(values(processedData))
     
-    return processedData
+    return values(processedData)
 
   } catch (error) {
     console.error(`Error while loading data: ${key}`, error)
@@ -203,9 +156,7 @@ export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestPar
 
     console.log(`from local storage: ${key}`, dataFromLocalStorage, parsedData)
     
-    const processedData = processRequestDataMap[key](parsedData)
-
-    return Promise.resolve(processedData)
+    return Promise.resolve([parsedData])
 
   } catch (error) {
     console.error(error)

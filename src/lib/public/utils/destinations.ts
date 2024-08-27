@@ -62,19 +62,3 @@ export const isDestinationArray = (value: unknown): value is DestinationReturnSc
 const toAppDestinationObject = (destination: DestinationReturnSchema): App.Destination => ({[destination.iata_code]: destination}) 
 
 export const transformDestinations = (destinations: DestinationReturnSchema[]): App.Destination => destinations.reduce((accumulator, current) => ({...accumulator, ...toAppDestinationObject(current)}), {})
-
-export const addDestination = (destinations: App.Destination) => (fare: fareDestinationReturnSchema): DestinationReturnSchema => {
-
-  const {destination} = fare
-
-  const newDestinations = {...destinations}
-
-  if (newDestinations[destination])
-    return newDestinations[destination]
-
-  const currentUnknown = {...defaultDestination}
-
-  currentUnknown.iata_code = destination
-
-  return currentUnknown
-}

@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { inititeHistogramFareMonth, inititeHistogramFareMonthDates, isEmptyObject, isValidToAdd, parseDeparture } from "./utils"
+import { inititeHistogramFareMonth, inititeHistogramFareMonthDates, isEmptyObject, isValidToAdd, parseDeparture } from "../utils"
 import { YEAR_MONTH_FORMAT } from "./constants"
 
 const addDestinationToHistogram = (module: App.FaresByDate, fare: Directus.Fare) => {

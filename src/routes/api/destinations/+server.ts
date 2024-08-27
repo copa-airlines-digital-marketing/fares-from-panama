@@ -16,8 +16,6 @@ export const GET: RequestHandler = async() => {
 
     const [destinations, fromFares] = requests
 
-    console.log(destinations)
-
     if (isDestinationArray(destinations) && isViajaPanamaFareDestinationArray(fromFares))
       return json(requests, {status: 200})
 

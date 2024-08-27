@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
-	import { getFareModulesContext } from '../context';
 	import { getContext } from 'svelte';
 	import { isEmpty, isNotNil } from 'ramda';
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
 	import PopularSkeleton from './popular-skeleton.svelte';
 	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
+	import { getLowestFaresContext } from '$lib/public/modules/context';
 
 	const { all: destinations, selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
-	const modules = getFareModulesContext();
+	const lowestsFares = getLowestFaresContext();
 
 	const section: string = getContext('section');
 
-	$: popular = $modules.popular;
+	$: popular = $lowestsFares;
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
@@ -24,6 +24,8 @@
 		if (window.dataLayer) window.dataLayer.push({ event: 'fare_click', module: 'Popular', fare });
 		$selectedDestination = destination;
 	};
+
+	$: console.log('popular', 'destinations', $destinations, popular);
 </script>
 
 {#if isNotNil(popular) && !isEmpty(popular) && selectedStayOfSection}
@@ -68,12 +70,12 @@
 	</ul>
 {:else}
 	<div class="relative">
-		<PopularSkeleton pulse={isEmpty($modules)}></PopularSkeleton>
+		<PopularSkeleton pulse={isEmpty($lowestsFares)}></PopularSkeleton>
 		<StatusWrapper
 			name={section}
 			{labels}
 			theme={'light'}
-			fares={isEmpty($modules)}
+			fares={isEmpty($lowestsFares)}
 			days={!$selectedStay[section]}
 			noFares={!!selectedStayOfSection && !!popular && !popular[parseInt(selectedStayOfSection)]}
 		></StatusWrapper>

@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { inititeFareMonth, isEmptyObject, isValidToAdd, parseDeparture } from "./utils"
+import { inititeFareMonth, isEmptyObject, isValidToAdd, parseDeparture } from "../utils"
 import { YEAR_MONTH_FORMAT } from "./constants"
 
 

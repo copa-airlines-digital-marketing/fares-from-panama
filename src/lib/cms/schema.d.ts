@@ -1,26 +1,4 @@
-type CollectionID = string | number 
 
-type BaseCollection = {
-  id: CollectionID
-  date_created: string
-  date_updated: string
-  status: string
-  user_created: string
-  user_updated: string
-}
-
-type NoStatusBaseCollection = Omit<BaseCollection, 'status'>
-
-type NoIdBaseCollecttion = Omit<BaseCollection, 'id'>
-
-type UpdateOnlyBaseCollection = Omit<BaseCollection, 'id' | 'status'>
-
-type CodeNameObject = {
-  code: string, 
-  name: string,
-}
-
-type Language = UpdateOnlyBaseCollection & CodeNameObject
 
 type Lang = BaseCollection & CodeNameObject
 
@@ -45,72 +23,6 @@ type GeoRegionTranslation = {
   languages_code: CollectionID | Language
   name: string
   airtrfx_uri: string
-}
-
-type Country = UpdateOnlyBaseCollection & {
-  code: string
-  phone_code: string
-  currency_code: string
-  flag: CollectionID | Icon
-  translations: CollectionID[] | CountryTransaltion[]
-  destintations: CollectionID[] | Destination[]
-}
-
-type CountryTransaltion = {
-  id: number
-  countries_code: CollectionID | Country
-  languages_code: CollectionID | Language
-  name: string
-  airtrfx_uri: string
-}
-
-type Destination = UpdateOnlyBaseCollection & {
-  status: string
-  iata_code: string
-  codeshare: boolean
-  translations: CollectionID[] | DestinationTranslation[]
-  categories: CollectionID[] | DestinationInterest[]
-  region: CollectionID | GeoRegion
-  copa_region: CollectionID | CopaRegion
-  country: CollectionID | Country
-  maketing_category: string
-  flight_duration_from_panama: number
-  time_zone_offset: string
-  hub_floor: string
-  location: string
-  main_image: string
-}
-
-type DestinationTranslation = {
-  id: number
-  destinations_iata_code: CollectionID | Destination
-  languages_code: CollectionID | Language
-  name: string
-  airport_name: string
-  airtrfx_uri: string
-}
-
-type DestinationInterest = {
-  id: number
-  destinations_iata_code: CollectionID | Destination
-  destination_category_id: CollectionID | DestinationCategory
-  sort: number
-}
-
-type DestinationCategory = BaseCollection & {
-  name: string
-  image: string
-  sort: number
-  translations: CollectionID[] | DestinationCategoryTranslation[]
-  destinations: CollectionID[] | DestinationInterest[]
-}
-
-type DestinationCategoryTranslation = {
-  id: number
-  destination_category_id: CollectionID | DestinationCategory
-  languages_code: CollectionID | Language
-  name: string
-  airtfx_uri: string
 }
 
 type Logo = BaseCollection & {
@@ -239,13 +151,6 @@ type Links = UpdateOnlyBaseCollection & {
   url: string
   name: string
   icon: CollectionID | Icon
-}
-
-type Icon = BaseCollection & {
-  name: string
-  category: string
-  image: string
-  code: string
 }
 
 type TermsAndConditions = BaseCollection & {
@@ -433,7 +338,6 @@ type Schema = {
   destination_category: DestinationCategory[]
   destination_category_translations: DestinationCategoryTranslation[]
   destinations: Destination[]
-  destinations_interest: DestinationInterest[]
   destinations_translations: DestinationTranslation[]
   fare_module: FareModule[]
   fare_module_translations: FareModuleTranslations[]

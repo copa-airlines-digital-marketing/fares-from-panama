@@ -19,3 +19,5 @@ export const selectedHistogramDateStore = writable<string>()
 export const containsDiscounts = writable<boolean>(false)
 
 export const modulesStore = writable<App.Modules>()
+
+export const lowestModule = writable<App.FaresByDays>

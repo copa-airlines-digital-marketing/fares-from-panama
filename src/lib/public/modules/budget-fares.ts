@@ -1,9 +1,7 @@
-import { fareDepartureIsBeforeExisting } from "./utils"
+import { isValidToAdd } from "../utils"
 
-const isValidToAdd = (fare: Directus.Fare, existing: Directus.Fare) => 
-(fare.score > existing.score) || (fare.score === existing.score && fareDepartureIsBeforeExisting(fare,existing))
+export const addBudgetFare = (module: App.BudgetFares, fare: Directus.Fare): App.PopularFares => {
 
-export const addPopularFare = (module: App.PopularFares, fare: Directus.Fare): App.PopularFares => {
   const {days, destination} = fare
 
   const newModule = {...module} 
@@ -18,7 +16,7 @@ export const addPopularFare = (module: App.PopularFares, fare: Directus.Fare): A
 
   const existing = newModule[fare.days][fare.destination]
 
-  if (isValidToAdd(fare,existing)){
+  if (isValidToAdd(fare, existing)){
     newModule[days][destination] = fare
     return ({...newModule})
   }

@@ -1,4 +1,4 @@
-import { isValidToAdd } from "./utils"
+import { isValidToAdd } from "../utils"
 
 
 const addInterestFare = (module: App.InterestFares, name: App.Interest, fare: ViajaPanamaFare) => {

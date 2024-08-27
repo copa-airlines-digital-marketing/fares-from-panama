@@ -6,7 +6,7 @@
  * @param value Serializable value will be stringyfied
  * @returns 
  */
-export const saveToLocalStorage = (storage: typeof localStorage, key: string, value: string) => {
+export const saveToLocalStorage = (storage: typeof localStorage, key: string, value: unknown) => {
   try {
     const serialized = JSON.stringify(value)
     storage.setItem(key, serialized)
