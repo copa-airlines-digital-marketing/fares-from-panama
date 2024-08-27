@@ -14,7 +14,6 @@ type FaresRequestParams = {
 type KeyReturnTypeMap = {
   days: number[]
   destinations: unknown[]
-  lowests: unknown[]
   calendar: unknown[]
   histogram: unknown[]
   byDestination: unknown[]
@@ -36,7 +35,6 @@ const fetchAPI = (name: string) => (data: FaresRequestParams) => {
 const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams) => Promise<Response>> = {
   days: fetchAPI('days'),
   destinations: fetchAPI('destinations'),
-  lowests: fetchAPI('destinations'),
   calendar: fetchAPI('calendar'),
   histogram: fetchAPI('histogram'),
   byDestination: fetchAPI('by-destination')
@@ -77,10 +75,10 @@ const getDestinationsOfFares = (response: unknown) => {
     const [destinationResult, lowestsResult] = response
 
     if(isDestinationArray(destinationResult) && isViajaPanamaFareDestinationArray(lowestsResult)) {
-      return {
+      return {destinations: {
         lowests: getLowestFaresByDestinationAndDays(lowestsResult),
         destinations: map((value) => value[0], groupBy(prop('iata_code'), destinationResult))
-      }
+      }}
     }
     return {}
 
@@ -93,7 +91,6 @@ const getDestinationsOfFares = (response: unknown) => {
 const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown) => Record<string, unknown>> = {
   days: getDaysOfFares,
   destinations: getDestinationsOfFares,
-  lowests: getDestinationsOfFares,
   calendar: () => {},
   histogram: () => {},
 }

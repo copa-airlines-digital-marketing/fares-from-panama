@@ -32,7 +32,10 @@
 	};
 
 	const setDestinations = (key: keyof typeof keyToStoreMap) => (value: unknown) => {
-		if (Array.isArray(value) && value.length !== 4) return keyToStoreMap[key].set(value[0]);
+		if (Array.isArray(value) && value.length !== 4) {
+			keyToStoreMap[key].set(value[0]);
+			return requestData('low', {});
+		}
 
 		const [lowests, destinations] = value;
 		destinationStore.set(destinations);
@@ -40,13 +43,18 @@
 	};
 
 	onMount(async () => {
-		requestData('days', {}).then((value) => days.set(value[0]));
+		requestData('days', {}).then((value) => (!isEmpty(value) ? days.set(value[0]) : {}));
 
-		requestData('destinations', {}).then(setDestinations('destinations'));
+		requestData('destinations', {}).then((value) => {
+			if (isEmpty(value)) return {};
 
-		if (!isEmpty($lowestsFare)) return;
+			const data = value[0];
 
-		requestData('lowests', {}).then(setDestinations('lowests'));
+			console.log(data);
+
+			destinationStore.set(data.destinations);
+			lowestsFare.set(data.lowests);
+		});
 
 		/* const destinationRequest = await fetch('/api/destinations', { method: 'GET' });
 		const destinations = await destinationRequest.json();
