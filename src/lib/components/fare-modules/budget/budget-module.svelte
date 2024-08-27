@@ -10,8 +10,9 @@
 	import { quintIn } from 'svelte/easing';
 	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
 	import { getLowestFaresContext } from '$lib/public/modules/context';
+	import InterestFareCard from '../interest/interest-fare-card.svelte';
 
-	const { all: destinations, selected: selectedDestination } = getDestinationsContext();
+	const { selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
 	const selectedBudget = getBudgetContext();
 	const lowestsFares = getLowestFaresContext();
@@ -51,47 +52,9 @@
 		class="auto-rows-auto grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-tiny"
 	>
 		{#each fares as fare, i (i)}
-			{@const { destination, departure, price, taxes } = fare}
-			{@const image = $destinations[destination].main_image}
 			{#if i < maxShow}
 				<li in:fly={{ duration: 350, y: '-100%' }} out:fly={{ duration: 350, y: '-100%' }}>
-					<a
-						class="aspect-video sm:aspect-[4/3] fare-card--destination-image font-heading grid gap-x-4 h-full group overflow-hidden rounded-2xl shadow-tiny text-12/16 text-common-white w-full group"
-						href="#fechas"
-						on:click={handleCardClick($destinations[destination], fare)}
-					>
-						<img
-							loading="lazy"
-							class="[grid-area:image] object-cover h-full w-full"
-							src="https://cm-marketing.directus.app/assets/{image}?width=800&height=600&fit=cover&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
-							alt=""
-						/>
-						<span
-							class="[grid-area:image] bg-common-black/40 group-hover:bg-red group-focus:bg-red transition-colors"
-						></span>
-						<span class="col-[content] font-heading-medium row-[dest]">
-							<span class="text-24/32"
-								>{$destinations[destination]?.translations[0]?.name ?? 'not found'}</span
-							>
-							({destination}),
-							<span class="uppercase"
-								>{$destinations[destination]?.country?.code ?? 'not found'}</span
-							>
-						</span>
-						<span class="col-[content] mb-8 row-[date]">
-							{labels['roundTrip']}
-						</span>
-						<span class="col-[detail] justify-self-end row-[labl] self-end">{labels['from']}</span>
-						<span class="col-[detail] justify-self-end row-[crcy] self-start"
-							>{labels['currency']}</span
-						>
-						<span class="col-[price] font-heading-bold row-[labl_/_crcy] text-32/40">${price}</span>
-						<span
-							class="col-[cta] row-[labl_/_crcy] text-16/24 place-self-end gap-4 font-heading-medium"
-						>
-							{labels['viewDates']}
-						</span>
-					</a>
+					<InterestFareCard {fare}></InterestFareCard>
 				</li>
 			{/if}
 		{/each}
@@ -117,18 +80,3 @@
 		></StatusWrapper>
 	</div>
 {/if}
-
-<style lang="post-css">
-	.fare-card--destination-image {
-		grid-template-columns: [image-start] 8px [content-start detail-start] auto [detail-end price-start] auto [price-end cta-start] 1fr [cta-end content-end] 8px [image-end];
-		grid-template-rows:
-			[image-start] 8px
-			[dest-start] auto
-			[dest-end date-start] auto
-			[date-end]1fr
-			[labl-start] auto
-			[labl-end crcy-start] auto
-			[crcy-end] 8px
-			[image-end];
-	}
-</style>

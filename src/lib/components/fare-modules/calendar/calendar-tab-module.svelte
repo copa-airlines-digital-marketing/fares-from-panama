@@ -47,7 +47,6 @@
 			calendarMonths
 		);
 		$monthsAlternatives = alternatives;
-		console.log($monthsAlternatives);
 		if (alternatives) toastFN(1);
 	}
 </script>

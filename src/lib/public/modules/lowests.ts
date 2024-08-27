@@ -9,15 +9,15 @@ const assocPriceAndMax = (fare: fareDestinationReturnSchema) => ({
 
 const omitAggregations = omit(['min', 'max'])
 
-const transformResponseToFares = pipe(assocPriceAndMax, omitAggregations)
+export const transformResponseToFares = pipe(assocPriceAndMax, omitAggregations)
 
 const getDaysProps = (fare: ReturnType<typeof transformResponseToFares>) => fare.days.toString()
 
 const getDestinationProp = (fare: ReturnType<typeof transformResponseToFares>) => fare.destination
 
-const groupByDays = groupBy(getDaysProps)
+export const groupByDays = groupBy(getDaysProps)
 
-const groupByDestination = groupBy(getDestinationProp)
+export const groupByDestination = groupBy(getDestinationProp)
 
 const getLowestFaresByDestinationAndDays = pipe(map(transformResponseToFares), groupByDays, map(groupByDestination), map(map(value => value[0])))
 

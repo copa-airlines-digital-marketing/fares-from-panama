@@ -1,73 +1,36 @@
-import { isValidToAdd } from "../utils"
+import { concat, groupBy, head, map, mapObjIndexed, omit, pipe, prop, reduce, sortBy, tail, tap, unwind, values } from "ramda";
+import type { DestinationReturnSchema } from "../utils/destinations";
+import type { InterestReturnSchema } from "../utils/interest";
+import { say } from "../utils";
 
-
-const addInterestFare = (module: App.InterestFares, name: App.Interest, fare: ViajaPanamaFare) => {
-
-  const {days, destination} = fare
-
-  const newModule = {...module} 
-
-  if (!newModule[days])
-    newModule[days] = {}
-
-  if (!newModule[days][name])
-    newModule[days][name] = {}
-  
-  if (!newModule[days][name][destination]){
-    newModule[days][name][destination] = fare
-    return ({...newModule})
-  }
-
-  const existing = newModule[days][name][destination]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[days][name][destination] = fare
-    return ({...newModule})
-  }
-
-  return {...newModule}
+const getTranslationName = (intesrest: InterestReturnSchema) => {
+  return intesrest.translations?.at(0)?.name || intesrest.name
 }
 
-const setLowestFareForInterest = (module: App.LowestFareByInterest, name: App.Interest, fare: ViajaPanamaFare) => {
+const concatReduceBy = reduce(concat, [])
 
-  const {days} = fare
+const unwindDestinations = unwind('categories')
 
-  const newModule = {...module} 
+const concatCategories = (category: Pick<DestinationReturnSchema, 'categories'>) => concatReduceBy(category.categories.map(value => values(value).map(getTranslationName)))
 
-  if (!newModule[days])
-    newModule[days] = {}
+const mapToCategoriesArray = (destination: DestinationReturnSchema) =>  ({
+  iata_code: destination.iata_code,
+  categories: concatCategories(destination)
+})
 
-  if (!newModule[days][name]){
-    newModule[days][name] = fare
-    return ({...newModule})
+const groupByCategory = groupBy(prop('categories'))
+
+const addParams = (cats: object) => (value: object, key: string) => ({...value, ...cats[key]})
+
+const createArrayOfDestinationsAndCategories = pipe(map(mapToCategoriesArray), tap(say('no more')), addParams, mapObjIndexed)
+
+const omitDaysAndIata = map(omit(['days', 'iata_code']))
+
+export const getLowestByInterest = (destinations: App.Destination, fares: App.FaresByDays) => {
+  const lowestByDayCategoryAndDestination = map(pipe(createArrayOfDestinationsAndCategories(destinations), omitDaysAndIata, tap(say('hello')), map(unwindDestinations), values, concatReduceBy, groupByCategory), fares)
+  const lowestByDayAndCategory = map(map(pipe(values, sortBy(prop('price')), head, omit(['categories']))), lowestByDayCategoryAndDestination)
+  return {
+    lowestByDayCategoryAndDestination,
+    lowestByDayAndCategory
   }
-
-  const existing = newModule[days][name]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[days][name] = fare
-    return ({...newModule})
-  }
-
-  return {...newModule}
-}
-
-export const addFareToInterest = (interestNames: App.LowestFareByInterest, interestModule: App.InterestFares, destinations: App.Destination, fare: ViajaPanamaFare) => {
-  
-const interests = destinations[fare.destination]?.categories || []
-
-let byName = {...interestNames}
-
-let byInterest = {...interestModule}
-
-interests.forEach(interest => {
-  const translation = interest.destination_category_id.translations
-  if(translation){
-    const interestName  = translation[0].name
-    byName = setLowestFareForInterest(byName, interestName, fare)
-    byInterest = addInterestFare(byInterest, interestName, fare)
-  }
-});
-
-return {interestNames: byName, interests: byInterest}
 }

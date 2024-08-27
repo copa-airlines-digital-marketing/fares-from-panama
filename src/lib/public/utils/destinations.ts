@@ -1,7 +1,6 @@
 import { z } from "zod"
 import { countryReturnSchema } from "./country"
 import { interestReturnSchema } from "./interest"
-import type { fareDestinationReturnSchema } from "./fares"
 
 export const destinationReturnSchema = z.object({
   iata_code: z.string(),

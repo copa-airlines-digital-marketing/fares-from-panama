@@ -7,8 +7,9 @@
 	import PopularSkeleton from './popular-skeleton.svelte';
 	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
 	import { getLowestFaresContext } from '$lib/public/modules/context';
+	import InterestFareCard from '../interest/interest-fare-card.svelte';
 
-	const { all: destinations, selected: selectedDestination } = getDestinationsContext();
+	const { selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
 	const lowestsFares = getLowestFaresContext();
 
@@ -24,8 +25,6 @@
 		if (window.dataLayer) window.dataLayer.push({ event: 'fare_click', module: 'Popular', fare });
 		$selectedDestination = destination;
 	};
-
-	$: console.log('popular', 'destinations', $destinations, popular);
 </script>
 
 {#if isNotNil(popular) && !isEmpty(popular) && selectedStayOfSection}
@@ -35,36 +34,8 @@
 		{#each Object.values(popular[parseInt(selectedStayOfSection)])
 			.sort((a, b) => b.score - a.score)
 			.slice(0, 12) as fare}
-			{@const { destination, price } = fare}
 			<li>
-				<a
-					href="#fechas"
-					class="bg-secondary font-heading grid gap-x-4 h-full hover:bg-red fare-card--plain focus:bg-red py-8 px-16 rounded-xl shadow-medium text-12/16 text-common-white transition-colors"
-					on:click={handleCardClick($destinations[destination], fare)}
-				>
-					<span class="font-heading-medium [grid-area:dest]">
-						<span class="text-20/32">{$destinations[destination].translations[0].name}</span>
-						({destination}),
-						<span class="uppercase">{$destinations[destination].country.code}</span>
-					</span>
-					<span class="[grid-area:date] mb-24">
-						{labels['roundTrip']}
-					</span>
-					<span class="[grid-area:labl] justify-self-end leading-4 self-end">
-						{labels['from']}
-					</span>
-					<span class="[grid-area:crcy] justify-self-end leading-4 self-start">
-						{labels['currency']}
-					</span>
-					<span class="font-heading-bold [grid-area:prce] justify-self-end self-center text-32/40">
-						${price}
-					</span>
-					<span
-						class="col-[cta] row-[labl_/_crcy] text-16/24 place-self-end gap-4 font-heading-medium"
-					>
-						{labels['viewDates']}
-					</span>
-				</a>
+				<InterestFareCard {fare}></InterestFareCard>
 			</li>
 		{/each}
 	</ul>

@@ -10,18 +10,19 @@
 	import InterestTabsSkeleton from './interest-tabs-skeleton.svelte';
 	import InterestAccordionSkeleton from './interest-accordion-skeleton.svelte';
 	import InterestAccordion from './interest-accordion.svelte';
+	import { getInterestLowestContext, getInterestsFaresContext } from '$lib/public/modules/context';
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
-	const modules = getFareModulesContext();
-
+	const lowest = getInterestLowestContext();
+	const interestFaresContext = getInterestsFaresContext();
 	const section: string = getContext('section');
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
-	$: interestNames = $modules.interestNames;
+	$: interestNames = $lowest;
 
-	$: interestFares = $modules.interests;
+	$: interestFares = $interestFaresContext;
 
 	$: innerWidth = undefined;
 
@@ -49,7 +50,7 @@
 				name={section}
 				{labels}
 				theme={'light'}
-				fares={isNil($modules) || isEmpty($modules)}
+				fares={isNil(interestFares) || isEmpty(interestFares)}
 				days={!$selectedStay[section]}
 				noFares={isNotNil(selectedStayOfSection) &&
 					isNotNil(interestNames) &&
@@ -66,7 +67,7 @@
 			name={section}
 			{labels}
 			theme={'light'}
-			fares={isNil($modules) || isEmpty($modules)}
+			fares={isNil(interestFares) || isEmpty(interestFares)}
 			days={!$selectedStay[section]}
 			noFares={!(
 				isNotNil(selectedStayOfSection) &&

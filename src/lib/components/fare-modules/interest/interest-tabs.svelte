@@ -8,17 +8,18 @@
 	import { isEmpty, isNotNil } from 'ramda';
 	import InterestNameCard from './interest-name-card.svelte';
 	import IntersetFareCard from './interest-fare-card.svelte';
+	import { getInterestLowestContext, getInterestsFaresContext } from '$lib/public/modules/context';
 
 	const { all: destinations } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
 	const section = getContext<string>('section');
-	const modules = getFareModulesContext();
-
+	const lowest = getInterestLowestContext();
+	const interestFaresContext = getInterestsFaresContext();
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
-	$: interestNames = $modules.interestNames;
+	$: interestNames = $lowest;
 
-	$: interestFares = $modules.interests;
+	$: interestFares = $interestFaresContext;
 
 	$: selectedStayOfSection = $selectedStay[section];
 

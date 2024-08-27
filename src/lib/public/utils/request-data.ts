@@ -4,6 +4,7 @@ import { isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from ".
 import { all, F, groupBy, isEmpty, isNil, map, prop, values } from "ramda"
 import { isDestinationArray, } from "./destinations"
 import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
+import { getLowestByInterest } from "../modules/interest-fares"
 
 type FaresRequestParams = {
   days?: string,
@@ -52,7 +53,7 @@ const getDateFromFares = (response: unknown) => {
   try {
     return parseJSON(dateString)
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return FIRST_DATE
   }
 }
@@ -75,9 +76,13 @@ const getDestinationsOfFares = (response: unknown) => {
     const [destinationResult, lowestsResult] = response
 
     if(isDestinationArray(destinationResult) && isViajaPanamaFareDestinationArray(lowestsResult)) {
+      const destinations = map((value) => value[0], groupBy(prop('iata_code'), destinationResult))
+      const lowests = getLowestFaresByDestinationAndDays(lowestsResult)
+      const interests = getLowestByInterest(destinations, lowests)
       return {destinations: {
-        lowests: getLowestFaresByDestinationAndDays(lowestsResult),
-        destinations: map((value) => value[0], groupBy(prop('iata_code'), destinationResult))
+        lowests,
+        destinations,
+        ...interests
       }}
     }
     return {}
@@ -122,12 +127,10 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
     
     const nextUpdate = parseJSON(getFromStorage(window.localStorage, UPDATE_TIME_KEY, (new Date()).toISOString()))
     
-    console.log('requesting from server', processedData, lastUpdate, nextUpdate)
+    console.log('requesting from server')
     
     if (isBefore(nextUpdate, lastUpdate)) 
       saveToLocalStorage(window.localStorage, UPDATE_TIME_KEY, addHours(lastUpdate, HOURS_TO_CHECK).toISOString())
-
-    console.log(values(processedData))
     
     return values(processedData)
 
@@ -151,7 +154,7 @@ export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestPar
 
     const parsedData = JSON.parse(dataFromLocalStorage)
 
-    console.log(`from local storage: ${key}`, dataFromLocalStorage, parsedData)
+    console.log(`from local storage: ${key}`)
     
     return Promise.resolve([parsedData])
 
