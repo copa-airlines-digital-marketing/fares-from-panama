@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getDaysContext } from '$lib/components/days';
 	import { getDestinationsContext } from '$lib/components/destination/context';
-	import { getFareModulesContext } from '../context';
 	import { getContext } from 'svelte';
 	import { isEmpty, isNotNil } from 'ramda';
 	import StatusWrapper from '$lib/components/skeleton/status-wrapper.svelte';
@@ -10,17 +9,18 @@
 	import { fly } from 'svelte/transition';
 	import { quintIn } from 'svelte/easing';
 	import type { DestinationReturnSchema } from '$lib/public/utils/destinations';
+	import { getLowestFaresContext } from '$lib/public/modules/context';
 
 	const { all: destinations, selected: selectedDestination } = getDestinationsContext();
 	const { selected: selectedStay } = getDaysContext();
 	const selectedBudget = getBudgetContext();
-	const modules = getFareModulesContext();
+	const lowestsFares = getLowestFaresContext();
 
 	const section: string = getContext('section');
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
-	$: budget = $modules.budget;
+	$: budget = $lowestsFares;
 
 	$: selectedStayOfSection = $selectedStay[section];
 
@@ -36,7 +36,7 @@
 
 {#if isNotNil($selectedBudget) && !!selectedStayOfSection && isNotNil(budget) && !isEmpty(budget)}
 	{@const fares = Object.values(budget[parseInt(selectedStayOfSection)])
-		.sort((a, b) => a.price - b.price)
+		.sort((a, b) => b.price - a.price)
 		.filter((fare) => fare.price <= $selectedBudget)}
 	{#key $selectedBudget}
 		<div
@@ -110,7 +110,7 @@
 			name={section}
 			{labels}
 			theme={'light'}
-			fares={isEmpty($modules)}
+			fares={isEmpty($lowestsFares)}
 			days={!$selectedStay[section]}
 			budget={!$selectedBudget}
 			noFares={!!selectedStayOfSection && !!budget && !budget[parseInt(selectedStayOfSection)]}

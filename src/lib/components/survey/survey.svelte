@@ -109,7 +109,7 @@
 						<ol class="flex flex-col gap-16 my-petit">
 							<li>
 								<Rating name="ease_of_use" count={5}>
-									<span slot="heading">¿Qué tan fácil te pareció de usar?</span>
+									<span slot="heading">¿Qué tan fácil de usar te pareció esta herramienta?</span>
 									<div slot="lowScore">Extremadamente difícil</div>
 									<div slot="highScore">Extremadamente fácil</div>
 								</Rating>
