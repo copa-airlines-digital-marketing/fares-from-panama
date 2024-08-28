@@ -37,7 +37,7 @@
 						class:bg-grey-100={isEmpty(fare)}
 						class:bg-primary={!isEmpty(fare)}
 						class:bg-red={selected}
-						style="height: {calculateHeight(max, fare.price)}px;"
+						style="height: {calculateHeight(max, fare.price > 1000000 ? 500 : fare.price)}px;"
 					></span>
 				</Tooltip.Trigger>
 				<Tooltip.Content transition={fly} transitionConfig={{ y: -5, duration: 350 }}>
@@ -54,8 +54,9 @@
 							</div>
 						{/if}
 						<div class="text-right">
-							{labels['from']}
-							{labels['currency']} ${fare.price}
+							{fare.price < 1000000
+								? `${labels['from']} ${labels['currency']} $${fare.price}`
+								: labels['fareHigherThanUsual']}
 						</div>
 					</div>
 				</Tooltip.Content>

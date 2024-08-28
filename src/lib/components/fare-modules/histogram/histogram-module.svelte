@@ -31,6 +31,8 @@
 		isNotNil(labels) &&
 		isNotNil(histogramMonths);
 
+	$: pulse = !isNotNil(histogramMonths);
+
 	setContext('scrollIndicator', writable(0));
 </script>
 
@@ -42,10 +44,10 @@
 	{#if showModule}
 		<HistogramAccordion />
 	{:else}
-		<HistogramAccordionSkeleton pulse={!showModule} />
+		<HistogramAccordionSkeleton {pulse} />
 	{/if}
 {:else if showModule}
 	<HistogramTabs></HistogramTabs>
 {:else}
-	<HistogramTabsSkeleton pulse={!showModule} />
+	<HistogramTabsSkeleton {pulse} />
 {/if}

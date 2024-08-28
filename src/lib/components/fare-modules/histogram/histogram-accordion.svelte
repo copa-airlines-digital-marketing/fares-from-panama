@@ -8,6 +8,8 @@
 	import HistogramDatesTabs from './histogram-dates-tabs.svelte';
 	import { slide } from 'svelte/transition';
 	import { isAfter6Months, parseDeparture } from '$lib/public/utils';
+	import { requestData } from '$lib/public/utils/request-data';
+	import type { faresReturnSchema } from '$lib/public/utils/fares';
 
 	const section = getContext<string>('section');
 	const { selected: selectedStay } = getDaysContext();
@@ -23,9 +25,33 @@
 
 	$: selectedStayOfSection = $selectedStay[section];
 
-	const handleClick = (fare: unknown, month: string) => () => {
+	let debounceTimer: ReturnType<typeof setTimeout>;
+
+	const debounce = (callback: () => void) => {
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(callback, 450);
+	};
+
+	const faresModules = getFareModulesContext();
+
+	const handleMonthClick = (fare: faresReturnSchema, month: string) => () => {
+		const { days, departure } = fare;
+
 		if (window.dataLayer)
 			window.dataLayer.push({ event: 'fare_click', module: 'Histogram Month', month, fare });
+
+		debounce(() => {
+			requestData('histogram', { days, departure }).then((value) => {
+				if (!value || !Array.isArray(value) || isEmpty(value)) return;
+
+				const histogram = value[0];
+
+				faresModules.set({
+					...$faresModules,
+					histogram
+				});
+			});
+		});
 	};
 </script>
 
@@ -42,7 +68,7 @@
 							<Accordion.Trigger
 								value={key}
 								class="w-full border-b border-b-primary-ultradark group focus:bg-secondary focus:border-secondary hover:bg-secondary hover:border-secondary outline-none transition-colors"
-								on:click={handleClick(fare, key)}
+								on:click={handleMonthClick(fare, key)}
 							>
 								<HistogramMonthCard {fare} selected={current === key} />
 							</Accordion.Trigger>

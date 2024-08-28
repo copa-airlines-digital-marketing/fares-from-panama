@@ -1,6 +1,6 @@
 import { aggregate, readItems, type AggregationOptions, type QueryFields, type QueryFilter } from "@directus/sdk"
 import { createRestClient } from "./clients"
-import { formatDate } from "date-fns"
+import { dropLast } from "ramda"
 
 type FaresAggregation = AggregationOptions<Schema, 'viaja_panama_fares'>
 
@@ -73,10 +73,10 @@ const calendarMonthFaresFilterQuery = (destination: string): FaresQuery => ({
   ]
 })
 
-const histogramFaresQuery = (days: number, departure: Date): FaresQuery => ({
+const histogramFaresQuery = (days: number, departure: string): FaresQuery => ({
   _and:[
     {days: {_eq: days}},
-    {departure: {_eq: formatDate(departure, 'YYYY-mm-dd')}},
+    {departure: {_istarts_with: dropLast(3,departure)}},
   ]
 })
 
@@ -94,7 +94,7 @@ const getCalendarFares = (host: string, token: string, destination: string) => {
   }))
 }
 
-const getHistogramFares = (host: string, token: string, days: number, departure: Date) => {
+const getHistogramFares = (host: string, token: string, days: number, departure: string) => {
   const client = createRestClient(host, token)
   return client.request(readItems(FARES_COLLECTION_NAME, {
     fields: faresReturnFieldsQuery,
