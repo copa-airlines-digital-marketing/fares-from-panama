@@ -25,7 +25,7 @@ export const GET: RequestHandler = async({url}) => {
 
     console.log(errorID, JSON.stringify(e))
 
-    return json([], {status: 204})
+    return json([], { status: 200 })
   }
 
 }

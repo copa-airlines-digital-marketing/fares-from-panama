@@ -27,7 +27,7 @@ const processFare = pipe(map(setMonth), groupByDestination, groupByDays, groupBy
 
 const sortFn = (a: faresReturnSchema, b: faresReturnSchema) => a.price - b.price
 
-const getLowest = pipe(sort(sortFn), head)
+export const getLowest = pipe(sort(sortFn), head)
 
 const getLowestsByMonths = map(map(map(getLowest)))
 

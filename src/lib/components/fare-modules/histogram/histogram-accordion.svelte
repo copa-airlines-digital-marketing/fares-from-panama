@@ -17,6 +17,8 @@
 
 	$: histogramMonths = $modules.histogramMonths;
 
+	$: histogram = $modules.histogram;
+
 	let current: string;
 
 	$: selectedStayOfSection = $selectedStay[section];

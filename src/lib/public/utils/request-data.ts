@@ -1,12 +1,13 @@
 import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
-import { faresReturnSchema, isViajaPanamaFare, isViajaPanamaFareArray, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
-import { all, groupBy, has, isEmpty, isNil, keys, map, path, pathOr, pick, prop, sortBy, values } from "ramda"
+import { faresReturnSchema, isViajaPanamaFareArray, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
+import { all, groupBy, has, isEmpty, isNil, keys, map, pathOr, pick, prop, values } from "ramda"
 import { isDestinationArray, } from "./destinations"
 import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
 import { getLowestByInterest } from "../modules/interest-fares"
 import { prepareCalendarOfDestination, type CalendarModules } from "../modules/calendar-fares"
 import { isObject } from "@melt-ui/svelte/internal/helpers"
+import { isMinPriceByMonthArray, preparerHistogramMonths } from "../modules/histogram-fares"
 
 type FaresRequestParams = {
   days?: string,
@@ -19,6 +20,7 @@ type KeyReturnTypeMap = {
   destinations: unknown[]
   calendar: unknown[]
   histogram: unknown[]
+  histogramMonth: unknown[]
 }
 
 const FIRST_DATE = new Date(2024, 1, 1)
@@ -38,7 +40,8 @@ const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams
   days: fetchAPI('days'),
   destinations: fetchAPI('destinations'),
   calendar: fetchAPI('calendar'),
-  histogram: fetchAPI('histogram')
+  histogram: fetchAPI('histogram'),
+  histogramMonth: fetchAPI('histogram-months')
 }
 
 const getDateFromFares = (response: unknown) => {
@@ -121,10 +124,21 @@ const getCalendarFares = (response: unknown, currentCalendar?: CalendarModules):
   }
 }
 
+const getMinByMonthsAndDays = (response: unknown, accumulatedValue?: unknown) => {
+
+  if(!isMinPriceByMonthArray(response))
+    return
+
+  const histogramMonth = preparerHistogramMonths(response)
+
+  return {histogramMonth}
+}
+
 const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown, accumulatedValue?: unknown) => Record<string, unknown>> = {
   days: getDaysOfFares,
   destinations: getDestinationsOfFares,
   calendar: getCalendarFares,
+  histogramMonth: getMinByMonthsAndDays,
   histogram: () => {},
 }
 
@@ -194,6 +208,7 @@ const validateProperData: Record<keyof KeyReturnTypeMap, (values: unknown, param
   destinations: (values: unknown, params?: FaresRequestParams) =>  values,
   calendar: validateCalendarOnLocalStorage,
   histogram: () => {},
+  histogramMonth: (values: unknown, params?: FaresRequestParams) =>  values
 }
 
 export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {

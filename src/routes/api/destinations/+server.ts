@@ -17,20 +17,20 @@ export const GET: RequestHandler = async() => {
     const [destinations, fromFares] = requests
 
     if (isDestinationArray(destinations) && isViajaPanamaFareDestinationArray(fromFares))
-      return json(requests, {status: 200})
+      return json(requests, { status: 200 })
 
     destinationReturnSchema.array().parse(destinations)
 
     fareDestinationReturnSchema.array().parse(fromFares)
 
-    return json([], {status: 200})
+    return json([], { status: 200 })
 
   } catch(e) {
     const errorID = crypto.randomUUID()
 
     console.log(errorID, JSON.stringify(e))
 
-    return json([], {status: 200})
+    return json([], { status: 200 })
   }
 
 }

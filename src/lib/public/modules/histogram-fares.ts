@@ -1,97 +1,50 @@
-import { format } from "date-fns"
-import { inititeHistogramFareMonth, inititeHistogramFareMonthDates, isEmptyObject, isValidToAdd, parseDeparture } from "../utils"
-import { YEAR_MONTH_FORMAT } from "./constants"
+import { z } from "zod"
+import { groupBy, map, omit, path, pipe, prop } from "ramda"
+import { formatForMonthYear, parseDeparture } from "../utils"
+import { startOfMonth } from "date-fns/fp"
+import { groupByDays } from "./lowests"
+import { getLowest } from "./calendar-fares"
 
-const addDestinationToHistogram = (module: App.FaresByDate, fare: Directus.Fare) => {
-
-  const {days, departure, destination} = fare
-
-  const fareMonth = format(parseDeparture(fare), YEAR_MONTH_FORMAT)
-
-  const newModule = {...module} 
-
-  if (!newModule[days])
-    newModule[days] = {}
-
-  if (!newModule[days][fareMonth])
-    newModule[days][fareMonth] = inititeHistogramFareMonthDates(fare)
-
-  if (isEmptyObject(newModule[days][fareMonth][departure]))
-    newModule[days][fareMonth][departure]= {}
-
-  if (!newModule[days][fareMonth][departure][destination]){
-      newModule[days][fareMonth][departure][destination]= fare
-      return {...newModule}
-  }
-  
-  const existing = newModule[days][fareMonth][departure][destination]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[days][fareMonth][departure][destination]= fare
-    return ({...newModule})
-  }
-
-}
-
-
-const setLowestFareByDate = (module: App.LowestFareByDate, fare: Directus.Fare) => {
-
-  const {days, departure} = fare
-
-  const fareMonth = format(parseDeparture(fare), YEAR_MONTH_FORMAT)
-
-  const newModule = {...module} 
-
-  if (!newModule[days])
-    newModule[days] = {}
-
-  if (!newModule[days][fareMonth])
-    newModule[days][fareMonth] = inititeHistogramFareMonth(fare)
-
-  if (isEmptyObject(newModule[days][fareMonth][departure])){
-    newModule[days][fareMonth][departure]= fare
-    return {...newModule}
-  }
-  
-  const existing = newModule[days][fareMonth][departure]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[days][fareMonth][departure] = fare
-    return ({...newModule})
-  }
-
-  return {...newModule}
-
-}
-
-const setLowestFareMonth = (module: App.LowestFareByMonth, fare: Directus.Fare) => {
-  const {days} = fare
-
-  const fareMonth = format(parseDeparture(fare), YEAR_MONTH_FORMAT)
-
-  const newModule = {...module} 
-
-  if (!newModule[days])
-    newModule[days] = {}
-
-  if (!newModule[days][fareMonth]){
-    newModule[days][fareMonth] = fare
-    return ({...newModule})
-  }
-
-  const existing = newModule[days][fareMonth]
-
-  if (isValidToAdd(fare, existing)){
-    newModule[days][fareMonth] = fare
-    return ({...newModule})
-  }
-
-  return {...newModule}
-}
-
-export const addFareToHistogram = (months: App.LowestFareByMonth, dates: App.LowestFareByDate, fares: App.FaresByDate, fare: Directus.Fare) => 
-  ({
-    histogramMonths: setLowestFareMonth(months, fare),
-    histogramDays: setLowestFareByDate(dates, fare),
-    histogram: addDestinationToHistogram(fares, fare),
+const minPriceByMonthSchema = z.object({
+  departure: z.string(),
+  days: z.number(),
+  min: z.object({
+    price: z.number(),
+    'updated_at': z.string()
   })
+})
+
+type MinPriceByMonth = z.infer<typeof minPriceByMonthSchema>
+
+const isMinPriceByMonthArray = (value: unknown): value is MinPriceByMonth[] =>  {
+  return minPriceByMonthSchema.array().safeParse(value).success
+}
+
+const getDepartureMonthFirstDate = pipe(parseDeparture, startOfMonth, formatForMonthYear)
+
+const assocMinPriceAndCalculateMonth = (data: MinPriceByMonth) => ({...data, price: path(['min', 'price'], data), month: getDepartureMonthFirstDate(data)}) 
+
+const groupByMonth = map(groupBy(prop('month')))
+
+const groupByDate = map(map(groupBy(prop('departure'))))
+
+const prepareByDays = pipe(map(assocMinPriceAndCalculateMonth), map(omit(['min'])), groupByDays)
+
+const calculateLowestByMonth = pipe(prepareByDays, groupByMonth, map(map(getLowest)))
+
+const calculateLowestByDate = pipe(prepareByDays, groupByMonth, groupByDate, map(map(map(getLowest))))
+
+const preparerHistogramMonths = (fares: MinPriceByMonth[]) => ({
+  histogramMonths: calculateLowestByMonth(fares),
+  histogramDays: calculateLowestByDate(fares)
+})
+
+export {
+  minPriceByMonthSchema,
+  preparerHistogramMonths,
+  isMinPriceByMonthArray
+}
+
+export type {
+  MinPriceByMonth
+}

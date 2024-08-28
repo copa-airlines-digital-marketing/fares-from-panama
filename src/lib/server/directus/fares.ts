@@ -49,6 +49,20 @@ const faresDaysGroup: FaresAggregation = {
   ]
 }
 
+const minPriceByDate: FaresAggregation = {
+  aggregate: {
+    min: ['price', 'updated_at']
+
+  },
+  groupBy: [
+    'days',
+    'departure'
+  ],
+  query:{
+    limit: -1
+  }
+}
+
 const calendarMonthFaresFilterQuery = (destination: string): FaresQuery => ({
   _and:[
     {
@@ -65,7 +79,6 @@ const histogramFaresQuery = (days: number, departure: Date): FaresQuery => ({
     {departure: {_eq: formatDate(departure, 'YYYY-mm-dd')}},
   ]
 })
-
 
 const getDestinationsOfFares = (host: string, token: string) => {
   const client = createRestClient(host, token)
@@ -95,9 +108,15 @@ const getDaysOfFare = (host: string, token: string) => {
   return client.request(aggregate(FARES_COLLECTION_NAME, faresDaysGroup))
 }
 
+const getLowestFareByDayAndDate = (host: string, token: string) => {
+  const client = createRestClient(host, token)
+  return client.request(aggregate(FARES_COLLECTION_NAME, minPriceByDate))
+}
+
 export {
   getDaysOfFare,
   getDestinationsOfFares,
   getCalendarFares,
-  getHistogramFares
+  getLowestFareByDayAndDate,
+  getHistogramFares,
 }

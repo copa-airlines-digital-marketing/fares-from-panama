@@ -99,6 +99,8 @@ export const getDayAndDate = (date: Date) => format(date, 'eeee d', {locale: es}
 
 export const getFullDateName = (date: Date) => format(date, 'EEEE dd LLL', {locale: es})
 
+export const formatForMonthYear = (date: Date) => format(date, 'yyyyMMdd', {locale: es})
+
 export const getWeekDaysNames = () => eachDayOfInterval({start: startOfWeek(new Date()), end: endOfWeek(new Date())}).map(getDayOfWeekName)
 
 export const formatDateForDisplay = (date: Date) => format(date, 'dd/MM/yyy')

@@ -17,6 +17,7 @@
 		setInterestsFaresContext
 	} from '$lib/public/modules/context.js';
 	import { isEmpty } from 'ramda';
+	import { array } from 'zod';
 
 	export let data;
 
@@ -44,6 +45,12 @@
 			lowestsFare.set(data.lowests);
 			interestFares.set(data.lowestByDayCategoryAndDestination);
 			interestLowest.set(data.lowestByDayAndCategory);
+		});
+
+		requestData('histogramMonth', {}).then((value) => {
+			if (!value || !Array.isArray(value) || isEmpty(value)) return;
+
+			fareModules.set({ ...$fareModules, ...value[0] });
 		});
 	});
 </script>

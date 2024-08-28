@@ -13,7 +13,6 @@
 	export let dateKey: string;
 	export let lowest: number;
 	export let max: number;
-	export let count: number;
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
@@ -54,7 +53,6 @@
 								{labels['lowestFare']}
 							</div>
 						{/if}
-						<div class="text-right">{count} {labels['destinations']}</div>
 						<div class="text-right">
 							{labels['from']}
 							{labels['currency']} ${fare.price}
