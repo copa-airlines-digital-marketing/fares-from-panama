@@ -17,7 +17,6 @@
 		setInterestsFaresContext
 	} from '$lib/public/modules/context.js';
 	import { isEmpty } from 'ramda';
-	import { array } from 'zod';
 
 	export let data;
 
@@ -26,7 +25,7 @@
 	const description = getMetaDescriptionFromPage(site);
 	const storefrontSection = getSectionsFromPage(site);
 
-	const { all: destinationStore } = setDestinationState({});
+	const { all: destinationStore } = setDestinationState({}, undefined);
 	const { days } = setDaysContext({ days: [], selectedDays: {} });
 	const lowestsFare = setLowestFaresContext();
 	const interestLowest = setInterestLowestContext();
