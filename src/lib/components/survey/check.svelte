@@ -10,7 +10,7 @@
 		{name}
 		{id}
 		{value}
-		class="col-start-1 row-start-1 h-48 checked:bg-primary border-none bg-grey-300 appearance-none rounded-sm my-4 peer transition-colors hover:bg-primary-light outline-primary"
+		class="col-start-1 col-span-1 row-start-1 h-48 checked:bg-primary border-none bg-grey-300 appearance-none rounded-sm my-4 peer transition-colors hover:bg-primary-light outline-primary w-full"
 		required
 	/>
 	<label
