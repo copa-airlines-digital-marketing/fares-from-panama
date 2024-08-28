@@ -44,7 +44,7 @@
 			<SectionCard content={card}></SectionCard>
 		{/each}
 	</ul>
-	<div class="fixed group bottom-16 right-16 md:right-24 z-10 justify-end">
+	<div class="fixed group bottom-16 right-16 md:right-24 size-64 z-10 justify-end">
 		<MainNav {nav}></MainNav>
 	</div>
 </div>
