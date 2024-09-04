@@ -69,7 +69,7 @@
 		if (!hasAnswered) animate = true;
 		setTimeout(() => {
 			if (!hasAnswered) open.click();
-		}, 30000);
+		}, 120000);
 	});
 </script>
 

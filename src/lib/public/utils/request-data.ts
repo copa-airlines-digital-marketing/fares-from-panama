@@ -1,4 +1,4 @@
-import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
+import { parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
 import { faresReturnSchema, isViajaPanamaFareArray, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
 import { all, append, dropLast, groupBy, has, isEmpty, isNil, join, keys, map, mergeDeepLeft, pathOr, pick, pipe, prop, replace, values } from "ramda"
@@ -25,10 +25,6 @@ type KeyReturnTypeMap = {
 
 const FIRST_DATE = new Date(2024, 1, 1)
 
-const HOURS_TO_CHECK = 2
-
-const UPDATE_TIME_KEY = 'nextUpdate'
-
 const NOT_FOUND_VALUE = 'not found'
 
 const fetchAPI = (name: string) => (data: FaresRequestParams) => {
@@ -42,31 +38,6 @@ const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams
   calendar: fetchAPI('calendar'),
   histogram: fetchAPI('histogram'),
   histogramMonth: fetchAPI('histogram-months')
-}
-
-const getDateFromFares = (response: unknown) => {
-  let dateString: string = NOT_FOUND_VALUE
-
-  const fare = pathOr(response, [1,0], response)
-
-  if (isViajaPanamaFareArray(fare))
-    dateString = fare[0].updated_at
-  
-  if (isViajaPanamaFareDaysArray(fare))
-    dateString = fare[0].min.updated_at
-
-  if (dateString === NOT_FOUND_VALUE)
-    dateString = pathOr(NOT_FOUND_VALUE, ['min', 'updated_at'], fare)
-
-  if (dateString === NOT_FOUND_VALUE) 
-    return FIRST_DATE
-
-  try {
-    return parseJSON(dateString)
-  } catch (error) {
-    console.error(error)
-    return FIRST_DATE
-  }
 }
 
 const getDaysOfFares = (response: unknown, accumulatedValue?: unknown) => {
@@ -179,24 +150,12 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
 
     Object.keys(processedData).map(key => {
       try {
-        saveToLocalStorage(window.localStorage, key, processedData[key])
+        saveToLocalStorage(window.tvpFares, key, processedData[key])
       } catch (error) {
         console.error('error while saving to localStorage', error)
       }
     })
-    
-    const lastUpdate = getDateFromFares(data)
-    
-    const nextUpdate = getFromStorage(window.localStorage, UPDATE_TIME_KEY, NOT_FOUND_VALUE)
         
-    if(nextUpdate === NOT_FOUND_VALUE || isBefore(parseJSON(nextUpdate), lastUpdate)) {
-      try {
-        saveToLocalStorage(window.localStorage, UPDATE_TIME_KEY, addHours(lastUpdate, HOURS_TO_CHECK).toISOString())
-      } catch (error) {
-        console.log('error while storing last update on local storage', error)
-      }
-    }
-    
     return values(processedData)
 
   } catch (error) {
@@ -266,14 +225,12 @@ const validateProperData: Record<keyof KeyReturnTypeMap, (values: unknown, param
 }
 
 export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {
-  const dataFromLocalStorage = getFromStorage(window.localStorage,key, NOT_FOUND_VALUE)
+  window.tvpFares = window.tvpFares || new Map<string, string>()
 
-  const nextUpdateFromLocalStorage = getFromStorage(window.localStorage, UPDATE_TIME_KEY, NOT_FOUND_VALUE)
+  const dataFromLocalStorage = getFromStorage(window.tvpFares,key, NOT_FOUND_VALUE)
 
   try {
-    const nextUpdate = parseJSON(nextUpdateFromLocalStorage)
-
-    if (dataFromLocalStorage === NOT_FOUND_VALUE || (key !== 'calendar' && key !== 'histogram' && isAfter(nextUpdate, new Date())))
+    if (dataFromLocalStorage === NOT_FOUND_VALUE || (key !== 'calendar' && key !== 'histogram'))
       return getRequestedData(key, params)
 
     const parsedData = JSON.parse(dataFromLocalStorage)

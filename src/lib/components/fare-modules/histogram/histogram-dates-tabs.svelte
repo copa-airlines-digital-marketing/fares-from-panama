@@ -4,7 +4,7 @@
 	import { getDaysContext } from '$lib/components/days';
 	import { getFareModulesContext } from '../context';
 	import { fly } from 'svelte/transition';
-	import { isEmpty, isNil, isNotNil, max, min, sort } from 'ramda';
+	import { isEmpty, isNil, isNotNil, map, max, min, prop, sort, values } from 'ramda';
 	import HistogramDayCard from './histogram-day-card.svelte';
 	import HistogramFareCard from './histogram-fare-card.svelte';
 	import { datesDif, isBeforeSweetSpot, isBeforeToday, parseDate, say } from '$lib/public/utils';
@@ -28,7 +28,19 @@
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
-	const getFirstDate = pipe(filter(pipe(isEmpty, not)), keys, head);
+	const sortByPrice = (a: ViajaPanamaFare, b: ViajaPanamaFare) => {
+		const price = a.price - b.price;
+		return price === 0 ? datesDif(a.departure, b.departure) : price;
+	};
+
+	const getFirstDate = pipe(
+		filter(pipe(isEmpty, not)),
+		tap(say('hello')),
+		values,
+		sort(sortByPrice),
+		head,
+		prop('departure')
+	);
 
 	$: histogramDays = $modules.histogramDays;
 

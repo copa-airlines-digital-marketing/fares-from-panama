@@ -107,7 +107,7 @@
 		{:else if itemIsCarrousel(item)}
 			<Carousel carousel={item}></Carousel>
 		{:else if itemIsTextContent(item)}
-			<TextContent content={item} {theme} {component_name}></TextContent>
+			<TextContent content={item} {theme} {component_name} {section}></TextContent>
 		{:else}
 			<div>⚠️ Unsupported collection: {collection}</div>
 		{/if}
