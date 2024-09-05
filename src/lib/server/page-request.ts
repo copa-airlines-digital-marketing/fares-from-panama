@@ -77,7 +77,6 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                               {"links_url":[
                                 'name',
                                 'url',
-                                'opens_in',
                                 {'icon':['code']}
                               ]},
                             ]}
@@ -92,7 +91,6 @@ export const getPageQuery = ({defaultLang, defaultStorefront, lang, storefront}:
                               'title',
                               {links: [
                                 'title',
-                                'opens_in',
                                 {icon_override: ['code']},
                                 {links_url: [
                                   'url',
