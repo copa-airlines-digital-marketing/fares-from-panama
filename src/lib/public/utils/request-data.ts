@@ -1,18 +1,18 @@
-import { addHours, isAfter, isBefore, parseJSON } from "date-fns"
+import { parseJSON } from "date-fns"
 import { getFromStorage, saveToLocalStorage } from "./local-storage"
 import { faresReturnSchema, isViajaPanamaFareArray, isViajaPanamaFareDaysArray, isViajaPanamaFareDestinationArray } from "./fares"
-import { all, groupBy, has, isEmpty, isNil, keys, map, pathOr, pick, prop, values } from "ramda"
+import { all, append, dropLast, groupBy, has, isEmpty, isNil, join, keys, map, mergeDeepLeft, pathOr, pick, pipe, prop, replace, values } from "ramda"
 import { isDestinationArray, } from "./destinations"
 import { getLowestFaresByDestinationAndDays } from "../modules/lowests"
 import { getLowestByInterest } from "../modules/interest-fares"
 import { prepareCalendarOfDestination, type CalendarModules } from "../modules/calendar-fares"
 import { isObject } from "@melt-ui/svelte/internal/helpers"
-import { isMinPriceByMonthArray, preparerHistogramMonths } from "../modules/histogram-fares"
+import { isMinPriceByMonthArray, prepareHistogramFares, preparerHistogramMonths } from "../modules/histogram-fares"
 
 type FaresRequestParams = {
-  days?: string,
+  days?: string | number,
   destination?: string,
-  month?: string,
+  departure?: string,
 }
 
 type KeyReturnTypeMap = {
@@ -24,10 +24,6 @@ type KeyReturnTypeMap = {
 }
 
 const FIRST_DATE = new Date(2024, 1, 1)
-
-const HOURS_TO_CHECK = 2
-
-const UPDATE_TIME_KEY = 'nextUpdate'
 
 const NOT_FOUND_VALUE = 'not found'
 
@@ -42,31 +38,6 @@ const requestedDataMap: Record<keyof KeyReturnTypeMap, (data: FaresRequestParams
   calendar: fetchAPI('calendar'),
   histogram: fetchAPI('histogram'),
   histogramMonth: fetchAPI('histogram-months')
-}
-
-const getDateFromFares = (response: unknown) => {
-  let dateString: string = NOT_FOUND_VALUE
-
-  const fare = pathOr(response, [1,0], response)
-
-  if (isViajaPanamaFareArray(fare))
-    dateString = fare[0].updated_at
-  
-  if (isViajaPanamaFareDaysArray(fare))
-    dateString = fare[0].min.updated_at
-
-  if (dateString === NOT_FOUND_VALUE)
-    dateString = pathOr(NOT_FOUND_VALUE, ['min', 'updated_at'], fare)
-
-  if (dateString === NOT_FOUND_VALUE) 
-    return FIRST_DATE
-
-  try {
-    return parseJSON(dateString)
-  } catch (error) {
-    console.error(error)
-    return FIRST_DATE
-  }
 }
 
 const getDaysOfFares = (response: unknown, accumulatedValue?: unknown) => {
@@ -134,12 +105,34 @@ const getMinByMonthsAndDays = (response: unknown, accumulatedValue?: unknown) =>
   return {histogramMonth}
 }
 
+const getHistogramFares = (response: unknown, currentHistogram?: CalendarModules): {histogram: App.FaresByDate} => {
+  try {
+
+    faresReturnSchema.array().parse(response)
+
+    const histogram: App.FaresByDate = prepareHistogramFares(response)
+
+    if(!currentHistogram)
+      return { histogram }
+
+    const newHistogram = mergeDeepLeft(histogram, currentHistogram)
+    
+    return {
+      histogram: newHistogram
+    }
+
+  } catch (error) {
+    console.error(`Error while loading histogram fares for`, error)
+    return <{histogram: App.FaresByDate}>{}
+  }
+}
+
 const processRequestDataMap: Record<keyof KeyReturnTypeMap,(response: unknown, accumulatedValue?: unknown) => Record<string, unknown>> = {
   days: getDaysOfFares,
   destinations: getDestinationsOfFares,
   calendar: getCalendarFares,
   histogramMonth: getMinByMonthsAndDays,
-  histogram: () => {},
+  histogram: getHistogramFares,
 }
 
 const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresRequestParams, accumulatedValue?: unknown) => {
@@ -157,19 +150,12 @@ const getRequestedData = async (key: keyof KeyReturnTypeMap, params: FaresReques
 
     Object.keys(processedData).map(key => {
       try {
-        saveToLocalStorage(window.localStorage, key, processedData[key])
+        saveToLocalStorage(window.tvpFares, key, processedData[key])
       } catch (error) {
         console.error('error while saving to localStorage', error)
       }
     })
-    
-    const lastUpdate = getDateFromFares(data)
-    
-    const nextUpdate = getFromStorage(window.localStorage, UPDATE_TIME_KEY, NOT_FOUND_VALUE)
         
-    if(nextUpdate === NOT_FOUND_VALUE || isBefore(parseJSON(nextUpdate), lastUpdate)) 
-      saveToLocalStorage(window.localStorage, UPDATE_TIME_KEY, addHours(lastUpdate, HOURS_TO_CHECK).toISOString())
-    
     return values(processedData)
 
   } catch (error) {
@@ -203,23 +189,48 @@ const validateCalendarOnLocalStorage = (values: unknown, params?: FaresRequestPa
   return values
 }
 
+const validateHistogramOnLocalStorage = (values: unknown, params?: FaresRequestParams) => {
+
+  if(!params || !isObject(params) || !has('days', params) || !has('departure', params)) 
+    return []
+
+  const { days, departure } = params
+
+  if( !days || !departure ) return []
+  
+  if( !values || !Array.isArray(values) )
+    return getRequestedData( 'histogram', params )
+  
+  const histogram = values[0]
+  
+  if( !histogram || !isObject(histogram) )
+    return getRequestedData( 'histogram', params )
+  
+  const histogramDays = histogram[days]
+
+  const formatedDeparture = pipe(dropLast(2), replace(/-/g, ''), append('01'), join(''))
+
+  if(!histogramDays || !isObject(histogramDays) || !has(formatedDeparture(departure), histogramDays))
+    return getRequestedData('histogram', params, histogram)
+  
+  return values
+}
+
 const validateProperData: Record<keyof KeyReturnTypeMap, (values: unknown, params?: FaresRequestParams) => unknown> = {
   days: (values: unknown, params?: FaresRequestParams) =>  values,
   destinations: (values: unknown, params?: FaresRequestParams) =>  values,
   calendar: validateCalendarOnLocalStorage,
-  histogram: () => {},
+  histogram: validateHistogramOnLocalStorage,
   histogramMonth: (values: unknown, params?: FaresRequestParams) =>  values
 }
 
 export const requestData = (key: keyof KeyReturnTypeMap, params: FaresRequestParams) => {
-  const dataFromLocalStorage = getFromStorage(window.localStorage,key, NOT_FOUND_VALUE)
+  window.tvpFares = window.tvpFares || new Map<string, string>()
 
-  const nextUpdateFromLocalStorage = getFromStorage(window.localStorage, UPDATE_TIME_KEY, NOT_FOUND_VALUE)
+  const dataFromLocalStorage = getFromStorage(window.tvpFares,key, NOT_FOUND_VALUE)
 
   try {
-    const nextUpdate = parseJSON(nextUpdateFromLocalStorage)
-
-    if (dataFromLocalStorage === NOT_FOUND_VALUE || isAfter(nextUpdate, new Date()))
+    if (dataFromLocalStorage === NOT_FOUND_VALUE || (key !== 'calendar' && key !== 'histogram'))
       return getRequestedData(key, params)
 
     const parsedData = JSON.parse(dataFromLocalStorage)

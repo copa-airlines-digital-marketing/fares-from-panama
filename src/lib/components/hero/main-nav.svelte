@@ -34,7 +34,7 @@
 	{#if heroMenuVisible}
 		<a
 			aria-label="Ir al inicio"
-			class="bg-secondary cursor-pointer p-16 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition z-50"
+			class="bg-secondary cursor-pointer p-16 block size-64 rounded-full opacity-50 text-common-white hover:bg-red hover:opacity-100 focus:opacity-100 focus:bg-red transition z-50"
 			type="button"
 			href="#top"
 			transition:fade

@@ -67,6 +67,9 @@
 	onMount(() => {
 		const hasAnswered = getCookieValue(cookieName);
 		if (!hasAnswered) animate = true;
+		setTimeout(() => {
+			if (!hasAnswered) open.click();
+		}, 120000);
 	});
 </script>
 

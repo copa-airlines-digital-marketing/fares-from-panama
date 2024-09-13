@@ -4,15 +4,21 @@
 	import { getDaysContext } from '$lib/components/days';
 	import { getFareModulesContext } from '../context';
 	import { fly } from 'svelte/transition';
-	import { isEmpty, isNotNil, max, min } from 'ramda';
+	import { isEmpty, isNil, isNotNil, map, max, min, prop, sort, values } from 'ramda';
 	import HistogramDayCard from './histogram-day-card.svelte';
 	import HistogramFareCard from './histogram-fare-card.svelte';
-	import { isBeforeSweetSpot, isBeforeToday, parseDate } from '$lib/public/utils';
+	import { datesDif, isBeforeSweetSpot, isBeforeToday, parseDate, say } from '$lib/public/utils';
 	import type { Writable } from 'svelte/store';
 	import Icon from '$lib/components/site/icon.svelte';
 	import Scroll from '$lib/assets/icon-solar-round-double-alt-arrow-left-bold.svg?raw';
 	import { quintInOut } from 'svelte/easing';
-	import { number } from 'zod';
+	import PopularSkeleton from '../popular/popular-skeleton.svelte';
+	import { pipe } from 'ramda';
+	import { filter } from 'ramda';
+	import { keys } from 'ramda';
+	import { head } from 'ramda';
+	import { not } from 'ramda';
+	import { tap } from 'ramda';
 
 	export let month: string;
 
@@ -22,13 +28,27 @@
 
 	const labels = getContext<Record<string, string>>('moduleLabels');
 
+	const sortByPrice = (a: ViajaPanamaFare, b: ViajaPanamaFare) => {
+		const price = a.price - b.price;
+		return price === 0 ? datesDif(a.departure, b.departure) : price;
+	};
+
+	const getFirstDate = pipe(
+		filter(pipe(isEmpty, not)),
+		tap(say('hello')),
+		values,
+		sort(sortByPrice),
+		head,
+		prop('departure')
+	);
+
 	$: histogramDays = $modules.histogramDays;
 
 	$: histogram = $modules.histogram;
 
 	$: selectedStayOfSection = $selectedStay[section] && parseInt($selectedStay[section]);
 
-	$: name = undefined;
+	let name = getFirstDate($modules.histogramDays[$selectedStay[section]][month]);
 
 	$: maxShow = name ? 12 : 12;
 
@@ -69,8 +89,10 @@
 		<ScrollArea.Root class="relative w-full pb-tiny pt-roomy" type="auto" dir="ltr">
 			<ScrollArea.Viewport class="w-full">
 				<ScrollArea.Content>
-					<Tabs.List class="auto-cols-auto gap-4 grid grid-flow-col grid-rows-1 items-end">
-						{#each Object.keys(histogramDays[selectedStayOfSection][month]) as key (key)}
+					<Tabs.List
+						class="auto-cols-auto gap-4 grid grid-flow-col grid-rows-1 items-end min-h-216"
+					>
+						{#each Object.keys(histogramDays[selectedStayOfSection][month]).sort(datesDif) as key (key)}
 							<Tabs.Trigger
 								disabled={isBeforeToday(parseDate(key))}
 								value={key}
@@ -81,7 +103,7 @@
 									fare={histogramDays[selectedStayOfSection][month][key]}
 									dateKey={key}
 									lowest={110}
-									max={210}
+									max={500}
 									selected={name === key}
 								></HistogramDayCard>
 							</Tabs.Trigger>
@@ -111,11 +133,8 @@
 				/>
 			</ScrollArea.Scrollbar>
 		</ScrollArea.Root>
-		{#if isEmpty(histogram)}
-			destinationsSkeleton
-		{:else}
-			{JSON.stringify(histogram)}
-			<!-- {#each Object.keys(histogram[selectedStayOfSection][month]) as key (key)}
+		{#if !isEmpty(histogram) && isNotNil(histogram) && isNotNil(histogram[selectedStayOfSection]) && isNotNil(histogram[selectedStayOfSection][month])}
+			{#each Object.keys(histogram[selectedStayOfSection][month]) as key (key)}
 				{@const fares = histogram[selectedStayOfSection][month][key]}
 				{@const validFares = Object.values(fares)
 					.filter((fare) => !!fare && !isEmpty(fare) && fare.price !== 9999999)
@@ -130,6 +149,10 @@
 									<HistogramFareCard {fare} />
 								</li>
 							{/if}
+						{:else}
+							<div class="text-center col-full mb-24">
+								{labels['noFares']}
+							</div>
 						{/each}
 					</ul>
 					{#if validFares.length > 12 && maxShow < validFares.length}
@@ -145,12 +168,12 @@
 					{/if}
 				</Tabs.Content>
 			{:else}
-				<div class="text-center text-common-white">
+				<div class="text-center">
 					{labels['noFares']}
 				</div>
-			{/each} -->
+			{/each}
+		{:else}
+			<PopularSkeleton pulse={true}></PopularSkeleton>
 		{/if}
 	</Tabs.Root>
-{:else}
-	not a number
 {/if}

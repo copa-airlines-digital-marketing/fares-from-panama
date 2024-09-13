@@ -39,7 +39,6 @@
 	} = createCombobox<DestinationReturnSchema>({
 		defaultSelected: $selectedDestination ? toOption($selectedDestination) : undefined,
 		forceVisible: true,
-		onSelectedChange: handleDestinationChange,
 		loop: true,
 		closeOnEscape: true,
 		highlightOnHover: true
@@ -97,21 +96,9 @@
 		$selectedDestination = destination;
 	};
 
-	function handleDestinationChange(options: unknown) {
-		if (
-			!options ||
-			!isObject(options) ||
-			!has('next', options) ||
-			hasPath(['next', 'disabled'], options)
-		)
-			return;
+	$: getDestinationsData = handleDestinationChange($selectedDestination);
 
-		const { next } = options;
-
-		if (!next || typeof next !== 'object' || !has('value', next)) return;
-
-		const { value } = next;
-
+	function handleDestinationChange(value: unknown) {
 		if (!isDestination(value)) return;
 
 		debounce(() => {

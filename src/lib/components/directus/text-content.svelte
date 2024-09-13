@@ -6,6 +6,7 @@
 	export let content: Directus.TextContent;
 	export let component_name: string;
 	export let theme: Directus.Theme;
+	export let section: string;
 
 	const { name } = content;
 
@@ -26,7 +27,7 @@
 {:else if component_name === 'textContent'}
 	<TextContent {title} {description} {call_to_actions} {theme}></TextContent>
 {:else if component_name === 'search-module-step'}
-	<ModuleStep {title} {description}></ModuleStep>
+	<ModuleStep {title} {description} {section}></ModuleStep>
 {:else}
 	{logUnsupportedComponent(component_name)}
 {/if}

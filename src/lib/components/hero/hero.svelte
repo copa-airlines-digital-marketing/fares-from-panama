@@ -6,6 +6,8 @@
 	import SectionCard from './section-card.svelte';
 	import { isTextContent } from '$lib/public/utils/text-content';
 	import { prop } from 'ramda';
+	import { onMount } from 'svelte';
+	import { addToast } from '../site/toast.svelte';
 
 	export let content: SectionContent[];
 
@@ -19,9 +21,17 @@
 	let nav = content.filter((c) => c.component_name === 'main-nav' && itemIsNewNavigation(c.item))[0]
 		.item;
 
+	let welcomeToast = content.filter(
+		(c) => c.component_name === 'toast' && isTextContent(c.item)
+	)[0];
+
 	let mainNavTitle = content.filter(
 		(c) => c.component_name === 'main-menu-title' && isTextContent(c.item)
 	)[0].item;
+
+	onMount(() => {
+		if (welcomeToast) addToast({ data: welcomeToast.item, closeDelay: 10000 });
+	});
 </script>
 
 <div
@@ -44,7 +54,7 @@
 			<SectionCard content={card}></SectionCard>
 		{/each}
 	</ul>
-	<div class="fixed group bottom-16 right-16 md:right-24 z-10 justify-end">
+	<div class="fixed group bottom-16 right-16 md:right-24 size-64 z-10 justify-end">
 		<MainNav {nav}></MainNav>
 	</div>
 </div>

@@ -1,9 +1,10 @@
 import { z } from "zod"
-import { groupBy, map, omit, path, pipe, prop } from "ramda"
-import { formatForMonthYear, parseDeparture } from "../utils"
+import { groupBy, map, mergeDeepLeft, omit, path, pipe, prop } from "ramda"
+import { formatForMonthYear, inititeHistogramFareMonthDates, parseDeparture } from "../utils"
 import { startOfMonth } from "date-fns/fp"
-import { groupByDays } from "./lowests"
+import { groupByDays, groupByDestination } from "./lowests"
 import { getLowest } from "./calendar-fares"
+import type { faresReturnSchema } from "../utils/fares"
 
 const minPriceByMonthSchema = z.object({
   departure: z.string(),
@@ -34,14 +35,26 @@ const calculateLowestByMonth = pipe(prepareByDays, groupByMonth, map(map(getLowe
 
 const calculateLowestByDate = pipe(prepareByDays, groupByMonth, groupByDate, map(map(map(getLowest))))
 
-const preparerHistogramMonths = (fares: MinPriceByMonth[]) => ({
-  histogramMonths: calculateLowestByMonth(fares),
-  histogramDays: calculateLowestByDate(fares)
-})
+const preparerHistogramMonths = (fares: MinPriceByMonth[]) => {
+  const histogramMonths = calculateLowestByMonth(fares)
+  const months = map(map(inititeHistogramFareMonthDates), histogramMonths)
+  const histogramDays = mergeDeepLeft(calculateLowestByDate(fares), months)
+  return{
+    histogramMonths,
+    histogramDays,
+  }
+}
+
+const addMonth = (fare: faresReturnSchema) => ({...fare, month: getDepartureMonthFirstDate(fare)})
+
+const calculateFaresByDate = pipe(map(addMonth), groupByDays, groupByMonth, groupByDate, map(map(map(groupByDestination))), map(map(map(map(getLowest)))))
+
+const prepareHistogramFares = (fares: faresReturnSchema[]) => calculateFaresByDate(fares)
 
 export {
   minPriceByMonthSchema,
   preparerHistogramMonths,
+  prepareHistogramFares,
   isMinPriceByMonthArray
 }
 

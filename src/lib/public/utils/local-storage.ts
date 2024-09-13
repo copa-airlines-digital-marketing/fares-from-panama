@@ -6,10 +6,10 @@
  * @param value Serializable value will be stringyfied
  * @returns 
  */
-export const saveToLocalStorage = (storage: typeof localStorage, key: string, value: unknown) => {
+export const saveToLocalStorage = (storage: Map<string, string>, key: string, value: unknown) => {
   try {
     const serialized = JSON.stringify(value)
-    storage.setItem(key, serialized)
+    storage.set(key, serialized)
     return 'completed'
   } catch (e) {
     console.error(e)
@@ -17,6 +17,6 @@ export const saveToLocalStorage = (storage: typeof localStorage, key: string, va
   }
 }
 
-export const getFromStorage = (storage: typeof localStorage, key: string, defaultValue: string) => {
-  return storage.getItem(key) ?? defaultValue
+export const getFromStorage = (storage: Map<string, string>, key: string, defaultValue: string) => {
+  return storage.get(key) ?? defaultValue
 }
