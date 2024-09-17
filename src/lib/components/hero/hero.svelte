@@ -55,7 +55,7 @@
 		{/each}
 	</ul>
 	<div class="fixed group bottom-16 right-16 md:right-24 size-64 z-10 justify-end">
-		<MainNav {nav}></MainNav>
+		<MainNav></MainNav>
 	</div>
 </div>
 

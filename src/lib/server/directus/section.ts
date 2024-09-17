@@ -39,7 +39,6 @@ export const sectionQueryFields: QueryFields<Schema, Section> = [
       'form': formQueryFields,
       'icons': iconQueryFields,
       'logos': logoQueryFields,
-      'navigation': navigationQueryFields,
       'terms_and_conditions': termsandconditionsQueryFields,
       'Text_Content': textcontentQueryFields,
     }}
