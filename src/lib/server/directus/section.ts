@@ -7,7 +7,6 @@ import { followbuttonsQueryFields } from "./follow-buttons"
 import { iconQueryFields } from "./icon"
 import { formQueryFields } from "./form"
 import { logoQueryFields } from "./logos"
-import { navigationQueryFields } from "./navigation"
 import { termsandconditionsQueryFields } from "./terms-and-conditions"
 import { textcontentQueryFields } from "./text-content"
 

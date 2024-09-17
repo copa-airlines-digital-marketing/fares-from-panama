@@ -18,9 +18,6 @@
 	let hero = content.filter((c) => c.component_name === 'main-title' && isTextContent(c.item))[0]
 		.item;
 
-	let nav = content.filter((c) => c.component_name === 'main-nav' && itemIsNewNavigation(c.item))[0]
-		.item;
-
 	let welcomeToast = content.filter(
 		(c) => c.component_name === 'toast' && isTextContent(c.item)
 	)[0];
