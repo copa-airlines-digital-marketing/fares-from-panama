@@ -10,13 +10,12 @@
 </script>
 
 <header class="bg-primary-ultradark p-16 to-secondary w-full {className}">
-	<div class="container flex gap-16 items-center justify-between mx-auto">
+	<div class="container grid gap-16 items-center grid-cols-2 mx-auto">
 		<a href="/" title="ir al inicio">
-			<Icon data={tarifasFelicesLogo} class="h-56 lg:h-72" />
+			<Icon data={tarifasFelicesLogo} class="h-auto sm:h-56 lg:h-72" />
 		</a>
-		<a href="https://www.copaair.com" title="Ir a copa.com">
-			<Icon data={copaIsotipo} class="h-40 sm:hidden" />
-			<Icon data={copaLogo} class="h-40 hidden sm:block" />
+		<a href="https://www.copaair.com" title="Ir a copa.com" class="sm:justify-self-end">
+			<Icon data={copaLogo} class="h-auto w-full max-h-40" />
 		</a>
 	</div>
 </header>
