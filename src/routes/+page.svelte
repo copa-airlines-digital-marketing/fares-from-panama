@@ -63,3 +63,5 @@
 	{@const section = sectioM2M.sections_id}
 	<Section {section}></Section>
 {/each}
+
+<Survey></Survey>
