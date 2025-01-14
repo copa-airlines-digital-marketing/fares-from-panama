@@ -29,26 +29,26 @@
 		{@const { title, media } = content.translations[0]}
 		<div
 			class="col-start-1 col-full grid grid-cols-1 grid-rows-1 row-start-1 row-span-full bg-cover"
-			style="background-image: url('https://cm-marketing.directus.app/assets/{media}?width=50&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU');"
+			style="background-image: url('https://cm-marketing.directus.app/assets/{media}?width=50');"
 		>
 			<picture class="col-start-1 row-start-1">
 				<source
 					media="(min-width: 1367px)"
-					srcset="https://cm-marketing.directus.app/assets/{media}?width=1920&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+					srcset="https://cm-marketing.directus.app/assets/{media}?width=1920"
 				/>
 				<source
 					media="(min-width: 960px)"
-					srcset="https://cm-marketing.directus.app/assets/{media}?width=1368&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+					srcset="https://cm-marketing.directus.app/assets/{media}?width=1368"
 				/>
 				<source
 					media="(min-width: 600px)"
-					srcset="https://cm-marketing.directus.app/assets/{media}?width=960&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+					srcset="https://cm-marketing.directus.app/assets/{media}?width=960"
 				/>
 				<img
 					alt=""
 					bind:this={image}
 					class="data-[loaded='true']:opacity-100 h-full object-cover opacity-0 transition-opacity duration-500 w-full"
-					src="https://cm-marketing.directus.app/assets/{media}?height=1088&width=612&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+					src="https://cm-marketing.directus.app/assets/{media}?height=1088&width=612"
 				/>
 			</picture>
 			<divs

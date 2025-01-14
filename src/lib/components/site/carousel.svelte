@@ -55,7 +55,7 @@
 					alt=""
 					class="col-start-1 row-start-1 row-span-2 w-full h-full object-cover"
 					loading="lazy"
-					src="https://cm-marketing.directus.app/assets/{imageID}?width=120&height=160&fit=cover&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+					src="https://cm-marketing.directus.app/assets/{imageID}?width=120&height=160&fit=cover"
 				/>
 				<span
 					class="bg-gradient-to-t block col-start-1 h-[160px] row-start-1 row-span-2 from-common-black"
@@ -94,13 +94,13 @@
 					<picture>
 						<source
 							media="(orientation: portrait)"
-							srcset="https://cm-marketing.directus.app/assets/{imageID}?width=1080&height=1920&fit=cover&quality=80&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+							srcset="https://cm-marketing.directus.app/assets/{imageID}?width=1080&height=1920&fit=cover&quality=80"
 						/>
 						<img
 							alt=""
 							class="absolute h-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full -z-10"
 							loading="lazy"
-							src="https://cm-marketing.directus.app/assets/{imageID}?width=1920&height=1080&fit=cover&quality=80&access_token=4_9wJcm9uVEPXkV_3JKynLk0B4aZZ4PU"
+							src="https://cm-marketing.directus.app/assets/{imageID}?width=1920&height=1080&fit=cover&quality=80"
 						/>
 					</picture>
 					<div
